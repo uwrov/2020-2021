@@ -620,6 +620,7 @@ dmypy.json
 
 ### ROS ###
 devel/
+build/
 logs/
 bin/
 msg_gen/
