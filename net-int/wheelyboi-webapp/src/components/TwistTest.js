@@ -1,13 +1,13 @@
 import React from "react";
 
-class MainGUI extends React.Component {
+class TwistTest extends React.Component {
    state = {
    }
 
    constructor(props) {
       super(props);
 
-      this.state.websocket = require('socket.io-client')('http://localhost:4040');
+      this.state.websocket = this.props.websocket;
    }
 
    render() {
@@ -18,4 +18,4 @@ class MainGUI extends React.Component {
    }
 }
 
-export default MainGUI;
+export default TwistTest;
