@@ -39,7 +39,7 @@ def state(state):
     print_directions(state)
 
 def main():
-    state(movement)
+    # state(movement)
     sio.run(app, host=HOST_IP, port=HOST_PORT)
 
 def to_binary(state):

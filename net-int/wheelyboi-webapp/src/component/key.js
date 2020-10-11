@@ -1,7 +1,8 @@
-import React from 'react';
 import Node from './node.js';
+import React from 'react';
 import './key.css';
 const socket = require('socket.io-client')('http://localhost:4040');
+
 
 export default class key extends React.Component {
    constructor() {
@@ -15,6 +16,7 @@ export default class key extends React.Component {
 
       document.addEventListener("keydown", event => {
          if(event.keyCode === 65){
+            console.log('you pressed left')
             this.setState({
                left: true
             });
