@@ -1,7 +1,7 @@
 import React from 'react';
 import Node from './node.js';
 import './key.css';
-socket = require('socket.io-client')('http://localhost:4000');
+const socket = require('socket.io-client')('http://localhost:4000');
 
 export default class key extends React.Component {
    constructor() {
