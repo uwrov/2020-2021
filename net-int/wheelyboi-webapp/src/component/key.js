@@ -13,9 +13,7 @@ export default class key extends React.Component {
          right: false
       };
 
-      socket.on('Send State', function(){
-         socket.emit(this.state);
-      });
+      socket.emit("Send State", this.state);
 
       document.addEventListener("keydown", event => {
          if(event.keyCode === 65){
