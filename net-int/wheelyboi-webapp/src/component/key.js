@@ -8,32 +8,32 @@ export default class key extends React.Component {
    constructor() {
       super();
       this.state = {
-         left: false,
-         up: false,
-         down: false,
-         right: false
+         left: 0,
+         up: 0,
+         down: 0,
+         right: 0
       };
 
       document.addEventListener("keydown", event => {
          if(event.keyCode === 65){
             console.log('you pressed left')
             this.setState({
-               left: true
+               left: 1
             });
          }
          if(event.keyCode === 87){
             this.setState({
-               up: true
+               up: 1
             });
          }
          if(event.keyCode === 83){
             this.setState({
-               down: true
+               down: 1
             });
          }
          if(event.keyCode === 68){
             this.setState({
-               right: true
+               right: 1
             });
          }
          socket.emit("Send State", this.state);
@@ -42,22 +42,22 @@ export default class key extends React.Component {
       document.addEventListener("keyup", event => {
          if(event.keyCode === 65){
             this.setState({
-               left: false
+               left: 0
             });
          }
          if(event.keyCode === 87){
             this.setState({
-               up: false
+               up: 0
             });
          }
          if(event.keyCode === 83){
             this.setState({
-               down: false
+               down: 0
             });
          }
          if(event.keyCode === 68){
             this.setState({
-               right: false
+               right: 0
             });
          }
          socket.emit("Send State", this.state);
