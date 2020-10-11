@@ -10,12 +10,6 @@ HOST_PORT = "4040"
 app = Flask(__name__)
 sio = SocketIO(app, cors_allowed_origins="*")
 
-movement = {
-    'up': True,
-    'down': False,
-    'left' : False,
-    'right': True
-}
 #send data as a dicitonary wtih keys: lx, ly,lz, ax, ay, az
 # the values will be the respective values for the Keys
 #send as twist object
@@ -35,7 +29,7 @@ def send_command(command):
 
 @sio.on('Send State')
 def state(state):
-    state = to_binary(state)
+    # state = to_binary(state)
     print_directions(state)
 
 def main():
