@@ -1,7 +1,7 @@
 import React from 'react';
 import Node from './node.js';
 import './key.css';
-socket = require('socket.io-client')('http://localhost:4000');
+const socket = require('socket.io-client')('http://localhost:4000');
 
 export default class key extends React.Component {
    constructor() {
@@ -66,28 +66,28 @@ export default class key extends React.Component {
 
 
    render() {
-      let arrows = [
-         [
-            <Node className="hidden"/>, 
-            <Node 
+      let topArrows = [
+            (<Node display="hidden"/>), 
+            (<Node 
                id="up" 
-               className={this.state.up ? "pressed" : "not"} />, 
-            <Node className="hidden"/>
-         ],
-         [
-            <Node 
-               id="left" 
-               className={this.state.left ? "pressed" : "not"} />, 
-            <Node 
-               id="down" 
-               className={this.state.down ? "pressed" : "not"} />, 
-            <Node 
-               id="right" 
-               className={this.state.right ? "pressed" : "not"} />]
+               display={this.state.up ? "pressed" : "not"} />), 
+            (<Node display="hidden"/>)
       ];
+      
+      let bottomArrows = [
+      (<Node 
+         id="left" 
+         display={this.state.left ? "pressed" : "not"} />), 
+      (<Node 
+         id="down" 
+         display={this.state.down ? "pressed" : "not"} />), 
+      (<Node 
+         id="right" 
+         display={this.state.right ? "pressed" : "not"} />)];
       return(
          <div className="key">
-            <div>{arrows}</div>
+            <div>{topArrows}</div>
+            <div>{bottomArrows}</div>
          </div>
       );
    }
