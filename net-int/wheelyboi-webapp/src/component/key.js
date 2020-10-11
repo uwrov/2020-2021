@@ -13,7 +13,7 @@ export default class key extends React.Component {
          right: false
       };
 
-      socket.on('sendState', function(){
+      socket.on('Send State', function(){
          socket.emit(this.state);
       });
 
