@@ -1,7 +1,7 @@
 import React from 'react';
 import Node from './node.js';
 import './key.css';
-const socket = require('socket.io-client')('http://localhost:4000');
+const socket = require('socket.io-client')('http://localhost:4040');
 
 export default class key extends React.Component {
    constructor() {
@@ -12,8 +12,6 @@ export default class key extends React.Component {
          down: false,
          right: false
       };
-
-      socket.emit("Send State", this.state);
 
       document.addEventListener("keydown", event => {
          if(event.keyCode === 65){
@@ -36,6 +34,7 @@ export default class key extends React.Component {
                right: true
             });
          }
+         socket.emit("Send State", this.state);
       });
 
       document.addEventListener("keyup", event => {
@@ -59,6 +58,7 @@ export default class key extends React.Component {
                right: false
             });
          }
+         socket.emit("Send State", this.state);
       });
    }
 
@@ -66,21 +66,21 @@ export default class key extends React.Component {
    render() {
       let arrows = [
          [
-            <Node className="hidden"/>, 
-            <Node 
-               id="up" 
-               className={this.state.up ? "pressed" : "not"} />, 
+            <Node className="hidden"/>,
+            <Node
+               id="up"
+               className={this.state.up ? "pressed" : "not"} />,
             <Node className="hidden"/>
          ],
          [
-            <Node 
-               id="left" 
-               className={this.state.left ? "pressed" : "not"} />, 
-            <Node 
-               id="down" 
-               className={this.state.down ? "pressed" : "not"} />, 
-            <Node 
-               id="right" 
+            <Node
+               id="left"
+               className={this.state.left ? "pressed" : "not"} />,
+            <Node
+               id="down"
+               className={this.state.down ? "pressed" : "not"} />,
+            <Node
+               id="right"
                className={this.state.right ? "pressed" : "not"} />]
       ];
       return(
