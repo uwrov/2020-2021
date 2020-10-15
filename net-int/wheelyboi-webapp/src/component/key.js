@@ -13,7 +13,7 @@ export default class key extends React.Component {
          lin_z: 0
       };
 
-      const input = document.getElementById("input");
+
 
       document.addEventListener("keydown", event => {
          if(event.keyCode === 65){
@@ -83,7 +83,17 @@ export default class key extends React.Component {
             <div>{topArrows}</div>
             <div>{bottomArrows}</div>
             <div>
-               <input id="input" type="text"  />
+               <input type="text" onChange={event => {
+                  let newZ = parseFloat(event.target.value);
+                  if(!isNaN(newZ)) {
+                     this.setState({
+                        lin_z: newZ
+                     });
+                     console.log("this.state.lin_z = " + this.state.lin_z);
+                  } else {
+                     console.log("that's not a valid float");
+                  }
+               }}/>
             </div>
          </div>
       );
