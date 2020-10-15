@@ -1,10 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import MainGUI from "./components/MainGUI.js";
+import Key from './component/key';
+
 
 ReactDOM.render(
-  <React.StrictMode>
-    <MainGUI />
-  </React.StrictMode>,
-  document.getElementById('root')
+   <React.StrictMode>
+     <Key />
+   </React.StrictMode>,
+   document.getElementById('root')
 );
+
+ 
