@@ -8,56 +8,47 @@ export default class key extends React.Component {
    constructor() {
       super();
       this.state = {
-         left: 0,
-         up: 0,
-         down: 0,
-         right: 0
+         lin_x: 0,
+         lin_y: 0
       };
 
       document.addEventListener("keydown", event => {
          if(event.keyCode === 65){
-            console.log('you pressed left')
+            console.log('you pressed left');
             this.setState({
-               left: 1
+               lin_x: -1
             });
          }
          if(event.keyCode === 87){
+            console.log("you pressed up");
             this.setState({
-               up: 1
+               lin_y: 1
             });
          }
          if(event.keyCode === 83){
+            console.log("you pressed down");
             this.setState({
-               down: 1
+               lin_y: -1
             });
          }
          if(event.keyCode === 68){
+            console.log("you pressed right");
             this.setState({
-               right: 1
+               lin_x: 1
             });
          }
          socket.emit("Send State", this.state);
       });
 
       document.addEventListener("keyup", event => {
-         if(event.keyCode === 65){
+         if(event.keyCode === 65 || event.keyCode === 68){
             this.setState({
-               left: 0
+               lin_x: 0
             });
          }
-         if(event.keyCode === 87){
+         if(event.keyCode === 87 || event.keyCode === 83){
             this.setState({
-               up: 0
-            });
-         }
-         if(event.keyCode === 83){
-            this.setState({
-               down: 0
-            });
-         }
-         if(event.keyCode === 68){
-            this.setState({
-               right: 0
+               lin_y: 0
             });
          }
          socket.emit("Send State", this.state);
