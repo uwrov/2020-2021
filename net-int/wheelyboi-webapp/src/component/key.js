@@ -9,8 +9,11 @@ export default class key extends React.Component {
       super();
       this.state = {
          lin_x: 0,
-         lin_y: 0
+         lin_y: 0,
+         lin_z: 0
       };
+
+      const input = document.getElementById("input");
 
       document.addEventListener("keydown", event => {
          if(event.keyCode === 65){
@@ -61,24 +64,27 @@ export default class key extends React.Component {
             (<Node display="hidden"/>), 
             (<Node 
                id="up" 
-               display={this.state.up ? "pressed" : "not"} />), 
+               display={this.state.lin_y === 1 ? "pressed" : "not"} />), 
             (<Node display="hidden"/>)
       ];
       
       let bottomArrows = [
       (<Node 
          id="left" 
-         display={this.state.left ? "pressed" : "not"} />), 
+         display={this.state.lin_x === -1 ? "pressed" : "not"} />), 
       (<Node 
          id="down" 
-         display={this.state.down ? "pressed" : "not"} />), 
+         display={this.state.lin_y === -1 ? "pressed" : "not"} />), 
       (<Node 
          id="right" 
-         display={this.state.right ? "pressed" : "not"} />)];
+         display={this.state.lin_x === 1 ? "pressed" : "not"} />)];
       return(
          <div className="key">
             <div>{topArrows}</div>
             <div>{bottomArrows}</div>
+            <div>
+               <input id="input" type="text"  />
+            </div>
          </div>
       );
    }
