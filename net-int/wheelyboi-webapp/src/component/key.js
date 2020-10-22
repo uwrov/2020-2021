@@ -3,8 +3,10 @@ import React from 'react';
 import './key.css';
 const socket = require('socket.io-client')('http://localhost:4040');
 
-
+// This component is a visual representation of the movement vector
+// that is being sent to the server by the controller.
 export default class key extends React.Component {
+   // Initialize the output vectors to zero.
    constructor() {
       super();
       this.state = {
@@ -13,31 +15,49 @@ export default class key extends React.Component {
          lin_z: 0
       };
 
-
-
-      document.addEventListener("keydown", event => {
+      // This event listener will be triggered everytime up, down, 
+      // left, right, space, and/or shift is being pressed. It will
+      // send the current state of the movement vector to the server.
+      document.addEventListener("keydown", event => { 
+         // Pressed left('a')
          if(event.keyCode === 65){
-            console.log('you pressed left');
             this.setState({
                lin_x: -1
             });
          }
+
+         // Pressed up
          if(event.keyCode === 87){
-            console.log("you pressed up");
             this.setState({
                lin_y: 1
             });
          }
+
+         // Pressed down
          if(event.keyCode === 83){
-            console.log("you pressed down");
             this.setState({
                lin_y: -1
             });
          }
+
+         // Pressed right
          if(event.keyCode === 68){
-            console.log("you pressed right");
             this.setState({
                lin_x: 1
+            });
+         }
+
+         // Pressed space
+         if(event.keyCode === 32){
+            this.setState({
+               lin_z: 1
+            });
+         }
+
+         // Pressed shift
+         if(event.keyCode === 16){
+            this.setState({
+               lin_z: -1
             });
          }
          socket.emit("Send State", this.state);
@@ -54,46 +74,50 @@ export default class key extends React.Component {
                lin_y: 0
             });
          }
+         if(event.keyCode === 32 || event.keyCode === 16){
+            this.setState({
+               lin_z: 0
+            });
+         }
          socket.emit("Send State", this.state);
       });
    }
 
 
    render() {
+      // The upper half of the array of Nodes.
       let topArrows = [
             (<Node display="hidden"/>), 
             (<Node 
-               id="up" 
+               id="front" 
                display={this.state.lin_y === 1 ? "pressed" : "not"} />), 
             (<Node display="hidden"/>)
       ];
       
+      // The bottom half of the array of Nodes.
       let bottomArrows = [
       (<Node 
          id="left" 
          display={this.state.lin_x === -1 ? "pressed" : "not"} />), 
       (<Node 
-         id="down" 
+         id="back" 
          display={this.state.lin_y === -1 ? "pressed" : "not"} />), 
       (<Node 
          id="right" 
          display={this.state.lin_x === 1 ? "pressed" : "not"} />)];
       return(
          <div className="key">
-            <div>{topArrows}</div>
-            <div>{bottomArrows}</div>
             <div>
-               <input type="text" onChange={event => {
-                  let newZ = parseFloat(event.target.value);
-                  if(!isNaN(newZ)) {
-                     this.setState({
-                        lin_z: newZ
-                     });
-                     console.log("this.state.lin_z = " + this.state.lin_z);
-                  } else {
-                     console.log("that's not a valid float");
-                  }
-               }}/>
+               <div>{topArrows}</div>
+               <div>{bottomArrows}</div>
+            </div>
+            <div>
+               <Node 
+                  id="up"
+                  display={this.state.lin_z === 1 ? "pressed" : "not"} />
+               <Node 
+                  id="down"
+                  display={this.state.lin_z === -1 ? "pressed" : "not"} />
             </div>
          </div>
       );
