@@ -11,45 +11,28 @@ HOST_PORT = "4040"
 app = Flask(__name__)
 sio = SocketIO(app, cors_allowed_origins="*")
 
-#@sio.on("Send Movement")
-def send_movement():
-    #emit('Movement', {"speed": speed, "direction": direction}, broadcast=True)
-    distance = 3
-    speed = 1
-    rospy.init_node('wheely_boi', anonymous=True)
-    pub_boi = rospy.Publisher('chatter', Twist, queue_size=10)
-    msg = Twist()
-    msg.linear.x = 1
-    msg.linear.y = 0
-    msg.linear.z = 0
-    msg.angular.x = 0
-    msg.angular.y = 0
-    msg.angular.z = 0
-    while not rospy.is_shutdown():
-        t0 = rospy.Time.now().to_sec()
-        current_dist = 0
-        print(msg.linear.x)
-        while (current_dist < distance):
-            print(current_dist)
-            print(distance)
-            pub_boi.publish(msg)
-            t1 = rospy.Time.now().to_sec()
-            print(t0)
-            print(t1)
-            current_dist = speed * (t1 - t0)
-        msg.linear.x = 0
-        print(msg.linear.x)
-        pub_boi.publish(msg)
-        rospy.signal_shutdown('task done')
+velocity_publisher = None
+rate = None
 
-#send data as a dicitonary wtih keys: lx, ly,lz, ax, ay, az
-# the values will be the respective values for the Keys
-#send as twist object
-@sio.on("Send Movement")
-def send_movement(data):
-    #('Movement', {"speed": speed, "direction": direction}, broadcast=True)
+# rosrun wb_sol 2020_server.py
+# source devel/setup.sh
+
+
+#@sio.on("Send Movement")
+@sio.on("Send State")
+def send_movement(state):
     msg = Twist()
-    msg.linear.x = data
+    msg.linear.x = state["lin_x"]
+    msg.linear.y = state["lin_y"]
+    msg.linear.z = state["lin_z"]
+    msg.angular.x = state["lin_x"]
+    msg.angular.y = state["lin_y"]
+    msg.angular.z = state["lin_z"]
+    #while not rospy.is_shutdown():
+    rospy.loginfo("Sending Command v:" + str(msg.linear.x))
+    velocity_publisher.publish(msg)
+    rate.sleep()
+    #rospy.signal_shutdown('task done')
 
 def send_sensor_data():
     emit('Senor Data', {'sensor data': sensor_data}, broadcast=True)
@@ -61,24 +44,11 @@ def send_command(command):
 
 if __name__ == '__main__':
     try:
-	sio.run(app, host=HOST_IP, port=HOST_PORT)
-        send_movement()
+        rospy.init_node('wheely_boi', anonymous=True)
+        velocity_publisher = rospy.Publisher('/wheely_boi/wheely_boi/cmd', Twist, queue_size=10)
+        rate = rospy.Rate(10)
+        sio.run(app, host=HOST_IP, port=HOST_PORT)
     except rospy.ROSInterruptException: pass
-    #('Command', command, broadcast=True)
-    print('hello')
-
-@sio.on('Send State')
-def state(state):
-    # state = to_binary(state)
-    print_directions(state)
-
-def to_binary(state):
-    for direction in state:
-        if state[direction]:
-            state[direction] = 1
-        else:
-            state[direction] = 0
-    return state
 
 def print_directions(state):
     for direction in state:
