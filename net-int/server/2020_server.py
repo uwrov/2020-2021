@@ -14,12 +14,15 @@ sio = SocketIO(app, cors_allowed_origins="*")
 velocity_publisher = None
 rate = None
 
+# CD into the directory src/wb_sol/urdf
+# roslaunch gazebo_ros empty_world.launch
+# rosrun gazebo_ros spawn_model -file wb.urdf -urdf -model wheely_boi
 # To run server
 # rosrun wb_sol 2020_server.py
 # source devel/setup.sh
 
 @sio.on("Send State")
-def send_movement(state):
+def send_state(state):
     """
     Sends contoller input to rospy
 
