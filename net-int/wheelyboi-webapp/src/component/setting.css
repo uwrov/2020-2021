@@ -1,0 +1,25 @@
+
+
+.dot {
+  height: 25px;
+  width: 25px;
+  
+  border-radius: 50%;
+  display: inline-block;
+}
+
+#on {
+  background-color: red;
+}
+
+#off {
+  background-color: black;
+}
+
+.no-change-dot:hover {
+  background-color: yellow;
+}
+
+.change-dot:hover {
+  background-color: orange;
+}

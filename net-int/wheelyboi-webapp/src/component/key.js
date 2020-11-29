@@ -1,18 +1,21 @@
 import Node from './node.js';
 import React from 'react';
 import './key.css';
+import Draggable from 'react-draggable';
+
 const socket = require('socket.io-client')('http://localhost:4040');
 
 // This component is a visual representation of the movement vector
 // that is being sent to the server by the controller.
 export default class key extends React.Component {
    // Initialize the output vectors to zero.
-   constructor() {
+   constructor(props) {
       super();
       this.state = {
          lin_x: 0,
          lin_y: 0,
-         lin_z: 0
+         lin_z: 0,
+         config: props.config
       };
 
       // This event listener will be triggered everytime up, down, 
@@ -20,42 +23,42 @@ export default class key extends React.Component {
       // send the current state of the movement vector to the server.
       document.addEventListener("keydown", event => { 
          // Pressed left('a')
-         if(event.keyCode === 65){
+         if(event.keyCode === this.state.config.left){
             this.setState({
                lin_x: -1
             });
          }
 
          // Pressed up
-         if(event.keyCode === 87){
+         if(event.keyCode === this.state.config.front){
             this.setState({
                lin_y: 1
             });
          }
 
          // Pressed down
-         if(event.keyCode === 83){
+         if(event.keyCode === this.state.config.back){
             this.setState({
                lin_y: -1
             });
          }
 
          // Pressed right
-         if(event.keyCode === 68){
+         if(event.keyCode === this.state.config.right){
             this.setState({
                lin_x: 1
             });
          }
 
          // Pressed space
-         if(event.keyCode === 32){
+         if(event.keyCode === this.state.config.up){
             this.setState({
                lin_z: 1
             });
          }
 
          // Pressed shift
-         if(event.keyCode === 16){
+         if(event.keyCode === this.state.config.down){
             this.setState({
                lin_z: -1
             });
@@ -64,17 +67,17 @@ export default class key extends React.Component {
       });
 
       document.addEventListener("keyup", event => {
-         if(event.keyCode === 65 || event.keyCode === 68){
+         if(event.keyCode === this.state.config.left || event.keyCode === this.state.config.right){
             this.setState({
                lin_x: 0
             });
          }
-         if(event.keyCode === 87 || event.keyCode === 83){
+         if(event.keyCode === this.state.config.back || event.keyCode === this.state.config.front){
             this.setState({
                lin_y: 0
             });
          }
-         if(event.keyCode === 32 || event.keyCode === 16){
+         if(event.keyCode === this.state.config.up || event.keyCode === this.state.config.down){
             this.setState({
                lin_z: 0
             });
@@ -91,35 +94,38 @@ export default class key extends React.Component {
             (<Node 
                id="front" 
                display={this.state.lin_y === 1 ? "pressed" : "not"} />), 
-            (<Node display="hidden"/>)
+            (<Node display="hidden"/>),
+            (<Node display="hidden"/>),
+            (<Node 
+               id="up"
+               display={this.state.lin_z === 1 ? "pressed" : "not"} />)
       ];
       
       // The bottom half of the array of Nodes.
       let bottomArrows = [
-      (<Node 
-         id="left" 
-         display={this.state.lin_x === -1 ? "pressed" : "not"} />), 
-      (<Node 
-         id="back" 
-         display={this.state.lin_y === -1 ? "pressed" : "not"} />), 
-      (<Node 
-         id="right" 
-         display={this.state.lin_x === 1 ? "pressed" : "not"} />)];
+         (<Node 
+            id="left" 
+            display={this.state.lin_x === -1 ? "pressed" : "not"} />), 
+         (<Node 
+            id="back" 
+            display={this.state.lin_y === -1 ? "pressed" : "not"} />), 
+         (<Node 
+            id="right" 
+            display={this.state.lin_x === 1 ? "pressed" : "not"} />),
+         (<Node display="hidden"/>),
+         <Node 
+            id="down"
+            display={this.state.lin_z === -1 ? "pressed" : "not"} />
+      ];
       return(
-         <div className="key">
-            <div>
-               <div>{topArrows}</div>
-               <div>{bottomArrows}</div>
+         <Draggable>
+            <div className="key">
+               <div>
+                  <div>{topArrows}</div>
+                  <div>{bottomArrows}</div>
+               </div>
             </div>
-            <div>
-               <Node 
-                  id="up"
-                  display={this.state.lin_z === 1 ? "pressed" : "not"} />
-               <Node 
-                  id="down"
-                  display={this.state.lin_z === -1 ? "pressed" : "not"} />
-            </div>
-         </div>
+         </Draggable>
       );
    }
 }

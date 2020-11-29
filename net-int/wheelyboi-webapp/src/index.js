@@ -1,11 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Key from './component/key';
+import Configuration from './component/configuration';
+
 
 
 ReactDOM.render(
    <React.StrictMode>
-     <Key />
+     <Configuration />
    </React.StrictMode>,
    document.getElementById('root')
 );
