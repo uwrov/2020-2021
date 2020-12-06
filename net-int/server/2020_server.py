@@ -4,6 +4,11 @@ import rospy
 from flask import Flask, render_template
 from flask_socketio import SocketIO, send, emit
 from geometry_msgs.msg import Twist
+# image stuff
+import base64
+from sensor_msgs.msg import Image
+from cv_bridge import CvBridge
+import cv2
 
 HOST_IP = "localhost"
 HOST_PORT = "4040"
@@ -13,7 +18,8 @@ sio = SocketIO(app, cors_allowed_origins="*")
 
 velocity_publisher = None
 rate = None
-
+image_subsciber = None
+image = None
 # CD into the directory src/wb_sol/urdf
 # roslaunch gazebo_ros empty_world.launch
 # rosrun gazebo_ros spawn_model -file wb.urdf -urdf -model wheely_boi
@@ -54,6 +60,30 @@ def send_state(state):
     rate.sleep()
     #rospy.signal_shutdown('task done')
 
+
+def send_image(data):
+    """
+    Sends image to client
+
+    Receives movement information from ROS as a image message.
+    The image is then converted into a cv2 image and then encoded in vase 64 so
+    it can be sent as a JSON object to the client via socket.io
+
+    Parameters
+    -------
+    data : ROS image
+        stores image from ROS
+
+    Returns
+    -------
+    None
+    """
+    rospy.loginfo('Image received...')
+    image = br.imgmsg_to_cv2(data)
+    retval, buffer = cv2.imencode('.png', image)
+    img = base64.b64encode(buffer)
+    emit("Image Detection", {'image': img}, broadcast = True)
+
 # def send_sensor_data():
 #     emit('Senor Data', {'sensor data': sensor_data}, broadcast=True)
 #
@@ -67,6 +97,8 @@ if __name__ == '__main__':
     try:
         rospy.init_node('wheely_boi', anonymous=True)
         velocity_publisher = rospy.Publisher('/wheely_boi/wheely_boi/cmd', Twist, queue_size=10)
+        image_subsciber = rospy.Subscriber("chatter", Image, send_image) # change chatter to url dest
+        br = CvBridge()
         rate = rospy.Rate(10)
         sio.run(app, host=HOST_IP, port=HOST_PORT)
     except rospy.ROSInterruptException: pass
