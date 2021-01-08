@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './oldcomponents/index.css';
-import Console from './oldcomponents/Console.js';
+//import './components/index.css';
+import Console from './components/Console.js';
 //import App from './App';
 import GUI from "./oldcomponents/components/GUI.js";
 
@@ -10,5 +10,5 @@ import GUI from "./oldcomponents/components/GUI.js";
 
 //let button = new Button();
 ReactDOM.render(<GUI />, document.getElementById('root'));
-//ReactDOM.render(<Console />, document.getElementById('console'));
+ReactDOM.render(<Console />, document.getElementById('root'));
 //ReactDOM.render(button.render(), document.getElementById('root'));
