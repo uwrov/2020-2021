@@ -10,5 +10,5 @@ import GUI from "./oldcomponents/components/GUI.js";
 
 //let button = new Button();
 ReactDOM.render(<GUI />, document.getElementById('root'));
-ReactDOM.render(<Console />, document.getElementById('root'));
+//ReactDOM.render(<Console />, document.getElementById('root'));
 //ReactDOM.render(button.render(), document.getElementById('root'));

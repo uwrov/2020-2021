@@ -1,4 +1,4 @@
-import Node from './node.js';
+import Node from './node.js/index.js';
 import React from 'react';
 import './Controller.css';
 import Draggable from 'react-draggable';
