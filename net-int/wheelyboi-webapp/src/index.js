@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Configuration from './component/configuration';
+import Key from '../../reactgui/cont-module/Key';
 
 
 
 ReactDOM.render(
    <React.StrictMode>
-     <Configuration />
+     <Key />
    </React.StrictMode>,
    document.getElementById('root')
 );
