@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 //import './components/index.css';
-import Console from './components/Console.js';
+import Console from './components/console/Console.js';
 //import App from './App';
 import GUI from "./oldcomponents/components/GUI.js";
 
