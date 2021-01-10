@@ -2,12 +2,17 @@ import React, { Component } from 'react';
 import './Console.css';
 
 
+const socket = require('socket.io-client')('http://localhost:4040');
+
 class Console extends Component {
     static thisConsole;
+    
     
 
     constructor(props) {
         super(props);
+        
+        
         this.prevArgs = []; // list of prev args
         this.argCount = -1;
         this.tempArgNum = 0;
@@ -24,8 +29,29 @@ class Console extends Component {
         this.data = "Console created.\nListening...\n";
         var temp = "Console created.\nListening...\n";
         this.consoleStorage.setItem('ConsoleData', temp);//set empty console
-        let timerId = setInterval(this.updateConsole, 100);//update the console every 100 ms   
+        let timerId = setInterval(this.updateConsole, 100);//update the console every 100 ms 
+        
+          
     }
+
+    socketOnListeners() {
+        const io = require("socket.io");
+        const server = io.listen(8000);
+        server.on('Print Console Logs', function(data){
+            let temp = this.consoleStorage.getElementById('ConsoleData');
+            data.forEach(el => {
+                temp += "$>" + "Type: " + el.type + "Message: " + el.message + "\n";
+                this.consoleStorage.removeItem('ConsoleData');
+                this.consoleStorage.setItem('ConsoleData', temp);
+                this.setState({ consoleWindow: this.consoleStorage.getItem('ConsoleData') });
+            });
+        });
+
+    }
+    
+
+    
+
 
     addArgs() {
         if (this.state.text != undefined && this.state.text != "\\") {

@@ -4,6 +4,7 @@ import MainCam from "./MainCam";
 import NavBar from "./NavBar";
 import Widgets from "./Widgets";
 import MiniCam from "./MiniCam";
+import Console from "../../components/console/Console"
 
 
 class GUI extends React.Component {
@@ -55,6 +56,7 @@ class GUI extends React.Component {
              camPorts={this.state.cam_ports}
              mainIndex={this.state.main_cam_index}
              />
+             <Console/>
 
 
 
