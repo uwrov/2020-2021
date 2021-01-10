@@ -97,13 +97,6 @@ export default class Controller extends React.Component {
    render() {
       // The upper half of the array of Nodes.
       let topArrows = [
-<<<<<<< HEAD:net-int/wheelyboi-webapp/src/component/key.js
-            (<Node display="hidden"/>),
-            (<Node
-               id="front"
-               display={this.state.lin_y === 1 ? "pressed" : "not"} />),
-            (<Node display="hidden"/>)
-=======
             (<Node display="hidden"/>), 
             (<Node 
                id="front" 
@@ -113,35 +106,10 @@ export default class Controller extends React.Component {
             (<Node 
                id="up"
                display={this.state.lin_z === 1 ? "pressed" : "not"} />)
->>>>>>> 3a6e8f3e4450dc148d75f7b1bf5be818f4ab21e5:net-int/reactgui/src/components/controller/Controller.js
       ];
 
       // The bottom half of the array of Nodes.
       let bottomArrows = [
-<<<<<<< HEAD:net-int/wheelyboi-webapp/src/component/key.js
-      (<Node
-         id="left"
-         display={this.state.lin_x === -1 ? "pressed" : "not"} />),
-      (<Node
-         id="back"
-         display={this.state.lin_y === -1 ? "pressed" : "not"} />),
-      (<Node
-         id="right"
-         display={this.state.lin_x === 1 ? "pressed" : "not"} />)];
-      return(
-         <div className="key">
-            <div>
-               <div>{topArrows}</div>
-               <div>{bottomArrows}</div>
-            </div>
-            <div>
-               <Node
-                  id="up"
-                  display={this.state.lin_z === 1 ? "pressed" : "not"} />
-               <Node
-                  id="down"
-                  display={this.state.lin_z === -1 ? "pressed" : "not"} />
-=======
          (<Node 
             id="left" 
             display={this.state.lin_x === -1 ? "pressed" : "not"} />), 
@@ -163,7 +131,6 @@ export default class Controller extends React.Component {
                   <div>{topArrows}</div>
                   <div>{bottomArrows}</div>
                </div>
->>>>>>> 3a6e8f3e4450dc148d75f7b1bf5be818f4ab21e5:net-int/reactgui/src/components/controller/Controller.js
             </div>
          </Draggable>
       );
