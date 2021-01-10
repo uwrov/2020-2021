@@ -2,7 +2,7 @@ import React from 'react';
 
 // This component represents the nodes that light up when
 // a particular key is pressed.
-export default function Node(props) {
+export default function node(props) {
    let name = "";
    // Assigns a text to the Node. Will be empty if not one of the
    // predefined keys.
