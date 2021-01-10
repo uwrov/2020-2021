@@ -19,7 +19,7 @@ sio = SocketIO(app, cors_allowed_origins="*")
 velocity_publisher = None
 rate = None
 image_subsciber = None
-image = None
+br = None
 # CD into the directory src/wb_sol/urdf
 # roslaunch gazebo_ros empty_world.launch
 # rosrun gazebo_ros spawn_model -file wb.urdf -urdf -model wheely_boi
@@ -82,7 +82,7 @@ def send_image(data):
     image = br.imgmsg_to_cv2(data)
     retval, buffer = cv2.imencode('.png', image)
     img = base64.b64encode(buffer)
-    emit("Image Detection", {'image': img}, broadcast = True)
+    sio.emit("Image Display", {'image': img}, broadcast = True)
 
 # def send_sensor_data():
 #     emit('Senor Data', {'sensor data': sensor_data}, broadcast=True)
@@ -96,9 +96,9 @@ if __name__ == '__main__':
     """ Sets up rospy and starts server """
     try:
         rospy.init_node('wheely_boi', anonymous=True)
-        velocity_publisher = rospy.Publisher('/wheely_boi/wheely_boi/cmd', Twist, queue_size=10)
-        image_subsciber = rospy.Subscriber("chatter", Image, send_image) # change chatter to url dest
+        #velocity_publisher = rospy.Publisher('/wheely_boi/wheely_boi/cmd', Twist, queue_size=10)
+        image_subsciber = rospy.Subscriber("/image/distribute", Image, send_image) # change chatter to url dest
         br = CvBridge()
-        rate = rospy.Rate(10)
+        #rate = rospy.Rate(10)
         sio.run(app, host=HOST_IP, port=HOST_PORT)
     except rospy.ROSInterruptException: pass
