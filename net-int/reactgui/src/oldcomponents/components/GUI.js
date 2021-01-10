@@ -4,7 +4,10 @@ import MainCam from "./MainCam";
 import NavBar from "./NavBar";
 import Widgets from "./Widgets";
 import MiniCam from "./MiniCam";
+
 import Console from "../../components/console/Console"
+import Controller from "../../components/controller/Controller";
+
 
 
 class GUI extends React.Component {
@@ -52,14 +55,13 @@ class GUI extends React.Component {
                         this.state.cam_ports[this.state.main_cam_index] :
                         this.state.cam_ports[this.state.main_cam_index]}/>
             {this.renderSettings()}
-           <Widgets ip={this.state.cam_ip}
+            <Widgets ip={this.state.cam_ip}
              camPorts={this.state.cam_ports}
              mainIndex={this.state.main_cam_index}
+
              />
              <Console/>
-
-
-
+             <Controller />
 
          </div>
       );
