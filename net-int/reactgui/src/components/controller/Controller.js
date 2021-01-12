@@ -3,6 +3,7 @@ import React from 'react';
 import './Controller.css';
 import Draggable from 'react-draggable';
 
+
 const socket = require('socket.io-client')('http://localhost:4040');
 
 // This component is a visual representation of the movement vector
@@ -25,10 +26,10 @@ export default class Controller extends React.Component {
          } 
       };
 
-      // This event listener will be triggered everytime up, down, 
+      // This event listener will be triggered everytime up, down,
       // left, right, space, and/or shift is being pressed. It will
       // send the current state of the movement vector to the server.
-      document.addEventListener("keydown", event => { 
+      document.addEventListener("keydown", event => {
          // Pressed left('a')
          if(event.keyCode === this.state.config.left){
             this.setState({
@@ -60,14 +61,14 @@ export default class Controller extends React.Component {
          // Pressed space
          if(event.keyCode === this.state.config.up){
             this.setState({
-               lin_z: 1
+               lin_z: 5
             });
          }
 
          // Pressed shift
          if(event.keyCode === this.state.config.down){
             this.setState({
-               lin_z: -1
+               lin_z: -5
             });
          }
          socket.emit("Send State", this.state);
@@ -107,7 +108,7 @@ export default class Controller extends React.Component {
                id="up"
                display={this.state.lin_z === 1 ? "pressed" : "not"} />)
       ];
-      
+
       // The bottom half of the array of Nodes.
       let bottomArrows = [
          (<Node 
