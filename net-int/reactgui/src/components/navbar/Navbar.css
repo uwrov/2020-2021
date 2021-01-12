@@ -1,0 +1,50 @@
+#NavBar {
+  position: absolute;
+  background-color: hsla(120, 100%, 50%, 0.4);
+  width: 100%;
+  height: 50px;
+  z-index: 1;
+}
+
+#Settings {
+   background-color: #add8e6;
+   font-size: 20px;
+   text-align: center;
+   margin-right: 10px;
+   transition-duration: 0.4s;
+
+}
+
+#Debugger {
+   background-color: #ffcccb;
+   font-size: 20px;
+   text-align: center;
+}
+
+#Settings:hover {
+   background-color: #008CBA;
+}
+
+#Debugger:hover {
+   background-color: #f44336;
+}
+
+.nav-menu {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 500px;
+        position: absolute;
+        top: 80px;
+        left: -100%;
+        opacity: 1;
+        transition: all 0.5s ease;
+}
+
+.nav-menu.active {
+        background: #6668f4;
+        left: 0;
+        opacity: 1;
+        transition: all 0.5s ease;
+        z-index: 1;
+}

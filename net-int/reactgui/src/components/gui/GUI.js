@@ -1,4 +1,5 @@
 import React from "react";
+import Navbar from "../navbar/NavBar.js";
 
 class GUI extends React.Component {
    state = {
@@ -16,6 +17,7 @@ class GUI extends React.Component {
       return (
          <div>
             {
+            	//<Navbar/>
                //Render Nav Bar
                //Render Widget Display
                //Render Console
