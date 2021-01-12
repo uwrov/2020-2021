@@ -1,5 +1,5 @@
 import React from "react";
-
+import Console from "../console/Console"
 class GUI extends React.Component {
    state = {
       websocket: null,
@@ -20,6 +20,7 @@ class GUI extends React.Component {
                //Render Widget Display
                //Render Console
                //Render settings
+               <Console />
             }
          </div>
       );
