@@ -12,35 +12,23 @@ class Console extends Component {
     constructor(props) {
         super(props);
         
-        
         this.prevArgs = []; // list of prev args
         this.argCount = -1;
         this.tempArgNum = 0;
         this.state = { text: '' }//state of the input field 
         this.state = {consoleWindow: ''}//state of the output textbox 
-        this.keyPressed = this.keyPressed.bind(this);//event handler for key press
-        this.handleChange = this.handleChange.bind(this);//event handler for typing
-        this.updateConsole = this.updateConsole.bind(this);//constantly update the console
-        this.handleEnter = this.handleEnter.bind(this);//event handler for enter key press
-        this.handlePgUp = this.handleBackSlash.bind(this);//even handler for enter key press
-        this.addArgs = this.addArgs.bind(this);// add args to array
-        this.getPrevArg = this.getPrevArg.bind(this); // get prev arg
         this.consoleStorage = window.localStorage;
         this.data = "Console created.\nListening...\n";
         var temp = "Console created.\nListening...\n";
         this.consoleStorage.setItem('ConsoleData', temp);//set empty console
-        let timerId = setInterval(this.updateConsole, 100);//update the console every 100 ms 
-        
-          
     }
 
     socketOnListeners() {
-        const io = require("socket.io");
-        const server = io.listen(8000);
-        server.on('Print Console Logs', function(data){
+        // listen for server logs
+        socket.on('Print Console Logs', function(data){
             let temp = this.consoleStorage.getElementById('ConsoleData');
             data.forEach(el => {
-                temp += "$>" + "Type: " + el.type + "Message: " + el.message + "\n";
+                temp += "$>Type: " + el.type + "Message: " + el.message + "\n";
                 this.consoleStorage.removeItem('ConsoleData');
                 this.consoleStorage.setItem('ConsoleData', temp);
                 this.setState({ consoleWindow: this.consoleStorage.getItem('ConsoleData') });
@@ -49,40 +37,32 @@ class Console extends Component {
 
     }
     
-
-    
-
-
-    addArgs() {
-        if (this.state.text != undefined && this.state.text != "\\") {
+    addArgs = () => {
+        if (this.state.text !== undefined && this.state.text !== "\\") {
             this.prevArgs.push(this.state.text);
             this.argCount += 1; // increment counter
             //console.log(this.argCount);
         }
         
     }
-    getPrevArg() {
+
+    getPrevArg = () => {
        
         if (this.tempArgNum >= 0) {
-            console.log("This is the arg: " + this.prevArgs[this.tempArgNum]);
             this.setState({
                 text: this.prevArgs[this.tempArgNum]
             });
             this.tempArgNum -= 1;
         } else {
             this.setState({
-                text: ""
+                text: this.prevArgs[0]
             });
         }
-       
-        
-
-
     }
 
-    updateConsole() {
+    updateConsole = () => {
         try {
-            if (this.data == this.consoleStorage.getItem("ConsoleData")) {
+            if (this.data === this.consoleStorage.getItem("ConsoleData")) {
                 this.setState({ consoleWindow: this.consoleStorage.getItem("ConsoleData") });//update the console every 100 ms
             }
             else {
@@ -94,31 +74,32 @@ class Console extends Component {
             }
         } catch (e) {
             console.log(e);
-       
         }
     }
-    handleBackSlash() {
+
+    handleBackSlash = () => {
         console.log("triggred");
         this.getPrevArg();
     }
-    handleEnter() {
-        
+
+    handleEnter = () => {      
         this.addArgs();
         this.tempArgNum = this.argCount; // reset current prev arg to start again
         var temp = this.consoleStorage.getItem('ConsoleData');
         var command = this.state.text + " $";
         var commandArr = Array.from(command);
-        if (commandArr[0] == '!') {//command handle
+        if (commandArr[0] === '/') {//command handle
             var commandInfo = command.split(' ');
-            if (commandInfo[0] == '!get') {
-                if (commandInfo[1] == '$' || commandInfo[1] == '') {//empty string handle
+            if (commandInfo[0] === '/run') {
+                if (commandInfo[1] === '$' || commandInfo[1] === '') {// no arg specified
                     temp += "$>" + this.state.text + "\n";
-                    temp += "$>" + "no key specified...\n";
+                    temp += "$>No file specified. Usage '/run filename'\n";
                 }
-                else {
+                else { // args are present
                     temp += "$>" + this.state.text + "\n";
-                    temp += "$>" + "the data in " + commandInfo[1] + " is:\n" +
-                        this.consoleStorage.getItem(commandInfo[1]) + "\n";
+                    let data = '{ “command” : “run”, “arg1” : "'+  commandInfo[1] + '" }'  // create data
+                    console.log(data);  // debug
+                    socket.emit("Send Command", data);  // send data to server
                 }
                 this.consoleStorage.removeItem('ConsoleData');
                 this.consoleStorage.setItem('ConsoleData', temp);
@@ -128,11 +109,9 @@ class Console extends Component {
                 this.setState({
                     consoleWindow: this.consoleStorage.getItem('ConsoleData')
                 });
-
-
             }
             else {
-                temp += "$>" + "command not recognized..." + "\n";
+                temp += "$>command not recognized...\n";
                 this.consoleStorage.removeItem('ConsoleData');
                 this.consoleStorage.setItem('ConsoleData', temp);
                 this.setState({
@@ -145,8 +124,8 @@ class Console extends Component {
             }
         } else {
             console.log(temp);
-            if (this.state.text == undefined) {
-                temp += "$>" + "\n";
+            if (this.state.text === undefined) {
+                temp += "$>\n";
             }
             else {
                 temp += "$>" + this.state.text + "\n";
@@ -166,11 +145,11 @@ class Console extends Component {
     
     }
 
-    handleChange(event) {
+    handleChange = (event) => {
         this.setState({ text: event.target.value });
     }
 
-    keyPressed(event) {
+    keyPressed = (event) => {
         console.log(event.key);
         if (event.key === "Enter") {//if enter is pressed
             event.preventDefault();
@@ -182,41 +161,31 @@ class Console extends Component {
         }
     };
     
-        render() {
-            return (
-                
-                <div id="console">
-                    < textarea id="outputText" value={this.state.consoleWindow} disabled
+    render() {
+        return ( 
+            <div id="console">
+                <div>
+                <textarea id="outputText" value={this.state.consoleWindow} disabled
                         
-                        onChange={this.handleChange.bind(this)}
-                        onKeyPress={this.keyPressed.bind(this)}
+                    onChange={this.handleChange.bind(this)}
+                    onKeyPress={this.keyPressed.bind(this)}
                         
-                        rows="20"
-                        cols="106"
-                    > </textarea>
-                  
-
-                    
-                    
-                  
-                   
-                       
-                    <textarea id="in" rows="1" cols="106" name = "t" value={this.state.text} 
-                        placeholder="your command here"
-                        type="text"
-                        onChange={this.handleChange.bind(this)}
-                        onKeyPress={this.keyPressed.bind(this)}
-                        >
-
-
-                        </textarea>
-                        
-                        
-
+                    rows="20"
+                    cols="106"
+                />
                 </div>
+                <div>
+                <textarea id="in" rows="1" cols="106" name = "t" value={this.state.text} 
+                    placeholder="your command here"
+                    type="text"
+                    onChange={this.handleChange.bind(this)}
+                    onKeyPress={this.keyPressed.bind(this)}
+                />
+                </div>
+            </div>
 
-            )
-        }
+        )
+    }
 }
 
 

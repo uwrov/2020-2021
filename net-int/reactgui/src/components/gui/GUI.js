@@ -1,11 +1,13 @@
 import React from "react";
 import Navbar from "../navbar/NavBar.js";
 import Console from '../console/Console.js';
+import WidgetDisplay from "../widgets/WidgetDisplay.js";
+import "./GUI.css";
 
 class GUI extends React.Component {
    state = {
       websocket: null,
-      settings: {}
+      settings: {},
    }
 
    constructor(props) {
@@ -27,6 +29,7 @@ class GUI extends React.Component {
    updateSettings = (newSettings) => {
       this.setState({ settings: newSettings });
    }
+
 }
 
 export default GUI;
