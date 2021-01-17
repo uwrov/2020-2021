@@ -8,7 +8,9 @@ import ReactDOM from 'react-dom';
 import Camera from "./components/camera/Camera.js";
 
 
-//ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<GUI />, document.getElementById('root'));
+
+// ReactDOM.render(<Console />, document.getElementById('root'));
 
 //let button = new Button();
 //ReactDOM.render(<GUI />, document.getElementById('root'));
