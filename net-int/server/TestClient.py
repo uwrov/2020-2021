@@ -3,7 +3,7 @@ from flask import Flask, render_template
 from flask_socketio import SocketIO, send, emit
 
 HOST_IP = "localhost"
-HOST_PORT = "4040"
+HOST_PORT = "4444"
 
 app = Flask(__name__)
 sio = SocketIO(app, cors_allowed_origins="*")
