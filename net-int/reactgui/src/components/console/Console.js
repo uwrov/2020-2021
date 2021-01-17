@@ -12,7 +12,6 @@ class Console extends Component {
     constructor(props) {
         super(props);
         
-        
         this.prevArgs = []; // list of prev args
         this.argCount = -1;
         this.tempArgNum = 0;

@@ -2,7 +2,7 @@ import React from "react";
 import WidgetDisplay from "../widgets/WidgetDisplay.js";
 
 import "./GUI.css";
-import Console from "../console/Console"
+import Console from "../console/Console.js"
 
 class GUI extends React.Component {
    state = {
@@ -19,14 +19,16 @@ class GUI extends React.Component {
    render() {
       return (
          <div className="gui">
+            
             {
                //Render Nav Bar
-               <WidgetDisplay />
                //Render Widget Display
                //Render Console
                //Render settings
-               <Console />
             }
+               <WidgetDisplay/>
+               <Console/>
+            
          </div>
       );
    }
