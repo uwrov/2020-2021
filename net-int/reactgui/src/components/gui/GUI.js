@@ -1,5 +1,6 @@
 import React from "react";
 import Navbar from "../navbar/NavBar.js";
+import Console from '../console/Console.js';
 
 class GUI extends React.Component {
    state = {
@@ -13,16 +14,12 @@ class GUI extends React.Component {
       this.state.websocket = require('socket.io-client')('http://localhost:4040');
    }
 
+	//Render Nav Bar, Widget Display, Console, and Settings
    render() {
       return (
          <div>
-            {
-            	//<Navbar/>
-               //Render Nav Bar
-               //Render Widget Display
-               //Render Console
-               //Render settings
-            }
+        	<Navbar />
+        	<Console />   
          </div>
       );
    }

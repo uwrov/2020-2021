@@ -1,4 +1,4 @@
-const NavbarItems = [
+export const NavbarItems = [
 	{
 		title: 'settings',
 		defaultWidget: '',
