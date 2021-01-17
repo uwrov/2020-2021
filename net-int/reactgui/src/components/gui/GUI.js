@@ -2,6 +2,7 @@ import React from "react";
 import WidgetDisplay from "../widgets/WidgetDisplay.js";
 
 import "./GUI.css";
+import Console from "../console/Console"
 
 class GUI extends React.Component {
    state = {
@@ -24,6 +25,7 @@ class GUI extends React.Component {
                //Render Widget Display
                //Render Console
                //Render settings
+               <Console />
             }
          </div>
       );
