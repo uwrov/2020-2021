@@ -1,9 +1,12 @@
 import React from "react";
+import WidgetDisplay from "../widgets/WidgetDisplay.js";
+
+import "./GUI.css";
 
 class GUI extends React.Component {
    state = {
       websocket: null,
-      settings: {}
+      settings: {},
    }
 
    constructor(props) {
@@ -14,9 +17,10 @@ class GUI extends React.Component {
 
    render() {
       return (
-         <div>
+         <div className="gui">
             {
                //Render Nav Bar
+               <WidgetDisplay />
                //Render Widget Display
                //Render Console
                //Render settings
@@ -28,6 +32,7 @@ class GUI extends React.Component {
    updateSettings = (newSettings) => {
       this.setState({ settings: newSettings });
    }
+
 }
 
 export default GUI;

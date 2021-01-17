@@ -6,4 +6,3 @@ import GUI from "./components/gui/GUI.js";
 
 
 ReactDOM.render(<GUI />, document.getElementById('root'));
-ReactDOM.render(<Console />, document.getElementById('root'));
