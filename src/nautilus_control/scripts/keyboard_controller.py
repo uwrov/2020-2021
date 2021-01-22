@@ -26,7 +26,7 @@ def move():
     w.torque = Vector3(0,0,0)
 
     force_update = [ord('w'), ord('s'), ord('a'), ord('d'), ord('x'), ord('z'), ord('m')]
-    torque_update = [ord('q'), ord('e'), ord('i'), ord('k'), ord('j'), ord('l'), ord('m')]
+    torque_update = [ord('j'), ord('l'), ord('m')]
     while not rospy.is_shutdown():
         key = curses.wrapper(getch_c)
         if key in force_update:
