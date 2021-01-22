@@ -72,10 +72,8 @@ if __name__ == '__main__':
         W/S: X-Axis
         A/D: Y-Axis
         X/Z: Z-Axis
-        Q/E: Yaw
-        I/K: Pitch
         J/L: Roll
-        M: Zero out applied forces
+        M: Zero out applied forces/torques
     CTRL-C to quit
             """
     print(msg)
