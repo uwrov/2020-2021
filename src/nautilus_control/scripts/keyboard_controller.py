@@ -31,7 +31,7 @@ def move():
         key = curses.wrapper(getch_c)
         if key in force_update:
             update_func(key, w.force, force_update)
-        elif key in torque_update:
+        if key in torque_update:
             update_func(key, w.torque, torque_update)
 
         wrench_publisher.publish(w)
