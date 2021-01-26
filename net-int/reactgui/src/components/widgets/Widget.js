@@ -2,26 +2,31 @@ import React from "react";
 import "./Widget.css";
 
 class Widget {
-   constructor() {
 
+   constructor(title = "Widget") {
+      this.title = title;
    }
 
+   //
+   // Provide custom renderMethod()
+   //
    render() {
-      return ();
-   }
-   
-   renderWidget() {
       return (
-         <div className="widgetContent">
-            {render()}
+         <div className="emptyWidget">
          </div>
       );
    }
 
-   renderTab = () => {
+   renderWidget() {
       return (
-         <div className="widgetTab">Widget</div>
+         <div className="widgetContent">
+            {this.render()}
+         </div>
       );
+   }
+
+   getTitle() {
+      return this.title;
    }
 }
 
