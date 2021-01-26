@@ -1,15 +1,10 @@
 import React from "react";
+import Widget from "./Widget.js";
 import "./WidgetDisplay.css";
 
 class WidgetDisplay extends React.Component {
-   state = {
-      windows: [
-      ]
-   }
-
    constructor(props) {
       super(props);
-
    }
 
    render() {
@@ -23,41 +18,12 @@ class WidgetDisplay extends React.Component {
       );
    }
 
-   createWindow = (tab) => {
-      if(tab != null) {
-         let newWindow = {
-            openTab: 0,
-            tabs: [tab]
-         }
-         this.setState({windows: this.state.windows.append(newWindow)});
-      }
-   }
-
    renderWindows = () => {
-      return (
-         this.state.windows.map((window) => window.render())
-      );
+      if(this.props.windows.length > 0) {
+         return this.props.windows.map((window) => window.render());
+      };
    }
 }
 
-class Window {
-   constructor() {
-      this.openTab = 0;
-      this.tabs = [];
-   }
-
-   openTab(tab) {
-      let i = this.tabs.indexOf();
-   }
-
-   render() {
-      return (
-         <div>
-            {this.tabs.map((tab) => tab.renderTab())}
-            {window.tabs[window.openTab].renderWidget()}
-         </div>
-      );
-   }
-}
 
 export default WidgetDisplay;

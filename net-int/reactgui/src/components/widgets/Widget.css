@@ -4,12 +4,8 @@
    background: #885599;
 }
 
-.widgetTab {
-   background: #773344;
-   height: 50px;
-   width: 150px;
-}
-
 .widgetContent {
-
+   background: #595595;
+   height: calc( 100% - 25px );
+   width: 100%;
 }
