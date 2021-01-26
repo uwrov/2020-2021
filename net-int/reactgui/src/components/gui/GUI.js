@@ -1,6 +1,9 @@
 import React from "react";
 import Navbar from "../navbar/NavBar.js";
 import Console from '../console/Console.js';
+import Settings from "../Settings/Settings.js";
+//import Controller from "../controller/Controller.js";
+import Camera from "../camera/Camera.js";
 import WidgetDisplay from "../widgets/WidgetDisplay.js";
 import Widget from "../widgets/Widget.js";
 
@@ -24,11 +27,28 @@ class GUI extends React.Component {
       this.addTab(new Widget("Widget 4"), 0);
    }
 
+   addWidget = (widgetName) => {
+      	console.log(widgetName);
+       	switch (widgetName) {
+	       case "settings":
+	          new Settings();
+	          break;
+	       case "mainCam":
+	          new Camera();
+	          break;
+	       case "controller":
+	          //new Controller();
+	          break;
+	       case "console":
+	          new Console();
+	          break;
+	    }
+   }
 	//Render Nav Bar, Widget Display, Console, and Settings
    render() {
       return (
          <div className="gui">
-           	<Navbar />
+           	<Navbar addWidget = {this.addWidget} />
            	<Console />
             <WidgetDisplay socket={this.state.websocket} windows={this.state.windows}/>
          </div>

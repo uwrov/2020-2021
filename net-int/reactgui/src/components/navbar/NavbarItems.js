@@ -10,7 +10,7 @@ export const NavbarItems = [
 		cName: 'navButton'
 	},
 	{
-		title: 'input',
+		title: 'controller',
 		defaultWidget: '',
 		cName: 'navButton'
 	},
