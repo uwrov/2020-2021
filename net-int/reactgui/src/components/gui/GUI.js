@@ -28,27 +28,31 @@ class GUI extends React.Component {
    }
 
    addWidget = (widgetName) => {
-      	console.log(widgetName);
-       	switch (widgetName) {
-	       case "settings":
-	          new Settings();
-	          break;
-	       case "mainCam":
-	          new Camera();
-	          break;
-	       case "controller":
-	          //new Controller();
-	          break;
-	       case "console":
-	          new Console();
-	          break;
-	    }
+      console.log(widgetName);
+      switch (widgetName) {
+	     case "settings":
+	        new Settings();
+	        break;
+	     case "mainCam":
+	        new Camera();
+	        break;
+	     case "controller":
+	        //new Controller();
+	        break;
+	     case "console":
+	        new Console();
+	        break;
+	  }
+   }
+   
+   removeWidget = (widgetName) => {
+      
    }
 	//Render Nav Bar, Widget Display, Console, and Settings
    render() {
       return (
          <div className="gui">
-           	<Navbar addWidget = {this.addWidget} />
+           	<Navbar addWidget = {this.addWidget} removeWidget = {this.removeWidget} />
            	<Console />
             <WidgetDisplay socket={this.state.websocket} windows={this.state.windows}/>
          </div>
