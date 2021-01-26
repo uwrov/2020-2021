@@ -40,7 +40,7 @@ class GUI extends React.Component {
    //
    createWindow = (tab) => {
       if(tab != null) {
-         let newWindow = new Window();
+         let newWindow = new Window(this);
          newWindow.addTab(tab);
          this.setState({windows: this.state.windows.push(newWindow)});
       }
@@ -51,7 +51,17 @@ class GUI extends React.Component {
    //
    addTab = (tab, index) => {
       if(tab != null) {
-         this.setState({windows: this.state.windows[index].addTab(tab)});
+         this.state.windows[index].addTab(tab);
+         this.setState({windows: this.state.windows});
+      }
+   }
+
+   removeTab = (tab) => {
+      if(tab != null) {
+         this.state.windows.forEach((item) => {
+            item.removeTab(tab);
+         });
+         this.setState({windows: this.state.windows});
       }
    }
 
@@ -62,13 +72,25 @@ class GUI extends React.Component {
 
 
 class Window {
-   constructor() {
+   constructor(parent) {
+      this.parent = parent;
       this.openTab = 0;
       this.tabs = [];
    }
 
    addTab(tab) {
       this.tabs.push(tab);
+   }
+
+   removeTab(tab) {
+      const index = this.tabs.indexOf(tab);
+      if (index > -1) {
+        this.tabs.splice(index, 1);
+        this.openTab -= 1;
+        if(this.openTab < 0) {
+           this.openTab = 0;
+        }
+      }
    }
 
    setOpenTab = (tab) => {
@@ -87,6 +109,7 @@ class Window {
                   return (
                         <div className="widgetTab" onClick={() => {window.setOpenTab(tab)}}>
                         {tab.getTitle()}
+                        <span onClick={() => window.parent.removeTab(tab)}>    (&#215;)</span>
                      </div>
                   );}
                )}
