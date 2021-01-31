@@ -62,7 +62,7 @@ class GUI extends React.Component {
    render() {
       return (
          <div className="gui">
-           	<Navbar addWidget = {this.addWidget} />
+           	<Navbar addWidget = {this.addWidget} removeWidget = {this.removeWidget} />
            	<Console />
 
             <div className="widgetDisplay">

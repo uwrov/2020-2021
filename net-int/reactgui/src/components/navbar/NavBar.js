@@ -27,12 +27,13 @@ class NavBar extends React.Component {
         this.setState({ buttonClicks: this.state.buttonClicks.set(title, newVal)});
         if (newVal){
             this.props.addWidget(title);
+        } else{
+        	this.props.removeWidget(title);
         }
     }
     
     
 	render() {
-		
 		return(
 			<nav className="NavbarItems">
 				<h1 className = "navbar-logo">UWROV</h1>
@@ -43,7 +44,8 @@ class NavBar extends React.Component {
 		        	{NavbarItems.map((item, index) => {
 		        		return (
                             <li key={index}>
-                                <a className={item.cName} onClick = {() => {this.handleButtonClick(item.title)}}>
+                                <a className={item.cName + this.state.buttonClicks.get(item.title)} 
+                                 onClick = {() => {this.handleButtonClick(item.title)}}>
                                 {item.title}
                                 </a>
                             </li>
