@@ -219,31 +219,31 @@ export default class Xbox extends React.Component {
    }
 
    render() {
-      
+
       return(
          <div className="gamepad">
-            <Gamepad 
+            <Gamepad
                onButtonChange={this.handleChange}
-               onAxisChange={this.handleAxis} 
+               onAxisChange={this.handleAxis}
             >
                <div>
-                  <img src={require("./xboxImages/bg.png")} id="bg" />
-                  <img src={require("./xboxImages/a.png")} id="a" />
-                  <img src={require("./xboxImages/b.png")} id="b" />
-                  <img src={require("./xboxImages/x.png")} id="x" />
-                  <img src={require("./xboxImages/y.png")} id="y" />
-                  <img src={require("./xboxImages/left.png")} id="left" />
-                  <img src={require("./xboxImages/right.png")} id="right" />
-                  <img src={require("./xboxImages/up.png")} id="up" />
-                  <img src={require("./xboxImages/down.png")} id="down" />
-                  <img src={require("./xboxImages/stick.png")} id="stick" />
-                  <img src={require("./xboxImages/stick2.png")} id="stick2" />
-                  <img src={require("./xboxImages/bumperleft.png")} id="bumpl" />
-                  <img src={require("./xboxImages/bumperright.png")} id="bumpr" />
-                  <img src={require("./xboxImages/lt.png")} id="lt" />
-                  <img src={require("./xboxImages/rt.png")} id="rt" />
-                  <img src={require("./xboxImages/left.png")} id="back" />
-                  <img src={require("./xboxImages/right.png")} id="start" />
+                  <img src="/xboxImages/bg.png" id="bg" />
+                  <img src="/xboxImages/a.png" id="a" />
+                  <img src="/xboxImages/b.png" id="b" />
+                  <img src="/xboxImages/x.png" id="x" />
+                  <img src="/xboxImages/y.png" id="y" />
+                  <img src="/xboxImages/left.png" id="left" />
+                  <img src="/xboxImages/right.png" id="right" />
+                  <img src="/xboxImages/up.png" id="up" />
+                  <img src="/xboxImages/down.png" id="down" />
+                  <img src="/xboxImages/stick.png" id="stick" />
+                  <img src="/xboxImages/stick2.png" id="stick2" />
+                  <img src="/xboxImages/bumperleft.png" id="bumpl" />
+                  <img src="/xboxImages/bumperright.png" id="bumpr" />
+                  <img src="/xboxImages/lt.png" id="lt" />
+                  <img src="/xboxImages/rt.png" id="rt" />
+                  <img src="/xboxImages/left.png" id="back" />
+                  <img src="/xboxImages/right.png" id="start" />
                </div>
             </Gamepad>
          </div>

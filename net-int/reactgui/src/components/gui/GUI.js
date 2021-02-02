@@ -5,6 +5,7 @@ import Settings from "../Settings/Settings.js";
 import Controller from "../controller/Controller.js";
 import Camera from "../camera/Camera.js";
 import TestWidget from "../widgets/TestWidget.js";
+import Xbox from "../xbox/Xbox.js";
 
 import "../widgets/Widget.css";
 import "./GUI.css";
@@ -15,7 +16,7 @@ class GUI extends React.Component {
       "camera": <Camera />,
       "widget": <TestWidget />,
       "console": <Console />,
-      "controller": <Controller />
+      "controller": <Xbox />
    }
 
    state = {
