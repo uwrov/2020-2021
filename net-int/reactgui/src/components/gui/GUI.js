@@ -2,11 +2,11 @@ import React from "react";
 import Navbar from "../navbar/NavBar.js";
 import Console from '../console/Console.js';
 import Settings from "../Settings/Settings.js";
-//import Controller from "../controller/Controller.js";
+import Controller from "../controller/Controller.js";
 import Camera from "../camera/Camera.js";
 import TestWidget from "../widgets/TestWidget.js";
-import "../widgets/Widget.css";
 
+import "../widgets/Widget.css";
 import "./GUI.css";
 
 class GUI extends React.Component {
@@ -14,7 +14,8 @@ class GUI extends React.Component {
       "settings": <Settings />,
       "camera": <Camera />,
       "widget": <TestWidget />,
-      "console": <Console />
+      "console": <Console />,
+      "controller": <Controller />
    }
 
    state = {
