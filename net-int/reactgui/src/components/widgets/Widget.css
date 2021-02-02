@@ -29,4 +29,5 @@
    background: #595595;
    height: calc( 100% - 25px );
    width: 100%;
+   overflow: hidden;
 }
