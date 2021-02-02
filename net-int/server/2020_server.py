@@ -4,11 +4,6 @@ import rospy
 from flask import Flask, render_template
 from flask_socketio import SocketIO, send, emit
 from geometry_msgs.msg import Twist
-# image stuff
-import base64
-from sensor_msgs.msg import Image
-from cv_bridge import CvBridge
-import cv2
 
 HOST_IP = "localhost"
 HOST_PORT = "4040"
@@ -18,9 +13,9 @@ sio = SocketIO(app, cors_allowed_origins="*")
 
 velocity_publisher = None
 rate = None
-image_subsciber = None
-br = None
-image = None
+
+current = None
+
 # CD into the directory src/wb_sol/urdf
 # roslaunch gazebo_ros empty_world.launch
 # rosrun gazebo_ros spawn_model -file wb.urdf -urdf -model wheely_boi
@@ -49,20 +44,30 @@ def send_state(state):
     None
     """
     msg = Twist()
-    msg.linear.x = state["lin_x"]
-    msg.linear.y = state["lin_y"]
-    msg.linear.z = state["lin_z"]
-    msg.angular.x = state["lin_x"]
-    msg.angular.y = state["lin_y"]
-    msg.angular.z = state["lin_z"]
+    if current is None or msg.linear.x != current['lin_x'] or msg.linear.y != current['lin_y'] or msg.linear.y != current['lin_y'] or msg.angular.x != current['ang_x'] or msg.angular.y != current['ang_y']
+    or msg.angular.z != current['ang_z']:
+         msg.linear.x = state["lin_x"]
+         msg.linear.y = state["lin_y"]
+         msg.linear.z = state["lin_z"]
+         msg.angular.x = state["ang_x"]
+         msg.angular.y = state["ang_y"]
+         msg.angular.z = state["ang_z"]
+         current.linear.x = state["lin_x"]
+         current.linear.y = state["lin_y"]
+         current.linear.z = state["lin_z"]
+         current.angular.x = state["ang_x"]
+         current.angular.y = state["ang_y"]
+         current.angular.z = state["ang_z"]
+
+
     #while not rospy.is_shutdown():
-    rospy.loginfo("Sending Command v:" + str(msg.linear.x))
-    velocity_publisher.publish(msg)
+    rospy.loginfo("Sending Command v:" + str(current.linear.x))
+    velocity_publisher.publish(current)
     rate.sleep()
     #rospy.signal_shutdown('task done')
 
-
-def send_image(data):
+#def send_image(data):
+def send_image():
     """
     Sends image to client
 
@@ -79,8 +84,9 @@ def send_image(data):
     -------
     None
     """
-    rospy.loginfo('Image received...')
-    image = br.imgmsg_to_cv2(data)
+    #rospy.loginfo('Image received...')
+    #image = br.imgmsg_to_cv2(data)
+    image = cv2.imread("smile.png")
     retval, buffer = cv2.imencode('.png', image)
     img = base64.b64encode(buffer)
     sio.emit("Image Display", {'image': img}, broadcast = True)
@@ -96,11 +102,13 @@ def send_image(data):
 
 if __name__ == '__main__':
     """ Sets up rospy and starts server """
-    try:
-        rospy.init_node('wheely_boi', anonymous=True)
-        #velocity_publisher = rospy.Publisher('/wheely_boi/wheely_boi/cmd', Twist, queue_size=10)
-        image_subsciber = rospy.Subscriber("/image/distribute", Image, send_image) # change chatter to url dest
-        br = CvBridge()
-        #rate = rospy.Rate(10)
-        sio.run(app, host=HOST_IP, port=HOST_PORT)
-    except rospy.ROSInterruptException: pass
+    # try:
+    #     rospy.init_node('wheely_boi', anonymous=True)
+    #     #velocity_publisher = rospy.Publisher('/wheely_boi/wheely_boi/cmd', Twist, queue_size=10)
+    #     image_subsciber = rospy.Subscriber("/image/distribute", Image, send_image) # change chatter to url dest
+    #     br = CvBridge()
+    #     #rate = rospy.Rate(10)
+    #     sio.run(app, host=HOST_IP, port=HOST_PORT)
+    # except rospy.ROSInterruptException: pass
+    sio.run(app, host=HOST_IP, port=HOST_PORT)
+    send_image()

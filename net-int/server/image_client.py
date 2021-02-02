@@ -21,13 +21,14 @@ def send_image_through_ROS():
     image_publisher.publish(message)
     print("image sent")
 
-@sio.on("Image Display")
-def get_image(data):
-    with open("imageToSave.png", "wb") as fh:
-        fh.write(base64.decodebytes(data['image']))
-    img = cv2.imread('imageToSave.png')
-    cv2.imshow("Image",img)
-    cv2.waitKey(0)
+# @sio.on("Image Display")
+# def get_image(data):
+#     print("image recieved")
+#     with open("imageToSave.png", "wb") as fh:
+#         fh.write(base64.decodebytes(data['image']))
+#     img = cv2.imread('imageToSave.png')
+#     cv2.imshow("Image",img)
+#     cv2.waitKey(0)
 
 
 if __name__ == '__main__':

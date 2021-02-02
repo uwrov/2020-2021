@@ -7,9 +7,18 @@ class NavBar extends React.Component {
 
 
 state = {
-  buttons: [],
+  buttons: buttons = [
+      {
+         text: "Settings",
+         onClick: () => {this.showComponent("settings");}
+      },
+      {
+         text: "Debugger",
+         onClick: () => {this.showComponent("debugger");}
+      }
+   ]
 
-}
+} 
 
   constructor(props) {
     super(props);
