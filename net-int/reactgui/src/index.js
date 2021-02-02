@@ -6,6 +6,8 @@ import Console from './components/console/Console.js';
 import GUI from "./oldcomponents/components/GUI.js";
 import Controller from "./components/controller/Controller.js";
 import Camera from "./components/camera/Camera.js";
+import Xbox from "./components/xbox/Xbox.js";
+
 
 
 //ReactDOM.render(<App />, document.getElementById('root'));
@@ -15,4 +17,5 @@ import Camera from "./components/camera/Camera.js";
 //ReactDOM.render(<Console />, document.getElementById('root'));
 //ReactDOM.render(<Controller />, document.getElementById('root'));
 //ReactDOM.render(button.render(), document.getElementById('root'));
-ReactDOM.render(<Camera />, document.getElementById('root'));
+//ReactDOM.render(<Camera />, document.getElementById('root'));
+ReactDOM.render(<Xbox />, document.getElementById('root'));
