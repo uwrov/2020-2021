@@ -5,7 +5,7 @@
     <arg name="car_z" default="-99.5"/>
 
     <!-- Continue off of empty_underwater_world.launch (which creates an empty world we can spawn our car in) -->
-    <include file="$(find uuv_gazebo_worlds)/launch/empty_underwater_world.launch"/>
+    <include file="$(find nautilus_worlds)/launch/empty_underwater_world.launch"/>
 
     <!-- Spawn our model -->
     <node name="sdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
