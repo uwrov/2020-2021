@@ -4,6 +4,9 @@ import rospy
 import curses
 from geometry_msgs.msg import Wrench, Vector3
 
+min_thrust = -5 
+max_thrust = 5
+
 # Grab input from user (nonblocking)
 def getch_c(stdscr):
     # do not wait for input when calling getch
@@ -25,42 +28,44 @@ def move():
     w.force = Vector3(0,0,0)
     w.torque = Vector3(0,0,0)
 
-    force_update = [ord('w'), ord('s'), ord('a'), ord('d'), ord('x'), ord('z'), ord('m')]
-    torque_update = [ord('j'), ord('l'), ord('m')]
     while not rospy.is_shutdown():
         key = curses.wrapper(getch_c)
-        if key in force_update:
-            update_func(key, w.force, force_update)
-        if key in torque_update:
-            update_func(key, w.torque, torque_update)
+        update_func(key, w)
 
         wrench_publisher.publish(w)
         rate.sleep()
 
 def inc(val):
-    return min(val+0.1, 1.0)
+    return min(val+0.5, max_thrust)
 
 def dec(val):
-    return max(val-0.1, -1.0)
+    return max(val-0.5, min_thrust)
 
 # Returns a Vector3 representing the update to be done to w
-def update_func(key, vec, cmd_list):
-    if (key == cmd_list[0]):
-        vec.x = inc(vec.x)
-    elif (key == cmd_list[1]):
-        vec.x = dec(vec.x)
-    elif (key == cmd_list[2]):
-        vec.y = inc(vec.y)
-    elif (key == cmd_list[3]):
-        vec.y = dec(vec.y)
-    elif (key == cmd_list[4]):
-        vec.z = inc(vec.z)
-    elif (key == cmd_list[5]):
-        vec.z = dec(vec.z)
-    elif (key == cmd_list[6]):
-        vec.x = 0
-        vec.y = 0
-        vec.z = 0
+def update_func(key, w):
+    lin = w.force
+    tor = w.torque
+    if (key == ord('w')):
+        lin.x = inc(lin.x)
+    elif (key == ord('s')):
+        lin.x = dec(lin.x)
+    elif (key == ord('a')):
+        lin.y = inc(lin.y)
+    elif (key == ord('d')):
+        lin.y = dec(lin.y)
+    elif (key == ord('x')):
+        lin.z = inc(lin.z)
+    elif (key == ord('z')):
+        lin.z = dec(lin.z)
+    elif (key == ord('j')):
+        tor.z = dec(tor.z)
+    elif (key == ord('l')):
+        tor.z = inc(tor.z)
+    elif (key == ord('m')):
+        lin.x = 0
+        lin.y = 0
+        lin.z = 0
+        tor.z = 0
 
 
 if __name__ == '__main__':

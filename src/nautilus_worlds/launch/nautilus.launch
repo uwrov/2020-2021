@@ -1,0 +1,26 @@
+<!-- This will launches the rov model and its associated controlling scripts,
+assumes that the world has been launched already -->
+<launch>
+    <!-- coordinates rov spawns into -->
+    <arg name="x" default="-5"/>
+    <arg name="y" default="0"/>
+    <arg name="z" default="-99.5"/>
+
+    <!-- set to true if you want to reset the thruster allocation matrix -->
+    <arg name="reset_tam" default="false"/>
+
+    <!-- set these to true if you want to view them in window -->
+    <arg name="cam1" default="false"/>
+    <arg name="cam2" default="false"/>
+
+    <include file="$(find nautilus_description)/launch/upload.launch">
+        <arg name="x" value="$(arg x)"/>
+        <arg name="y" value="$(arg y)"/>
+        <arg name="z" value="$(arg z)"/>
+    </include>
+
+    <include file="$(find nautilus_control)/launch/start_thruster_manager.launch">
+        <arg name="reset_tam" value="$(arg reset_tam)"/>
+    </include>
+
+</launch>

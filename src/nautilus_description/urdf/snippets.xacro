@@ -68,8 +68,8 @@
         <clampMin>-100</clampMin>
 
         <!-- Minimum and maximum thrust force output allowed -->
-        <thrustMin>-2.36</thrustMin>
-        <thrustMax>2.36</thrustMax>
+        <thrustMin>-10</thrustMin>
+        <thrustMax>10</thrustMax>
 
         <!--
         Value from 0 to 1 to set the efficiency of the output thrust force

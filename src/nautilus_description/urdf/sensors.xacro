@@ -8,40 +8,89 @@
     more examples or add you own custom sensor units.
   -->
 
-  <!-- Mount a GPS. -->
-  <xacro:default_gps namespace="${namespace}" parent_link="${namespace}/base_link" />
+  <!-- adding camera link -->
+  <link name="camera_link">
+    <!-- collision properties -->
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="${cameraSize} ${cameraSize} ${cameraSize}"/>
+      </geometry>
+    </collision>
+    <!-- visual properties -->
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="${cameraSize} ${cameraSize} ${cameraSize}"/>
+      </geometry>
+      <material name="green"/>
+    </visual>
+   <!-- inertial properties -->
+    <inertial>
+      <mass value="${cameraMass}" />
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <box_inertia m="${cameraMass}" x="${cameraSize}" y="${cameraSize}" z="${cameraSize}" />
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+  </link>
 
-  <!-- Mount a Pose 3D sensor. -->
-  <xacro:default_pose_3d namespace="${namespace}" parent_link="${namespace}/base_link" />
+  <!-- Adding camera joint -->
+  <joint name="camera_joint" type="fixed">
+    <axis xyz="0 1 0" />
+    <!-- position relative to the parent link -->
+    <origin xyz="0.21 0 0" rpy="0 0 0"/>
+    <parent link="nautilus/base_link"/>  
+    <child link="camera_link"/>
+  </joint>
 
-  <!-- Forward-looking sonar sensor -->
-  <xacro:forward_multibeam_p900 namespace="${namespace}" parent_link="${namespace}/base_link">
-    <origin xyz="0 0 0" rpy="0 0 0"/>
-  </xacro:forward_multibeam_p900>
-
-  <!-- DVL  -->
-  <xacro:default_dvl namespace="${namespace}" parent_link="${namespace}/base_link">
-    <origin xyz="0 0 0" rpy="0 0 0"/>
-  </xacro:default_dvl>
-
-  <!-- RPT  -->
-  <xacro:default_rpt namespace="${namespace}" parent_link="${namespace}/base_link">
-    <origin xyz="0 0 0" rpy="0 0 0"/>
-  </xacro:default_rpt>
-
-  <!-- Pressure  -->
-  <xacro:default_pressure namespace="${namespace}" parent_link="${namespace}/base_link">
-    <origin xyz="0 0 0" rpy="0 0 0"/>
-  </xacro:default_pressure>
-
-  <!-- IMU  -->
-  <xacro:default_imu namespace="${namespace}" parent_link="${namespace}/base_link">
-    <origin xyz="0 0 0" rpy="0 0 0"/>
-  </xacro:default_imu>
-
-  <!-- Mount a camera  -->
-  <xacro:default_camera namespace="${namespace}" parent_link="${namespace}/base_link" suffix="">
-    <origin xyz="0 0 0" rpy="0 0 0"/>
-  </xacro:default_camera>
+  <!-- Adding gazebo plugins -->>
+  <gazebo reference="camera_link">
+    <!-- Defining camera properties -->
+    <sensor type="camera" name="camera1">
+      <update_rate>30.0</update_rate>
+      <camera name="head">
+        <horizontal_fov>1.3962634</horizontal_fov>
+        <image>
+          <width>800</width>
+          <height>800</height>
+          <format>R8G8B8</format>
+        </image>
+        <clip>
+          <near>0.02</near>
+          <far>300</far>
+        </clip>
+        <noise>
+          <type>gaussian</type>
+          <!-- Noise is sampled independently per pixel on each frame.
+               That pixel's noise value is added to each of its color
+               channels, which at that point lie in the range [0,1]. -->
+          <mean>0.0</mean>
+          <stddev>0.007</stddev>
+        </noise>
+      </camera>
+      <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+        <alwaysOn>true</alwaysOn>
+        <updateRate>0.0</updateRate>
+        <!-- rostopic name: nautilus/camera1/nautilus_cam -->
+        <cameraName>nautilus/camera1</cameraName>
+        <imageTopicName>nautilus_cam</imageTopicName>
+        <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+        <frameName>camera_link_optical</frameName>
+        <!-- setting hackBaseline to anything but 0.0 will cause a misalignment
+            between the gazebo sensor image and the frame it is supposed to
+            be attached to -->
+        <hackBaseline>0.0</hackBaseline>
+        <distortionK1>0.0</distortionK1>
+        <distortionK2>0.0</distortionK2>
+        <distortionK3>0.0</distortionK3>
+        <distortionT1>0.0</distortionT1>
+        <distortionT2>0.0</distortionT2>
+        <CxPrime>0</CxPrime>
+        <Cx>0.0</Cx>
+        <Cy>0.0</Cy>
+        <focalLength>0.0</focalLength>
+      </plugin>
+    </sensor>
+  </gazebo>
 
 </robot>
