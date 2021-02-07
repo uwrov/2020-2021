@@ -23,4 +23,16 @@ assumes that the world has been launched already -->
         <arg name="reset_tam" value="$(arg reset_tam)"/>
     </include>
 
+    <group if="$(eval arg('cam1'))">
+        <node name="camera1" pkg="image_view" type="image_view">
+            <param name="image" value="/nautilus/nautilus/camera1/nautilus_cam"/>
+        </node>
+    </group>
+
+    <group if="$(eval arg('cam2'))">
+        <node name="camera2" pkg="image_view" type="image_view">
+            <param name="image" value="/nautilus/nautilus/camera2/nautilus_cam"/>
+        </node>
+    </group>
+
 </launch>
