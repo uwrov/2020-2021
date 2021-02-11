@@ -1,5 +1,13 @@
 # 2020-2021
 
+## First time Setup
+
+**If your username is 'uwrov'**, run `setup_sim.sh`.
+
+If you do not use the VM with username 'uwrov', change any instance of `/home/uwrov` to `/home/{your username}`, in `setup_sim.sh` *before* running it.
+
+After running the script, run `catkin_make` and you should be good to go!
+
 ## Launching the Simulator
 
 Once you have all the simulator files ready, launch a sample world using
