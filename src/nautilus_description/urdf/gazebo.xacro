@@ -12,8 +12,8 @@
     <xacro:property name="nautilus_length" value="0.381"/>
     <xacro:property name="nautilus_width"  value="0.2286"/>
     <xacro:property name="nautilus_height" value="0.254"/>
-    <xacro:property name="cameraSize" value="0.1"/>
-    <xacro:property name="cameraMass" value="0.1"/>
+    <xacro:property name="cameraSize" value="0.01"/>
+    <xacro:property name="cameraMass" value="0.01"/>
 
     <xacro:macro name="nautilus_hydro_model" params="namespace">
       <!-- List of hydrodynamic models this robot's links -->
