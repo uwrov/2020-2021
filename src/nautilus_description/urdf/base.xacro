@@ -59,22 +59,22 @@
         <collision>
         <origin xyz="0 0 -0.75" rpy="0 0 0"/>
         <geometry>
-          <box size="2.56 1.50 0.10"/>
+          <box size="0.01 0.01 0.01"/>
         </geometry>
       </collision>
       <!-- top plate -->
       <collision>
         <origin xyz="0 0 0.60" rpy="0 0 0"/>
-        <geometry><box size="0.381 0.2286 0.1"/></geometry>
+        <geometry><box size="0.01 0.01 0.01"/></geometry>
       </collision>
       <!-- left / right sides -->
       <collision>
         <origin xyz="-0.20 0.70 -0.15" rpy="0 0 0"/>
-        <geometry><box size="0.381 0.1 0.254"/></geometry>
+        <geometry><box size="0.01 0.01 0.01"/></geometry>
       </collision>
       <collision>
         <origin xyz="-0.20 -0.70 -0.15" rpy="0 0 0"/>
-        <geometry><box size="0.381 0.1 0.254"/></geometry>
+        <geometry><box size="0.01 0.01 0.01"/></geometry>
       </collision>
       </link>
 

@@ -4,13 +4,13 @@
 
     <arg name="prop_x" default="0"/>
     <arg name="prop_y" default="0"/>
-    <arg name="prop_z" default="-99.5"/>
+    <arg name="prop_z" default="-50"/>
 
     <arg name="reset_tam" default="false"/>
 
-    <arg name="nautilus_x" default= "-3"/>
+    <arg name="nautilus_x" default= "-1"/>
     <arg name="nautilus_y" default= "0"/>
-    <arg name="nautilus_z" default= "-99.5"/>
+    <arg name="nautilus_z" default= "-49.85"/>
 
     <!-- Continue off of empty_underwater_world.launch (which creates an empty world we can spawn our car in) -->
     <include file="$(find nautilus_worlds)/launch/empty_underwater_world.launch"/>
@@ -24,6 +24,6 @@
     <!-- Spawn our model -->
     <group if="$(eval arg('prop') != 'none')">
         <node name="sdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
-            args="-sdf -x $(arg car_x) -y $(arg car_y) -z $(arg car_z) -model $(arg prop) -database $(arg prop)"/>
+            args="-sdf -x $(arg prop_x) -y $(arg prop_y) -z $(arg prop_z) -model $(arg prop) -database $(arg prop)"/>
     </group>
 </launch>
