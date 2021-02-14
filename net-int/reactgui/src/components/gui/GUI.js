@@ -196,7 +196,8 @@ class GUI extends React.Component {
 
 class Window {
    constructor() {
-      this.leaf = true;
+      this.isWindow = false;
+      this.isLeaf = true;
       this.child = [];
       this.openTab = 0;
       this.style = {};
@@ -301,8 +302,15 @@ class Window {
 
 function add(object, node) {}
 function remove(object, node) {}
-function get(object, windowId, componentId) {}
-function setTab(object, windowId, componentId) {}
-function renderWindows(object) {}
+function get(object, windowId, componentId) {
+
+   return object;
+}
+function setTab(object, windowId, componentId) {
+   return object;
+}
+function renderWindows(object) {
+   return (<div></div>);
+}
 
 export default GUI;
