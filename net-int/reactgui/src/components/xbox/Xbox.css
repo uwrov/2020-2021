@@ -1,0 +1,237 @@
+
+
+.gamepad {
+   position: relative;
+   width: 100%;
+   height: 100%;
+   outline-style: dotted;
+
+}
+
+#bg {
+   position: absolute;
+   top: 89px;
+   left: 8px;
+}
+
+#a {
+   position: absolute;
+   top: 243px;
+   left: 514px;
+}
+
+#b {
+   position: absolute;
+   top: 187px;
+   left: 566px;
+}
+
+#x {
+   position: absolute;
+   top: 187px;
+   left: 459px;
+}
+
+#y {
+   position: absolute;
+   top: 135px;
+   left: 513px;
+}
+
+#stick {
+   position: absolute;
+   top: 175px;
+   left: 98px;
+   opacity: 100%;
+}
+
+#stick2 {
+   position: absolute;
+   top: 296px;
+   left: 394px;
+   opacity: 100%;
+}
+
+#up {
+   position: absolute;
+   top: 288px;
+   left: 222px;
+}
+
+#left {
+   position: absolute;
+   top: 323px;
+   left: 190px;
+
+}
+
+#right {
+   position: absolute;
+   top: 323px;
+   left: 250px;
+
+}
+
+#down {
+   position: absolute;
+   top: 350px;
+   left: 222px;
+
+}
+
+#bumpl {
+   position: absolute;
+   top: 92px;
+   left: 84px;
+}
+
+#bumpr {
+   position: absolute;
+   top: 92px;
+   left: 481px;
+}
+
+#lt {
+   position: absolute;
+   top: 10px;
+   left: 102px;
+}
+
+#rt {
+   position: absolute;
+   top: 10px;
+   left: 484px;
+}
+
+#back {
+   position: absolute;
+   top: 205px;
+   left: 250px;
+}
+
+#start {
+   position: absolute;
+   top: 205px;
+   left: 400px;
+}
+*/
+
+
+.gamepad {
+   position: absolute;
+
+}
+
+
+
+
+
+
+/*
+#bg {
+   position: absolute;
+   top: 89px;
+   left: 8px;
+}
+
+#a {
+   position: absolute;
+   top: 243px;
+   left: 514px;
+}
+
+#b {
+   position: absolute;
+   top: 187px;
+   left: 566px;
+}
+
+#x {
+   position: absolute;
+   top: 187px;
+   left: 459px;
+}
+
+#y {
+   position: absolute;
+   top: 135px;
+   left: 513px;
+}
+
+#stick {
+   position: absolute;
+   top: 175px;
+   left: 98px;
+   opacity: 100%;
+}
+
+#stick2 {
+   position: absolute;
+   top: 296px;
+   left: 394px;
+   opacity: 100%;
+}
+
+#up {
+   position: absolute;
+   top: 288px;
+   left: 222px;
+}
+
+#left {
+   position: absolute;
+   top: 323px;
+   left: 190px;
+
+}
+
+#right {
+   position: absolute;
+   top: 323px;
+   left: 250px;
+
+}
+
+#down {
+   position: absolute;
+   top: 350px;
+   left: 222px;
+
+}
+
+#bumpl {
+   position: absolute;
+   top: 92px;
+   left: 84px;
+}
+
+#bumpr {
+   position: absolute;
+   top: 92px;
+   left: 481px;
+}
+
+#lt {
+   position: absolute;
+   top: 10px;
+   left: 102px;
+}
+
+#rt {
+   position: absolute;
+   top: 10px;
+   left: 484px;
+}
+
+#back {
+   position: absolute;
+   top: 205px;
+   left: 250px;
+}
+
+#start {
+   position: absolute;
+   top: 205px;
+   left: 400px;
+}
+*/
