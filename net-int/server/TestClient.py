@@ -10,6 +10,7 @@ sio = SocketIO(app, cors_allowed_origins="*")
 
 @sio.on("Test")
 def get_image(data):
+    print("sending test")
     sio.emit("Test", broadcast=True)
 
 if __name__ == '__main__':
