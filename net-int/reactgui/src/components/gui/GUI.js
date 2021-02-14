@@ -196,7 +196,7 @@ class GUI extends React.Component {
 
 class Window {
    constructor() {
-      this.isWindow = false;
+      this.hasLeafChildren = false;
       this.child = [];
       this.openTab = 0;
       this.style = {};
@@ -305,18 +305,29 @@ class Leaf {
    }
 }
 
+
 function add(object, node) {}
 function remove(object, node) {}
 
 function get(object, windowId, componentId) {
-   if(!object.isLeaf) {
-      if(!object.isWindow) {
+   if(object instanceof hasLeafChildren) {
+      if(!object.hasLeafChildren) {
          for(let i = 0; i < object.child.length; i++) {
             let obj = get(object.child[i], windowId, component);
-            if(obj instanceof )
+            if(obj instanceof Leaf.class) {
+               return obj;
+            } else if (obj instanceof Number) {
+               windowId = windowId - obj;
+            } else {
+               throw Error;
+            }
          }
       } else {
-
+         if(object.child.length < windowId) {
+            return object.child.length - windowId;
+         } else {
+            return object.child[windowId];
+         }
       }
    } else {
       return null;
