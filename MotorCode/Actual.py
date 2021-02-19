@@ -17,7 +17,7 @@ def control(inputArr, output):
         output[2] = c1
         output[3] = c2
     else: 
-
+    #if not ...
 
 #Test Code: 
 control([1, 1, 1, 0])
