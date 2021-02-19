@@ -3,7 +3,7 @@ import pigpio
 import curses
 import time
 
-# return user input
+# return user inpdut
 def getch_c(stdscr):
     # do not wait for input when calling getch
     stdscr.nodelay(1)
