@@ -3,7 +3,9 @@ import Navbar from "../navbar/NavBar.js";
 import Console from '../console/Console.js';
 import Settings from "../Settings/Settings.js";
 import Controller from "../controller/Controller.js";
-import Camera from "../camera/Camera.js";
+import RosCamera from "../rosCamera/RosCamera.js";
+import IpCamera from "../ipCamera/IpCamera.js";
+
 import TestWidget from "../widgets/TestWidget.js";
 import Xbox from "../xbox/Xbox.js";
 
@@ -12,12 +14,14 @@ import "./GUI.css";
 
 let WIDGET_DICT = {
    "settings": <Settings />,
-   "camera": <Camera />,
+   "ros_camera": <RosCamera />,
+   "ip_camera": <IpCamera />,
    "widget": <TestWidget />,
    "console": <Console />,
    "controller": <Xbox />
 };
 
+let WINDOW_COUNT = 0;
 
 
 class GUI extends React.Component {
@@ -33,17 +37,6 @@ class GUI extends React.Component {
 
       this.state.websocket = require('socket.io-client')('http://localhost:4040');
 
-      this.createWindow("widget");
-      this.addTab("camera", 0);
-      this.addTab("settings", 0);
-      this.addTab("widget", 0);
-      this.createWindow("widget");
-      this.addTab("camera", 1);
-      this.addTab("settings", 1);
-      this.addTab("widget", 1);
-
-      //this.addTab(new Widget("Widget 3"), 0);
-      //this.addTab(new Widget("Widget 4"), 0);
    }
 
    addWidget = (widgetName) => {
@@ -124,7 +117,7 @@ class GUI extends React.Component {
    //  Window Managing methods    //
    //                             //
    /////////////////////////////////
-
+   /**
    //
    // Creates a new Window that can hold multiple tabs
    //
@@ -151,7 +144,7 @@ class GUI extends React.Component {
       if(tab != null) {
          let w = this.state.windows[index];
          w.removeTab(tab);
-         /*
+
          const i = w.tabs.indexOf(tab);
          if (i > -1) {
            w.tabs.splice(i, 1);
@@ -160,7 +153,7 @@ class GUI extends React.Component {
               w.openTab = 0;
            }
          }
-         */
+
          this.setState({windows: this.state.windows});
       }
    }
@@ -169,18 +162,18 @@ class GUI extends React.Component {
       if(tab != null) {
          let w = this.state.windows.[index];
          w.setOpenTab(tab);
-         /*
+
          let i = w.tabs.indexOf(tab);
          if(i >= 0) {
             w.openTab = i;
          }
-         */
+
          this.setState({windows: this.state.windows});
          return true;
       }
       return false;
    }
-
+   */
    /////////////////////////////////
    //                             //
    //  Widget Generating methods  //
@@ -196,6 +189,7 @@ class GUI extends React.Component {
 
 class Window {
    constructor() {
+      this.WIN_ID = WINDOW_COUNT++;
       this.hasLeafChildren = false;
       this.child = [];
       this.openTab = 0;
@@ -305,15 +299,67 @@ class Leaf {
    }
 }
 
+// object: Object to be added to. Must be a window.
+// node: Node to be added. Must be a window or a leaf
+// If adding a window to a parent window, adds the window to the parent window. If the
+// parent window had leaves, adds a new window between the parent window and the leaves
+// If adding a leaf to a window, adds the leaf to the window if it has other leafs
+// Otherwise, finds the leftmost window with leaves and adds the leaf to that window
+// If adding a leaf to root for the first time, adds a new window between root and the leaf
+function add(object, node) {
+	if (object instanceof Window){
+		if(node instanceof Window){
+    		if(object.hasLeafChildren){
+    			for (i = 0; i < object.child.length; i++) {
+    				let newWindow = new Window();
+  					object.child[i] = add(newWindow, object.child[i]);
+				}
+    		}
+    		object.child.push(node);
+    	} else if (node instanceof Leaf){
+    		if(object.hasLeafChildren){
+    			object.child.push(node);
+    		} else{
+    			if (object.child.length ==0){
+    				let newWindow = new Window();
+  					object.child.push(add(newWindow, node));
+    			} else{
+    				object.child[0]= add(object.child[0], node);
+    			}
+    		}
+    	} else{
+    		'The second param must be of type Window or Leaf'
+    	}
+    } else{
+    	throw 'The first param must be of type Window';
+    }
+    return object;
+}
 
-function add(object, node) {}
-function remove(object, node) {}
+//object must be a Window
+// TODO implement case if remove takes out all children.
+function remove(object, windowID, componentID) {
+	if (object instanceof Window){
+		if (object.hasLeafChildren){
+			if (object.windowID = windowID){
+				object.child.splice(componentID,1);
+			} 
+		} else {
+			for (i = 0; i < object.child.length; i++) {
+  				object.child[i] = remove(object.child[i], newWindow, componentID);
+  			}
+		}
+	} else {
+		throw 'object must be a Window or Leaf';
+	}
+	return object;
+}
 
 function get(object, windowId, componentId) {
-   if(object instanceof hasLeafChildren) {
+   if(object instanceof Window.class) {
       if(!object.hasLeafChildren) {
          for(let i = 0; i < object.child.length; i++) {
-            let obj = get(object.child[i], windowId, component);
+            let obj = get(object.child[i], windowId, componentId);
             if(obj instanceof Leaf.class) {
                return obj;
             } else if (obj instanceof Number) {
@@ -322,11 +368,12 @@ function get(object, windowId, componentId) {
                throw Error;
             }
          }
+         return null;
       } else {
          if(object.child.length < windowId) {
             return object.child.length - windowId;
          } else {
-            return object.child[windowId];
+            return object.child[componentId];
          }
       }
    } else {
@@ -334,12 +381,48 @@ function get(object, windowId, componentId) {
    }
 }
 
-function setTab(object, windowId, componentId) {
-   return object;
+function setTab(object, windowId, tabId) {
+   if(object instanceof Window.class && windowId >= 0) {
+      if(!object.hasLeafChildren) {
+         let winCount = 0;
+         for(let i = 0; i < object.child.length; i++) {
+            let c = object.child[i];
+            let subCount = setTab(c, windowId - winCount, tabId);
+            winCount += subCount;
+         }
+         return winCount;
+      } else {
+         if(windowId == 0) {
+            object.openTab = tabId;
+         }
+         return 1;
+      }
+   }
+   return 0;
 }
 
 function renderWindows(object) {
-   return (<div></div>);
+   return (
+      <div>
+         {object.child.map((child) => {
+            if(child instanceof Window.class) {
+               if(child.hasLeafChildren) {
+
+               } else {
+                  return (
+                     <div>
+                     </div>
+                  );
+               }
+            } else {
+               return generateComponent(child);
+            }
+         })}
+      </div>
+   );
 }
 
+function generateComponent(component) {
+   return null;
+}
 export default GUI;

@@ -1,13 +1,13 @@
 import React from 'react';
-import './Camera.css';
+import './RosCamera.css';
 
 export default class Camera extends React.Component {
    constructor(props) {
       super(props);
       this.socket = require('socket.io-client')('http://localhost:4040');
       this.state = {
-         img_src: null
-      };
+         img_src: "https://cdn.mos.cms.futurecdn.net/42E9as7NaTaAi4A6JcuFwG-1200-80.jpg",
+      }
 
       console.log(this.socket)
       this.socket.on("Image Display", (image) => {
@@ -26,8 +26,8 @@ export default class Camera extends React.Component {
 
    render() {
       return(
-         <div>
-            <img src={this.state.img_src} alt="Image Display"/>
+         <div className="camera">
+            <img src={this.state.img_src} alt="Image Display" className="image"/>
          </div>
       );
    }
