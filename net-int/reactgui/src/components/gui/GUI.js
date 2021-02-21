@@ -3,7 +3,9 @@ import Navbar from "../navbar/NavBar.js";
 import Console from '../console/Console.js';
 import Settings from "../Settings/Settings.js";
 import Controller from "../controller/Controller.js";
-import Camera from "../camera/Camera.js";
+import RosCamera from "../rosCamera/RosCamera.js";
+import IpCamera from "../ipCamera/IpCamera.js";
+
 import TestWidget from "../widgets/TestWidget.js";
 import Xbox from "../xbox/Xbox.js";
 
@@ -12,7 +14,8 @@ import "./GUI.css";
 
 let WIDGET_DICT = {
    "settings": <Settings />,
-   "camera": <Camera />,
+   "ros_camera": <RosCamera />,
+   "ip_camera": <IpCamera />,
    "widget": <TestWidget />,
    "console": <Console />,
    "controller": <Xbox />
