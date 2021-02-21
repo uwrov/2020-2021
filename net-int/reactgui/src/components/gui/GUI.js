@@ -306,11 +306,16 @@ class Leaf {
 }
 
 
-function add(object, node) {}
-function remove(object, node) {}
+function add(object, node) {
+
+}
+
+function remove(object, node) {
+
+}
 
 function get(object, windowId, componentId) {
-   if(object instanceof hasLeafChildren) {
+   if(object instanceof Window.class) {
       if(!object.hasLeafChildren) {
          for(let i = 0; i < object.child.length; i++) {
             let obj = get(object.child[i], windowId, component);
@@ -322,6 +327,7 @@ function get(object, windowId, componentId) {
                throw Error;
             }
          }
+         return null;
       } else {
          if(object.child.length < windowId) {
             return object.child.length - windowId;
@@ -334,12 +340,45 @@ function get(object, windowId, componentId) {
    }
 }
 
-function setTab(object, windowId, componentId) {
-   return object;
+function setTab(object, windowId, tabId) {
+   if(object instanceof Window.class && windowID >= 0) {
+      if(!object.hasLeafChildren) {
+         let winCount = 0;
+         for(let i = 0; i < object.child.length; i++) {
+            let c = object.child[i];
+            let subCount = setTab(c, windowId - winCount, tabId);
+            winCount += subCount;
+         }
+         return winCount;
+      } else {
+         if(windowId == 0) {
+            c.openTab = tabId;
+         }
+         return 1;
+      }
+   }
+   return 0;
 }
 
 function renderWindows(object) {
-   return (<div></div>);
+   return (
+      <div>
+         {object.child.map((child) => {
+            if(child instanceof Window.class) {
+               if(child.hasLeafChildren) {
+
+               } else {
+                  return (
+                     <div>
+                     </div>
+                  );
+               }
+            } else {
+               return generateComponent(child);
+            }
+         })}
+      </div>
+   );
 }
 
 export default GUI;
