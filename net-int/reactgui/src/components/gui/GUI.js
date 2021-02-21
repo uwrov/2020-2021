@@ -342,8 +342,23 @@ function add(object, node) {
     return object;
 }
 
-function remove(object, node) {
-	
+//object must be a Window
+// TODO implement case if remove takes out all children.
+function remove(object, windowID, componentID) {
+	if (object instanceof Window){
+		if (object.hasLeafChildren){
+			if (object.windowID = windowID){
+				object.child.splice(componentID,1);
+			} 
+		} else {
+			for (i = 0; i < object.child.length; i++) {
+  				object.child[i] = remove(object.child[i], newWindow, componentID);
+  			}
+		}
+	} else {
+		throw 'object must be a Window or Leaf';
+	}
+	return object;
 }
 
 function get(object, windowId, componentId) {
