@@ -21,6 +21,7 @@ let WIDGET_DICT = {
    "controller": <Xbox />
 };
 
+let WINDOW_COUNT = 0;
 
 
 class GUI extends React.Component {
@@ -188,6 +189,7 @@ class GUI extends React.Component {
 
 class Window {
    constructor() {
+      this.WIN_ID = WINDOW_COUNT++;
       this.hasLeafChildren = false;
       this.child = [];
       this.openTab = 0;
@@ -324,7 +326,7 @@ function get(object, windowId, componentId) {
          if(object.child.length < windowId) {
             return object.child.length - windowId;
          } else {
-            return object.child[windowId];
+            return object.child[componentId];
          }
       }
    } else {
