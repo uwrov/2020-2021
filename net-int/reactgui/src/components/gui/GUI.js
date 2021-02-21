@@ -299,13 +299,60 @@ class Leaf {
    }
 }
 
-
+// object: Object to be added to. Must be a window.
+// node: Node to be added. Must be a window or a leaf
+// If adding a window to a parent window, adds the window to the parent window. If the
+// parent window had leaves, adds a new window between the parent window and the leaves
+// If adding a leaf to a window, adds the leaf to the window if it has other leafs
+// Otherwise, finds the leftmost window with leaves and adds the leaf to that window
+// If adding a leaf to root for the first time, adds a new window between root and the leaf
 function add(object, node) {
-
+	if (object instanceof Window){
+		if(node instanceof Window){
+    		if(object.hasLeafChildren){
+    			for (i = 0; i < object.child.length; i++) {
+    				let newWindow = new Window();
+  					object.child[i] = add(newWindow, object.child[i]);
+				}
+    		}
+    		object.child.push(node);
+    	} else if (node instanceof Leaf){
+    		if(object.hasLeafChildren){
+    			object.child.push(node);
+    		} else{
+    			if (object.child.length ==0){
+    				let newWindow = new Window();
+  					object.child.push(add(newWindow, node));
+    			} else{
+    				object.child[0]= add(object.child[0], node);
+    			}
+    		}
+    	} else{
+    		'The second param must be of type Window or Leaf'
+    	}
+    } else{
+    	throw 'The first param must be of type Window';
+    }
+    return object;
 }
 
-function remove(object, node) {
-
+//object must be a Window
+// TODO implement case if remove takes out all children.
+function remove(object, windowID, componentID) {
+	if (object instanceof Window){
+		if (object.hasLeafChildren){
+			if (object.windowID = windowID){
+				object.child.splice(componentID,1);
+			} 
+		} else {
+			for (i = 0; i < object.child.length; i++) {
+  				object.child[i] = remove(object.child[i], newWindow, componentID);
+  			}
+		}
+	} else {
+		throw 'object must be a Window or Leaf';
+	}
+	return object;
 }
 
 function get(object, windowId, componentId) {
