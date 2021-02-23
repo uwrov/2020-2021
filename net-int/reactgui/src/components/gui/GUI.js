@@ -3,7 +3,9 @@ import Navbar from "../navbar/NavBar.js";
 import Console from '../console/Console.js';
 import Settings from "../Settings/Settings.js";
 import Controller from "../controller/Controller.js";
-import Camera from "../camera/Camera.js";
+import RosCamera from "../rosCamera/RosCamera.js";
+import IpCamera from "../ipCamera/IpCamera.js";
+
 import TestWidget from "../widgets/TestWidget.js";
 import Xbox from "../xbox/Xbox.js";
 
@@ -12,12 +14,14 @@ import "./GUI.css";
 
 let WIDGET_DICT = {
    "settings": <Settings />,
-   "camera": <Camera />,
+   "ros_camera": <RosCamera />,
+   "ip_camera": <IpCamera />,
    "widget": <TestWidget />,
    "console": <Console />,
    "controller": <Xbox />
 };
 
+let WINDOW_COUNT = 0;
 
 
 class GUI extends React.Component {
@@ -33,17 +37,6 @@ class GUI extends React.Component {
 
       this.state.websocket = require('socket.io-client')('http://localhost:4040');
 
-      this.createWindow("widget");
-      this.addTab("camera", 0);
-      this.addTab("settings", 0);
-      this.addTab("widget", 0);
-      this.createWindow("widget");
-      this.addTab("camera", 1);
-      this.addTab("settings", 1);
-      this.addTab("widget", 1);
-
-      //this.addTab(new Widget("Widget 3"), 0);
-      //this.addTab(new Widget("Widget 4"), 0);
    }
 
    addWidget = (widgetName) => {
@@ -124,7 +117,7 @@ class GUI extends React.Component {
    //  Window Managing methods    //
    //                             //
    /////////////////////////////////
-
+   /**
    //
    // Creates a new Window that can hold multiple tabs
    //
@@ -151,7 +144,7 @@ class GUI extends React.Component {
       if(tab != null) {
          let w = this.state.windows[index];
          w.removeTab(tab);
-         /*
+
          const i = w.tabs.indexOf(tab);
          if (i > -1) {
            w.tabs.splice(i, 1);
@@ -160,7 +153,7 @@ class GUI extends React.Component {
               w.openTab = 0;
            }
          }
-         */
+
          this.setState({windows: this.state.windows});
       }
    }
@@ -169,18 +162,18 @@ class GUI extends React.Component {
       if(tab != null) {
          let w = this.state.windows.[index];
          w.setOpenTab(tab);
-         /*
+
          let i = w.tabs.indexOf(tab);
          if(i >= 0) {
             w.openTab = i;
          }
-         */
+
          this.setState({windows: this.state.windows});
          return true;
       }
       return false;
    }
-
+   */
    /////////////////////////////////
    //                             //
    //  Widget Generating methods  //
@@ -196,6 +189,7 @@ class GUI extends React.Component {
 
 class Window {
    constructor() {
+      this.WIN_ID = WINDOW_COUNT++;
       this.hasLeafChildren = false;
       this.child = [];
       this.openTab = 0;
@@ -365,7 +359,7 @@ function get(object, windowId, componentId) {
    if(object instanceof Window.class) {
       if(!object.hasLeafChildren) {
          for(let i = 0; i < object.child.length; i++) {
-            let obj = get(object.child[i], windowId, component);
+            let obj = get(object.child[i], windowId, componentId);
             if(obj instanceof Leaf.class) {
                return obj;
             } else if (obj instanceof Number) {
@@ -379,7 +373,7 @@ function get(object, windowId, componentId) {
          if(object.child.length < windowId) {
             return object.child.length - windowId;
          } else {
-            return object.child[windowId];
+            return object.child[componentId];
          }
       }
    } else {
@@ -388,7 +382,7 @@ function get(object, windowId, componentId) {
 }
 
 function setTab(object, windowId, tabId) {
-   if(object instanceof Window.class && windowID >= 0) {
+   if(object instanceof Window.class && windowId >= 0) {
       if(!object.hasLeafChildren) {
          let winCount = 0;
          for(let i = 0; i < object.child.length; i++) {
@@ -399,7 +393,7 @@ function setTab(object, windowId, tabId) {
          return winCount;
       } else {
          if(windowId == 0) {
-            c.openTab = tabId;
+            object.openTab = tabId;
          }
          return 1;
       }
@@ -428,4 +422,7 @@ function renderWindows(object) {
    );
 }
 
+function generateComponent(component) {
+   return null;
+}
 export default GUI;

@@ -3,45 +3,55 @@
 import json
 import socketio
 import shlex
+import sys
 
 HOST_IP = "localhost"
 HOST_PORT = "4040"
 PROMPT = "Command> "
 COMMANDS = {'run': 0, 'list': 1, 'error': 3, 'quit': 1, 'help': 1}
-sio = socketio.Client()
+
+sio = socketio.Client(reconnection = False)
 
 @sio.event
 def connect():
     print("Connected. Type \'help\' for help.")
+
+    # Only returns execution to sio when the command entered emits event    
     while not command():
         pass
 
 @sio.on("Print Console Logs")
-def receive_data(sid, data):
-    data = json.dumps(data)
+def receive_data(data):
     for row in data:
-        print(data["type"] + ":", data["message"], "[" + str(row["timestamp"]) + "]")
+        print(row["type"] + ":", row["message"], "[" + str(row["timestamp"]) + "]")
+   
     while not command():
         pass
 
 @sio.event
-def connect_error():
+def connect_error(err):
     print("Error: connection failed.")
-    quit()
-    
+
 @sio.event
 def disconnect():
     print("Disconnected.")
-    quit()
-    
+
 def command():
+    """
+
+    Takes command, parses, and runs it. Returns True when command entered emits socket-io event.
+
+    """
+
     query = shlex.split(input(PROMPT).strip())
-    function = query[0]
-    
+
     if (len(query) == 0):
         print("Error: empty command")
         return False
-    elif (not function in COMMANDS):
+    
+    function = query[0]
+
+    if (not function in COMMANDS):
         print("Error: command \'", function, "\' not found.")
         return False
     elif (COMMANDS[function] != 0 and len(query) != COMMANDS[function]):
@@ -55,7 +65,8 @@ def command():
     payload = {}
     
     if (function == 'quit'):
-        quit()
+        sio.disconnect()
+        return True
     elif (function == 'error'):
         event = 'Error Message'
         payload["code"] = query[1]
@@ -67,13 +78,15 @@ def command():
         if (len(query) > 1):
             payload["arg1"] = query[1]
             payload["arg2"] = query[2:]
-        
+
     sio.emit(event, json.dumps(payload))  
-    return True
+    return True    
 
 if __name__ == '__main__':
-    print("Script Manager Test Client")
-    sio.connect('http://' + HOST_IP + ':' + HOST_PORT)
-        
-        
 
+    print("Script Manager Test Client")
+    try:
+    	sio.connect('http://' + HOST_IP + ':' + HOST_PORT)
+    except:
+        print('Client quit.')
+        sys.exit()
