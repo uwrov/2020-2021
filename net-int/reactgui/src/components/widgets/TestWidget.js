@@ -18,7 +18,7 @@ class TestWidget extends React.Component {
       return (
          <div onClick={() => {console.log("click!"); this.setState({ip: "0.0.0.0:3000"})}}>
             hello world! {this.state.ip}
-            
+
             {this.props.text}
          </div>
       );
