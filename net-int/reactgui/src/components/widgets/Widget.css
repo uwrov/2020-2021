@@ -9,8 +9,6 @@
 .widgetWindow {
    display: inline-block;
    position: relative;
-   height: 100%;
-   width: 50%;
 }
 
 .widgetTab {
