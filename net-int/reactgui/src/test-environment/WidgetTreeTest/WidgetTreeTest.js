@@ -132,7 +132,8 @@ function Assert(tree1, tree2) {
 }
 
 function treeEquals(tree1, tree2) {
-   if(tree1.hasLeafChildren === tree2.hasLeafChildren &&
+   if(tree1.WIN_ID === tree2.WIN_ID &&
+                        tree1.hasLeafChildren === tree2.hasLeafChildren &&
                         tree1.openTab === tree2.openTab &&
                         tree1.child.length === tree2.child.length) {
       for(let i = 0; i < tree1.child.length; i++) {
