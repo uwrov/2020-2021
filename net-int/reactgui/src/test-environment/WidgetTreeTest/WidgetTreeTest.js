@@ -2,7 +2,6 @@ let WINDOW_COUNT = 0;
 
 function testAdd() {
 
-
 }
 
 function testRemove() {
