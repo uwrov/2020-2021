@@ -1,30 +1,11 @@
 import React from "react";
 import Navbar from "../navbar/NavBar.js";
 import Console from '../console/Console.js';
-import Settings from "../Settings/Settings.js";
-import Controller from "../controller/Controller.js";
-import RosCamera from "../rosCamera/RosCamera.js";
-import IpCamera from "../ipCamera/IpCamera.js";
-
-import TestWidget from "../widgets/TestWidget.js";
-import Xbox from "../xbox/Xbox.js";
 
 import "../widgets/Widget.css";
 import "./GUI.css";
 
-import T from "../../datastructs/WidgetTree.js";
-
-let WIDGET_DICT = {
-   "settings": <Settings />,
-   "ros_camera": <RosCamera />,
-   "ip_camera": <IpCamera />,
-   "widget": <TestWidget />,
-   "console": <Console />,
-   "controller": <Xbox />
-};
-
-let WINDOW_COUNT = 0;
-
+import { Window, Leaf, add, remove, get, setTab } from "../../datastructs/WidgetTree.js";
 
 class GUI extends React.Component {
 
@@ -119,28 +100,4 @@ class GUI extends React.Component {
    }
 }
 
-function renderWindows(object) {
-   return (
-      <div>
-         {object.child.map((child) => {
-            if(child instanceof Window.class) {
-               if(child.hasLeafChildren) {
-
-               } else {
-                  return (
-                     <div>
-                     </div>
-                  );
-               }
-            } else {
-               return generateComponent(child);
-            }
-         })}
-      </div>
-   );
-}
-
-function generateComponent(component) {
-   return null;
-}
 export default GUI;

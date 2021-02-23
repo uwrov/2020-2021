@@ -1,36 +1,38 @@
+import { Window, Leaf, add, remove, get, setTab } from "../../datastructs/WidgetTree.js";
+
 let WINDOW_COUNT = 0;
 
-function testAdd() {
+export function testAdd() {
 
 
 }
 
-function testRemove() {
+export function testRemove() {
 
 }
 
-function testGet() {
+export function testGet() {
 
 }
 
-function testSetTab() {
+export function testSetTab() {
 
 }
 
-function testEquals() {
+export function testEquals() {
    let root = new Window();
-   let root2 = new Window();
+   let testRoot = new Window(1);
 
-   Assert(root, root2);
+   Assert(root, testRoot);
 
    root.child.push(new Window());
-   root2.child.push(new Window());
+   testRoot.child.push(new Window(1));
 
-   Assert(root, root2);
+   Assert(root, testRoot);
 }
 
 
-function Assert(tree1, tree2) {
+export function Assert(tree1, tree2) {
    if(treeEquals(tree1, tree2)) {
       console.log("Pass: Tree1 === Tree2");
    } else {
@@ -38,7 +40,7 @@ function Assert(tree1, tree2) {
    }
 }
 
-function treeEquals(tree1, tree2) {
+export function treeEquals(tree1, tree2) {
    if(tree1.WIN_ID === tree2.WIN_ID &&
                         tree1.hasLeafChildren === tree2.hasLeafChildren &&
                         tree1.openTab === tree2.openTab &&
@@ -53,4 +55,4 @@ function treeEquals(tree1, tree2) {
    return false;
 }
 
-testEquals();
+export default { testAdd, testRemove, testSetTab, testEquals}

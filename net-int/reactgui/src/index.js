@@ -5,6 +5,7 @@ import GUI from "./components/gui/GUI.js";
 import RosCamera from "./components/rosCamera/RosCamera.js";
 import IpCamera from "./components/ipCamera/IpCamera.js"
 
+import Tests from "./test-environment/WidgetTreeTest/WidgetTreeTest.js";
 
 //ReactDOM.render(<GUI />, document.getElementById('root'));
 
@@ -15,3 +16,5 @@ import IpCamera from "./components/ipCamera/IpCamera.js"
 //ReactDOM.render(<Controller />, document.getElementById('root'));
 //ReactDOM.render(button.render(), document.getElementById('root'));
 ReactDOM.render(<IpCamera />, document.getElementById('root'));
+
+Tests.testEquals();

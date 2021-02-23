@@ -1,8 +1,10 @@
-let WINDOW_COUNT = 0;
+import WIDGET_LIB from "./WidgetLib.js";
+
+let WINDOW_COUNT = [0, 0];
 
 export class Window {
-   constructor() {
-      this.WIN_ID = WINDOW_COUNT++;
+   constructor(isTest = 0) {
+      this.WIN_ID = WINDOW_COUNT[isTest]++;
       this.hasLeafChildren = false;
       this.child = [];
       this.openTab = 0;
@@ -56,6 +58,32 @@ export function setTab(object, windowId, tabId) {
    if(window !== null && tabId < window.child.length) {
       window.openTab = tabId;
    }
+}
+
+
+export function renderWindows(object) {
+   return (
+      <div>
+         {object.child.map((child) => {
+            if(child instanceof Window.class) {
+               if(child.hasLeafChildren) {
+
+               } else {
+                  return (
+                     <div>
+                     </div>
+                  );
+               }
+            } else {
+               return generateComponent(child);
+            }
+         })}
+      </div>
+   );
+}
+
+export function generateComponent(component) {
+   return null;
 }
 
 export default { Window, Leaf, add, remove, get, setTab };
