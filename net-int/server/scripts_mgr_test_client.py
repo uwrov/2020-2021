@@ -24,9 +24,10 @@ def connect():
 def receive_data(data):
     for row in data:
         print(row["type"] + ":", row["message"], "[" + str(row["timestamp"]) + "]")
-   
-    while not command():
-        pass
+    
+    if (row["type"] != "script-output"):
+        while not command():
+            pass
 
 @sio.event
 def connect_error(err):

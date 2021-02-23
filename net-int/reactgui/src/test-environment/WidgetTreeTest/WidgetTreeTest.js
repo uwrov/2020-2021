@@ -4,7 +4,6 @@ let WINDOW_COUNT = 0;
 
 export function testAdd() {
 
-
 }
 
 export function testRemove() {

@@ -11,15 +11,22 @@ from datetime import datetime
 from flask import Flask, render_template
 from flask_socketio import SocketIO, send, emit
 
+# Terminal 1:
+# source devel/setup.sh
 # CD into the directory src/wb_sol/urdf
 # roslaunch gazebo_ros empty_world.launch
+#
+# Terminal 2:
+# source devel/setup.sh
+# CD into the directory src/wb_sol/urdf
 # rosrun gazebo_ros spawn_model -file wb.urdf -urdf -model wheely_boi
 #
-# To run server
-# Register all files in the scripts path with catkin
+# To run server (in separate terminal):
+# Create scripts folder in same directory as server (or modify SCRIPTS_PATH), add all scripts there
+# Register all files in the scripts path with catkin (edit CMakeLists.txt, then catkin_make)
 # source devel/setup.sh
 # roscore
-# ./scripts_mgr.py
+# ./scripts_mgr.py or python3 scripts_mgr.py
 
 
 HOST_IP = "localhost"
