@@ -14,7 +14,7 @@ HOST_PORT = "4040"
 app = Flask(__name__)
 sio = SocketIO(app, cors_allowed_origins="*")
 
-image_subsciber = None
+image_subscriber = None
 br = None
 
 # CD into the directory src/wb_sol/urdf
@@ -48,12 +48,21 @@ def send_image(data):
     sio.emit("Image Display", {'image': img}, broadcast = True)
     rospy.loginfo('Emitting Image')
 
+"""
+The cameras on nautilus publish sensor_msgs/Image to:
+
+/nautilus/nautilus/camera1/nautilus_cam: Front facing camera
+/nautilus/nautilus/camera2/nautilus_cam: Downward facing camera
+"""
+
 if __name__ == '__main__':
     """ Sets up rospy and starts server """
     try:
         print("image server is running")
         rospy.init_node('wheely_boi', anonymous=True)
-        image_subsciber = rospy.Subscriber("/image/distribute", Image, send_image) # change chatter to url dest
+        image_subscriber = rospy.Subscriber("/image/distribute", Image, send_image) # change chatter to url dest
+        front_cam_subscriber = rospy.Subscriber("/nautilus/nautilus/camera1/nautilus_cam", Image, send_image)
+        downward_cam_subscriber = rospy.Subscriber("/nautilus/nautilus/camera2/nautilus_cam", Image, send_image)
         br = CvBridge()
         sio.run(app, host=HOST_IP, port=HOST_PORT)
     except rospy.ROSInterruptException: pass
