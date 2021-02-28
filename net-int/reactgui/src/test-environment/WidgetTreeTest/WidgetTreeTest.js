@@ -9,7 +9,31 @@ import {
 
 let WINDOW_COUNT = 0;
 
-export function testAdd() {}
+export function testAdd() {
+  let root = new Window();
+  let testRoot = new Window(1);
+
+  // Tests adding a leaf to the root
+  let windowLeaf = new Window();
+  windowLeaf.hasLeafChildren = true;
+  windowLeaf.push(new Leaf());
+  root.child.push(windowLeaf);
+  add(testRoot, new Leaf(), 1);
+  Assert(root, testRoot);
+
+  // Tests adding a new window with a leaf to a root
+  let windowLeaf2 = new Window();
+  windowLeaf.hasLeafChildren = true;
+  windowLeaf.push(new Leaf());
+  root.child.push(windowLeaf2);
+  let testWindowLeaf2 = new Window();
+  windowLeaf.hasLeafChildren = true;
+  windowLeaf.push(new Leaf());
+  add(testRoot, testWindowLeaf2, 1);
+  Assert(root, testRoot);
+
+  //
+}
 
 export function testRemove() {}
 
