@@ -17,4 +17,4 @@ import Tests from "./test-environment/WidgetTreeTest/WidgetTreeTest.js";
 //ReactDOM.render(button.render(), document.getElementById('root'));
 ReactDOM.render(<IpCamera />, document.getElementById('root'));
 
-Tests.testEquals();
+Tests.runAllTests();

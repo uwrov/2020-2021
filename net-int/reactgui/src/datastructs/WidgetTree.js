@@ -1,5 +1,5 @@
+import React from "react";
 import WIDGET_LIB from "./WidgetLib.js";
-
 let WINDOW_COUNT = [0, 0];
 
 export class Window {
@@ -29,10 +29,14 @@ export function add(object, node,isTest = 0) {
    if (object instanceof Window){
       if(node instanceof Window){
          if(object.hasLeafChildren){
+            let newWindow = new Window(isTest);
+            newWindow.hasLeafChildren = true;
             for (let i = 0; i < object.child.length; i++) {
-               let newWindow = new Window(isTest);
-               object.child[i] = add(newWindow, object.child[i]);
+               add(newWindow, object.child[i]);
             }
+            object.child = [];
+            object.child.push(newWindow);
+            object.hasLeafChildren = false;
          }
          object.child.push(node);
       } else if (node instanceof Leaf){
