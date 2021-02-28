@@ -1,23 +1,13 @@
 import React from "react";
 import Navbar from "../navbar/NavBar.js";
 import Console from '../console/Console.js';
-import Settings from "../Settings/Settings.js";
-import Controller from "../controller/Controller.js";
-import Camera from "../camera/Camera.js";
-import TestWidget from "../widgets/TestWidget.js";
-import Xbox from "../xbox/Xbox.js";
 
 import "../widgets/Widget.css";
 import "./GUI.css";
 
+import { Window, Leaf, add, remove, get, setTab } from "../../datastructs/WidgetTree.js";
+
 class GUI extends React.Component {
-   WIDGET_DICT = {
-      "settings": <Settings />,
-      "camera": <Camera />,
-      "widget": <TestWidget />,
-      "console": <Console />,
-      "controller": <Xbox />
-   }
 
    state = {
       websocket: null,
@@ -30,16 +20,6 @@ class GUI extends React.Component {
 
       this.state.websocket = require('socket.io-client')('http://localhost:4040');
 
-      this.createWindow("widget");
-      this.addTab("camera", 0);
-      this.addTab("settings", 0);
-      this.addTab("widget", 0);
-      this.createWindow("widget");
-      this.addTab("camera", 1);
-      this.addTab("settings", 1);
-      this.addTab("widget", 1);
-      //this.addTab(new Widget("Widget 3"), 0);
-      //this.addTab(new Widget("Widget 4"), 0);
    }
 
    addWidget = (widgetName) => {
@@ -60,6 +40,7 @@ class GUI extends React.Component {
 	          break;
 	    }
    }
+
 	//Render Nav Bar, Widget Display, Console, and Settings
    render() {
       return (
@@ -78,6 +59,7 @@ class GUI extends React.Component {
    }
 
 
+
    /////////////////////////////////
    //                             //
    //  Widget Rendering methods   //
@@ -88,7 +70,7 @@ class GUI extends React.Component {
          let parent = this;
          return this.state.windows.map((window, index) => {
             console.log(window);
-            return parent.renderWindow(window, index);
+            return window.render();
          });
       }
    }
@@ -96,7 +78,7 @@ class GUI extends React.Component {
    renderWindow = (window, index) => {
       if(window.tabs.length > 0) {
          return (
-            <div className="widgetWindow">
+            <div className="widgetWindow" style={window.style}>
                {
                   window.tabs.map((tab) => {
                      return (
@@ -111,75 +93,6 @@ class GUI extends React.Component {
             </div>
          );
       }
-   }
-
-
-   /////////////////////////////////
-   //                             //
-   //  Window Managing methods    //
-   //                             //
-   /////////////////////////////////
-
-   //
-   // Creates a new Window that can hold multiple tabs
-   //
-   createWindow = (tab) => {
-      if(tab != null) {
-         let newWindow = {openTab: 0, tabs: [tab]}
-         this.setState({windows: this.state.windows.push(newWindow)});
-      }
-   }
-
-   //
-   // Creates a new Window that can hold multiple tabs
-   //
-   addTab = (tab, index) => {
-      if(tab != null) {
-         this.state.windows[index].tabs.push(tab);
-         this.setState({windows: this.state.windows});
-      }
-   }
-
-   removeTab = (tab, index) => {
-      if(tab != null) {
-         let w = this.state.windows[index];
-         const i = w.tabs.indexOf(tab);
-         if (i > -1) {
-           w.tabs.splice(i, 1);
-           w.openTab -= 1;
-           if(w.openTab < 0) {
-              w.openTab = 0;
-           }
-         }
-         this.setState({windows: this.state.windows});
-      }
-   }
-
-   setOpenTab = (tab, index) => {
-      if(tab != null) {
-         let w = this.state.windows.[index];
-         let i = w.tabs.indexOf(tab);
-         if(i >= 0) {
-            w.openTab = i;
-         }
-         this.setState({windows: this.state.windows});
-         return true;
-      }
-      return false;
-   }
-
-   /////////////////////////////////
-   //                             //
-   //  Widget Generating methods  //
-   //                             //
-   /////////////////////////////////
-
-   getOpenTab = (tab) => {
-      return (
-         <div className="widgetContent">
-            {this.WIDGET_DICT[tab.tabs[tab.openTab]]}
-         </div>
-      );
    }
 
    updateSettings = (newSettings) => {
