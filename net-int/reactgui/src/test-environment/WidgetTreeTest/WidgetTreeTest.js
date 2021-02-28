@@ -1,4 +1,11 @@
-import { Window, Leaf, add, remove, get, setTab } from "../../datastructs/WidgetTree.js";
+import {
+  Window,
+  Leaf,
+  add,
+  remove,
+  get,
+  setTab,
+} from "../../datastructs/WidgetTree.js";
 
 let WINDOW_COUNT = 0;
 
@@ -70,7 +77,7 @@ function testEquals() {
 
    root.child.push(new Window());
    testRoot.child.push(new Window(1));
-
+  
    assert(root, testRoot);
 }
 

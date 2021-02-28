@@ -1,19 +1,14 @@
-import React from 'react';
-
-
+import React from "react";
 
 class Button extends React.Component {
-
   render() {
-    return(
+    return (
       <div>
-      <img src="" alt="THIS IS TOTALLY AN IMAGE" />
-      <Button variant="primary"> Primary </Button>
+        <img src="" alt="THIS IS TOTALLY AN IMAGE" />
+        <Button variant="primary"> Primary </Button>
       </div>
     );
-
   }
-
 }
 
 export default Button;

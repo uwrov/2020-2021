@@ -10,10 +10,10 @@ import TestWidget from "../components/widgets/TestWidget.js";
 import Xbox from "../components/xbox/Xbox.js";
 
 export let WIDGET_DICT = {
-   "settings": <Settings />,
-   "ros_camera": <RosCamera />,
-   "ip_camera": <IpCamera />,
-   "widget": <TestWidget />,
-   "console": <Console />,
-   "controller": <Xbox />
+  settings: <Settings />,
+  ros_camera: <RosCamera />,
+  ip_camera: <IpCamera />,
+  widget: <TestWidget />,
+  console: <Console />,
+  controller: <Xbox />,
 };

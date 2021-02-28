@@ -1,31 +1,29 @@
-
-
 .widgetDisplay {
-   width: 100%;
-   height: 60%;
-   background: #cccc99;
+  width: 100%;
+  height: 60%;
+  background: #cccc99;
 }
 
 .widgetWindow {
-   display: inline-block;
-   position: relative;
+  display: inline-block;
+  position: relative;
 }
 
 .widgetTab {
-   display: inline-block;
-   position: relative;
-   background: #773344;
-   height: 25px;
-   width: 100px;
+  display: inline-block;
+  position: relative;
+  background: #773344;
+  height: 25px;
+  width: 100px;
 }
 
 .widget {
-   background: #885599;
+  background: #885599;
 }
 
 .widgetContent {
-   background: #595595;
-   height: calc( 100% - 25px );
-   width: 100%;
-   overflow: hidden;
+  background: #595595;
+  height: calc(100% - 25px);
+  width: 100%;
+  overflow: hidden;
 }

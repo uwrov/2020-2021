@@ -1,10 +1,5 @@
-import React from 'react';
+import React from "react";
 
 class ControllerDisplay extends React.Component {
-
-   render() {
-
-   }
-
-
+  render() {}
 }
