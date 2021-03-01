@@ -4,8 +4,8 @@ import rospy
 from flask import Flask, render_template
 from flask_socketio import SocketIO, send, emit
 import base64
-from sensor_msgs.msg import Image
-from cv_bridge import CvBridge
+from sensor_msgs.msg import CompressedImage
+import numpy as np
 import cv2
 
 HOST_IP = "localhost"
@@ -41,19 +41,20 @@ def send_image(data):
     -------
     None
     """
-    rospy.loginfo('Image received...')
-    image = br.imgmsg_to_cv2(data)
-    retval, buffer = cv2.imencode('.png', image)
-    img = base64.b64encode(buffer)
+    # rospy.loginfo('Image received...')
+    image = np.fromstring(data.data, np.uint8)
+    # img = cv2.imdecode(image, cv2.IMREAD_COLOR)
+    # retval, buffer = cv2.imencode('.png', image)
+    img = base64.b64encode(image)
     sio.emit("Image Display", {'image': img}, broadcast = True)
-    rospy.loginfo('Emitting Image')
+    # rospy.loginfo('Emitting Image')
 
 if __name__ == '__main__':
     """ Sets up rospy and starts server """
     try:
         print("image server is running")
         rospy.init_node('wheely_boi', anonymous=True)
-        image_subsciber = rospy.Subscriber("/image/distribute", Image, send_image) # change chatter to url dest
-        br = CvBridge()
+        image_subsciber = rospy.Subscriber("/nautilus/nautilus/camera1/nautilus_cam/compressed", CompressedImage, send_image) # change chatter to url dest
+        # br = CvBridge()
         sio.run(app, host=HOST_IP, port=HOST_PORT)
     except rospy.ROSInterruptException: pass
