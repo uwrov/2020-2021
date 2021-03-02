@@ -1,6 +1,7 @@
 import React from "react";
 import Navbar from "../navbar/NavBar.js";
 import Console from "../console/Console.js";
+import WidgetTreeDebugger from "../../tools/WidgetTreeDebugger";
 
 import "../widgets/Widget.css";
 import "./GUI.css";
@@ -11,13 +12,24 @@ class GUI extends React.Component {
   state = {
     websocket: null,
     settings: {},
-    windows: null,
+    windows: new WT.Window(),
   };
 
   constructor(props) {
     super(props);
 
     this.state.websocket = require("socket.io-client")("http://localhost:4040");
+    let window2 = new WT.Window();
+    window2 = WT.add(window2, new WT.Leaf("widget"));
+    window2 = WT.add(window2, new WT.Leaf("console"));
+    let window3 = new WT.Window();
+    window3 = WT.add(window3, new WT.Leaf("widget"));
+    window3 = WT.add(window3, new WT.Leaf("console"));
+    window2 = WT.add(window2, window3);
+    this.state.windows = WT.add(this.state.windows, new WT.Leaf("settings"));
+    this.state.windows = WT.add(this.state.windows, new WT.Leaf("widget"));
+    this.state.windows = WT.add(this.state.windows, new WT.Leaf("widget"));
+    this.state.windows = WT.add(this.state.windows, window2);
   }
 
   addWidget = (widgetName) => {
@@ -48,9 +60,10 @@ class GUI extends React.Component {
 
         <div className="widgetDisplay">
           {
-            WT.renderWindows(this.state.windows, this.updateWidgets)
+            //WT.renderWindows(this.state.windows, this.updateWidgets)
             //Render Widgets
           }
+          <WidgetTreeDebugger tree={this.state.windows}/>
         </div>
       </div>
     );

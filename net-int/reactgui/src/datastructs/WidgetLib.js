@@ -1,3 +1,5 @@
+import React from "react";
+
 import Console from "../components/console/Console.js";
 import Settings from "../components/Settings/Settings.js";
 import Controller from "../components/controller/Controller.js";
@@ -15,3 +17,5 @@ export let WIDGET_DICT = {
   console: <Console />,
   controller: <Xbox />,
 };
+
+export default null;

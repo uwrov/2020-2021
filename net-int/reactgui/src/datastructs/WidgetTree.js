@@ -1,4 +1,8 @@
-import WIDGET_LIB from "./WidgetLib.js";
+import React from "react";
+
+import { WIDGET_DICT } from "./WidgetLib.js";
+
+import "./widgets.css";
 
 let WINDOW_COUNT = [0, 0];
 
@@ -13,8 +17,8 @@ export class Window {
 }
 
 export class Leaf {
-  constructor() {
-    this.type = "settings";
+  constructor(type) {
+    this.type = type;
   }
 }
 
@@ -81,7 +85,7 @@ export function remove(object, windowID, componentID) {
  *
  */
 export function get(object, windowId, componentId) {
-  if (object instanceof Window.class) {
+  if (object instanceof Window) {
     if (!object.hasLeafChildren) {
       for (let i = 0; i < object.child.length; i++) {
         let obj = get(object.child[i], windowId, componentId);
@@ -120,22 +124,33 @@ export function setTab(object, windowId, tabId) {
  *
  *  @return {React.Component} DOM representation of the WidgetTree
  */
-export function renderWindows(object, callback) {
-  if (object !== null) {
-    return (
-      <div>
-        {object.child.map((child) => {
-          if (child instanceof Window.class) {
-            if (child.hasLeafChildren) {
-            } else {
-              return <div></div>;
-            }
-          } else {
-            return generateComponent(child);
-          }
-        })}
-      </div>
-    );
+export function renderWindows(root, callback, currNode = root) {
+  if (currNode !== null && currNode instanceof Window) {
+    if(currNode.hasLeafChildren) {
+      return (
+        <div className="widget-window">
+          {currNode.child.map((c, index) => {
+            return (
+              <div className="widget-tab" onClick={() => {
+                setTab(root, currNode.WIN_ID, index);
+                callback(root);
+              }}>
+                {c.type}
+              </div>
+            );
+          })}
+          {generateComponent(currNode.child[currNode.openTab])}
+        </div>
+      );
+    } else {
+      return (
+        <div className="window-wrapper">
+          {currNode.child.map((c) => {
+            return renderWindows(root, callback, c);
+          })}
+        </div>
+      )
+    }
   }
 }
 
@@ -148,7 +163,7 @@ export function renderWindows(object, callback) {
  *  @return {React.Component} React Component generated from the leaf.
  */
 export function generateComponent(component) {
-  return null;
+  return WIDGET_DICT[component.type];
 }
 
 export default {

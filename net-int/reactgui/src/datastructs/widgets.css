@@ -1,0 +1,15 @@
+.widget-window {
+  display: inline-block;
+  background: #553456;
+}
+
+.window-wrapper {
+  display: inline-block;
+}
+
+.widget-tab {
+  background: #ff3456;
+  display: inline-block;
+  height: 30px;
+  width: 75px;
+}
