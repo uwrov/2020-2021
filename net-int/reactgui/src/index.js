@@ -17,4 +17,4 @@ ReactDOM.render(<GUI />, document.getElementById("root"));
 //ReactDOM.render(button.render(), document.getElementById('root'));
 //ReactDOM.render(<IpCamera />, document.getElementById('root'));
 
-Tests.testEquals();
+//Tests.runAllTests();

@@ -29,31 +29,36 @@ export class Leaf {
 // If adding a leaf to a window, adds the leaf to the window if it has other leafs
 // Otherwise, finds the leftmost window with leaves and adds the leaf to that window
 // If adding a leaf to root for the first time, adds a new window between root and the leaf
-export function add(object, node, isTest = 0) {
-  if (object instanceof Window) {
-    if (node instanceof Window) {
-      if (object.hasLeafChildren) {
-        for (let i = 0; i < object.child.length; i++) {
-          let newWindow = new Window(isTest);
-          object.child[i] = add(newWindow, object.child[i]);
-        }
-      }
-      object.child.push(node);
-    } else if (node instanceof Leaf) {
-      if (object.hasLeafChildren) {
-        object.child.push(node);
+
+export function add(object, node,isTest = 0) {
+   if (object instanceof Window){
+      if(node instanceof Window){
+         if(object.hasLeafChildren){
+            let newWindow = new Window(isTest);
+            newWindow.hasLeafChildren = true;
+            for (let i = 0; i < object.child.length; i++) {
+               add(newWindow, object.child[i]);
+            }
+            object.child = [];
+            object.child.push(newWindow);
+            object.hasLeafChildren = false;
+         }
+         object.child.push(node);
+      } else if (node instanceof Leaf){
+         if(object.hasLeafChildren){
+            object.child.push(node);
+         } else{
+            if (object.child.length ==0){
+               let newWindow = new Window(isTest);
+               newWindow.hasLeafChildren = true;
+               add(object,add(newWindow, node));
+            } else{
+               object.child[0]= add(object.child[0], node);
+            }
+         }
       } else {
-        if (object.child.length == 0) {
-          let newWindow = new Window(isTest);
-          newWindow.hasLeafChildren = true;
-          add(object, add(newWindow, node));
-        } else {
-          object.child[0] = add(object.child[0], node);
-        }
+        throw new Error("The second param must be of type Window or Leaf");
       }
-    } else {
-      throw new Error("The second param must be of type Window or Leaf");
-    }
   } else {
     throw new Error("The first param must be of type Window");
   }
