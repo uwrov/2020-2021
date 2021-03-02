@@ -8,6 +8,9 @@ from sensor_msgs.msg import CompressedImage
 import numpy as np
 import cv2
 
+import timer
+
+
 HOST_IP = "localhost"
 HOST_PORT = "4040"
 
