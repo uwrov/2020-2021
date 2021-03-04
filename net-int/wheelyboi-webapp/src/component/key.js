@@ -1,6 +1,5 @@
 import Node from './node.js';
 import React from 'react';
-import './key.css';
 const socket = require('socket.io-client')('http://localhost:4040');
 
 // This component is a visual representation of the movement vector
@@ -15,10 +14,10 @@ export default class key extends React.Component {
          lin_z: 0
       };
 
-      // This event listener will be triggered everytime up, down, 
+      // This event listener will be triggered everytime up, down,
       // left, right, space, and/or shift is being pressed. It will
       // send the current state of the movement vector to the server.
-      document.addEventListener("keydown", event => { 
+      document.addEventListener("keydown", event => {
          // Pressed left('a')
          if(event.keyCode === 65){
             this.setState({
@@ -50,14 +49,14 @@ export default class key extends React.Component {
          // Pressed space
          if(event.keyCode === 32){
             this.setState({
-               lin_z: 1
+               lin_z: 5
             });
          }
 
          // Pressed shift
          if(event.keyCode === 16){
             this.setState({
-               lin_z: -1
+               lin_z: -5
             });
          }
          socket.emit("Send State", this.state);
@@ -87,23 +86,23 @@ export default class key extends React.Component {
    render() {
       // The upper half of the array of Nodes.
       let topArrows = [
-            (<Node display="hidden"/>), 
-            (<Node 
-               id="front" 
-               display={this.state.lin_y === 1 ? "pressed" : "not"} />), 
+            (<Node display="hidden"/>),
+            (<Node
+               id="front"
+               display={this.state.lin_y === 1 ? "pressed" : "not"} />),
             (<Node display="hidden"/>)
       ];
-      
+
       // The bottom half of the array of Nodes.
       let bottomArrows = [
-      (<Node 
-         id="left" 
-         display={this.state.lin_x === -1 ? "pressed" : "not"} />), 
-      (<Node 
-         id="back" 
-         display={this.state.lin_y === -1 ? "pressed" : "not"} />), 
-      (<Node 
-         id="right" 
+      (<Node
+         id="left"
+         display={this.state.lin_x === -1 ? "pressed" : "not"} />),
+      (<Node
+         id="back"
+         display={this.state.lin_y === -1 ? "pressed" : "not"} />),
+      (<Node
+         id="right"
          display={this.state.lin_x === 1 ? "pressed" : "not"} />)];
       return(
          <div className="key">
@@ -112,10 +111,10 @@ export default class key extends React.Component {
                <div>{bottomArrows}</div>
             </div>
             <div>
-               <Node 
+               <Node
                   id="up"
                   display={this.state.lin_z === 1 ? "pressed" : "not"} />
-               <Node 
+               <Node
                   id="down"
                   display={this.state.lin_z === -1 ? "pressed" : "not"} />
             </div>

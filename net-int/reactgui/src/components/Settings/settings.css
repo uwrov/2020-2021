@@ -1,0 +1,149 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+#fullpage > img {
+  width: 50px;
+  height: 50px;
+  float: right;
+  margin-right: 30px;
+}
+
+.settingsClosed {
+  display: none;
+}
+
+.settingsOpened {
+  width: 90%;
+  height: 90%;
+  border: solid black 2px;
+  margin-left: 20px;
+  display: flex;
+  flex-direction: row-reverse;
+  position: relative;
+}
+
+#settings {
+  margin-top: 20%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 20px;
+  margin-left: 15%;
+  height: 400px;
+  width: 70%;
+  border: solid black 2px;
+  background-color: azure;
+}
+
+.set {
+  margin: 5px;
+  flex-basis: 100%;
+  width: 90%;
+  height: 50px;
+  text-align: center;
+}
+
+.set:hover {
+  border: solid 1px darkblue;
+  background-color: darkgrey;
+}
+.tabs {
+  margin-top: 100px;
+  width: 20%;
+  height: 700px;
+  float: left;
+  background-color: azure;
+}
+
+.tabutton {
+  width: 100%;
+  height: 40px;
+  border-bottom: black solid 2px;
+}
+
+.sidebar {
+  margin-bottom: 0px;
+  height: 80%;
+  width: 20%;
+  background-color: gray;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.window {
+  border-bottom: 2px solid black;
+  height: 5%;
+  width: 100%;
+  position: relative;
+}
+
+#settings-title {
+  display: inline-block;
+  margin: 3px;
+  text-align: center;
+  color: blue;
+}
+
+#exit-button {
+  width: 20px;
+  height: 20px;
+  float: right;
+  margin: 10px;
+  background: red;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+#exit-button:hover {
+  opacity: 50%;
+}
+
+button {
+  width: 100px;
+  height: 100px;
+}
+
+.generalSettings {
+  position: absolute;
+  top: 20%;
+  width: 80%;
+  height: 80%;
+  background-color: lightblue;
+}
+
+#test {
+  width: 100%;
+}
+
+#fullpage,
+#root {
+  width: 100%;
+  height: 100%;
+}
+
+html,
+body,
+section {
+  height: 100%;
+  width: 100%;
+}
+
+.true {
+  background-color: darkgrey;
+}

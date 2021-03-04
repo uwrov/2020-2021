@@ -1,0 +1,27 @@
+#hidden {
+  visibility: hidden;
+}
+
+#pressed {
+  background-color: #a59a64;
+  border: none;
+  color: black;
+  height: 50px;
+  width: 50px;
+  float: left;
+}
+
+.key {
+  position: absolute;
+  border: dotted;
+  background-color: #3c2d70;
+}
+
+.node {
+  background-color: #d5ca94;
+  border: none;
+  color: black;
+  height: 50px;
+  width: 50px;
+  float: left;
+}
