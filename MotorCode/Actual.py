@@ -35,9 +35,3 @@ pinF = 20
 output = [0, 0, 0, 0, 0, 0]
 
 #Process the input
-
-
-
-    
-    
-    
