@@ -7,29 +7,31 @@ import {
   setTab,
 } from "../../datastructs/WidgetTree.js";
 
-let WINDOW_COUNT = 0;
+let root = new Window();
+root.hasLeafChildren = true;
+let testRoot = new Window(1);
+testRoot.hasLeafChildren = true;
 
 function testAdd() {
-   let root = new Window();
-   let testRoot = new Window(1);
-
    // Tests adding a leaf to the root
-   let windowLeaf0 = new Window();
-   windowLeaf0.hasLeafChildren = true;
-   windowLeaf0.child.push(new Leaf());
-   root.child.push(windowLeaf0);
+   root.child.push(new Leaf());
    add(testRoot, new Leaf(),1);
    assert(root, testRoot);
 
    // Tests adding a new window with a leaf to a root
+   let windowLeaf0 = new Window();
+   windowLeaf0.hasLeafChildren = true;
+   windowLeaf0.child.push(new Leaf());
+   root.child.push(windowLeaf0);
    let windowLeaf1 = new Window();
    windowLeaf1.hasLeafChildren = true;
-   windowLeaf1.child.push(new Leaf());
-   root.child.push(windowLeaf1);
-   let testWindowLeaf1 = new Window(1);
-   testWindowLeaf1.hasLeafChildren = true;
-   testWindowLeaf1.child.push(new Leaf());
-   add(testRoot, testWindowLeaf1,1);
+   windowLeaf1.child.push(root.child[0]);
+   root.child[0] = windowLeaf1;
+   root.hasLeafChildren = false;
+   let testWindowLeaf0 = new Window(1);
+   testWindowLeaf0.hasLeafChildren = true;
+   testWindowLeaf0.child.push(new Leaf());
+   add(testRoot, testWindowLeaf0,1);
    assert(root, testRoot);
 
    //Tests adding a new window with a leaf to a window with leaf children
@@ -58,7 +60,7 @@ function testAdd() {
 }
 
 function testRemove() {
-
+   //root.remove(root,4,0);
 }
 
 function testGet() {

@@ -41,19 +41,19 @@ def send_state(state):
     msg = Twist()
     if current is None or msg.linear.x != current['lin_x'] or msg.linear.y != current['lin_y'] or msg.linear.y != current['lin_y'] or msg.angular.x != current['ang_x'] or msg.angular.y != current['ang_y']
     or msg.angular.z != current['ang_z']:
-         msg.linear.x = state["lin_x"]
-         msg.linear.y = state["lin_y"]
-         msg.linear.z = state["lin_z"]
-         msg.angular.x = state["ang_x"]
-         msg.angular.y = state["ang_y"]
-         msg.angular.z = state["ang_z"]
-         current.linear.x = state["lin_x"]
-         current.linear.y = state["lin_y"]
-         current.linear.z = state["lin_z"]
-         current.angular.x = state["ang_x"]
-         current.angular.y = state["ang_y"]
-         current.angular.z = state["ang_z"]
 
+	 msg.linear.x = state["lin_x"]
+	 msg.linear.y = state["lin_y"]
+	 msg.linear.z = state["lin_z"]
+	 msg.angular.x = state["ang_x"]
+	 msg.angular.y = state["ang_y"]
+	 msg.angular.z = state["ang_z"]
+         current.linear.x = state["lin_x"]
+	 current.linear.y = state["lin_y"]
+	 current.linear.z = state["lin_z"]
+	 current.angular.x = state["ang_x"]
+	 current.angular.y = state["ang_y"]
+	 current.angular.z = state["ang_z"]  
 
     #while not rospy.is_shutdown():
     rospy.loginfo("Sending Command v:" + str(current.linear.x))
