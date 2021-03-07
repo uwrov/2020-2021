@@ -8,8 +8,8 @@ def control(inputArr, output):
             print("Error")
     #checking if the fourth value is 0 or not
     if (inputArr[3] == 0):
-        output[4] = (1000 * inputArr[2]) + 2500
-        output[5] = (1000 * inputArr[2]) + 2500
+        output[4] = (1000 * inputArr[2]) + 1500
+        output[5] = (1000 * inputArr[2]) + 1500
         c1 = 0.5 * (inputArr[0] + inputArr[1])
         c2 = 0.5 * (((-1) * inputArr[0]) + inputArr[1])
         output[0] = c1
@@ -21,6 +21,7 @@ def control(inputArr, output):
 
 #Test Code: 
 control([1, 1, 1, 0])
+control([])
 
 #Connection with pi:
 pi = pigpio.pi()
