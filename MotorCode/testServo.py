@@ -1,26 +1,26 @@
-#!/usr/bin/ python3.6
-import pigpio
 import curses
+import pigpio
 import time
 
-# return user inpdut
+# Return the users input.
 def getch_c(stdscr):
-    # do not wait for input when calling getch
+    # Do not wait for input when calling getch.
     stdscr.nodelay(1)
 
-    # get keyboard input, returns -1 if none available
+    # Gets keyboard input, returns -1 if none available.
     c = stdscr.getch()
     if c != -1:
         return c
 
 
-# move servo based on keyboard input
+# Moves the servo motor based on keyboard input.
 if __name__ == '__main__':
     pi = pigpio.pi()
 
+    # Gives the default values for the power and pins.
     pw = 1500
     pw_step = 50
-    pin = 21
+    pin1 = 21
     pin2 = 20
     pin3 = 16
     pin4 = 12
@@ -32,6 +32,7 @@ if __name__ == '__main__':
     while True:
         key = curses.wrapper(getch_c)
 
+        # Takes the keyboard input and designates the power.
         if (key == ord('d')):
             pw = max(500, pw - pw_step)
         elif (key == ord('a')):
@@ -42,8 +43,9 @@ if __name__ == '__main__':
             pw_step = max(10, pw_step - 10)
         elif (key == ord('q')):
             break
-
-        pi.set_servo_pulsewidth(pin, pw)
+        
+        # Operates the servo connected to each pin at a set power.
+        pi.set_servo_pulsewidth(pin1, pw)
         pi.set_servo_pulsewidth(pin2, pw)
         pi.set_servo_pulsewidth(pin3, pw)
         pi.set_servo_pulsewidth(pin4, pw)

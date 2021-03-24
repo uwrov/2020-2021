@@ -1,10 +1,10 @@
-import pigpio
 import curses
+import pigpio
 import time
 
 # Class to allow operation of a corner servo motor.
 class CornerServo: 
-    # Check whether an error occurs for the given input array.
+    # Checks whether an error occurs for the given input array.
     def __init__(self, x, y, z, r):
         try:
             self.x = x
