@@ -32,16 +32,23 @@ class NavBar extends React.Component {
         	this.props.removeWidget(title);
         }
     }
-    
-    NavItem(item){
+
+    NavItem = (item) =>{
     	if(item.dropdown){
     		return(
-    			<a className={item.cName + this.state.buttonClicks.get(item.title)} 
+    			<a className={item.cName + this.state.buttonClicks.get(item.title)}
                 onClick = {() => {this.handleButtonClick(item.title)}}>
                 {item.title}
                 </a>
             )
-    	}
+    	} else {
+			return(
+				<a className={item.cName + this.state.buttonClicks.get(item.title)}
+				   onClick = {() => {this.handleButtonClick(item.title)}}>
+					{item.title}
+				</a>
+			)
+		}
     }
     
 	render() {
@@ -55,10 +62,7 @@ class NavBar extends React.Component {
 		        	{NavbarItems.map((item, index) => {
 		        		return (
                             <li key={index}>
-                                <a className={item.cName + this.state.buttonClicks.get(item.title)} 
-                                 onClick = {() => {this.handleButtonClick(item.title)}}>
-                                {item.title}
-                                </a>
+								{this.NavItem(item)}
                             </li>
                         )
 		        	})}
