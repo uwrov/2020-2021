@@ -22,7 +22,7 @@ from flask_socketio import SocketIO, send, emit
 # rosrun gazebo_ros spawn_model -file wb.urdf -urdf -model wheely_boi
 #
 # To run server (in separate terminal):
-# Create scripts folder in same directory as server (or modify SCRIPTS_PATH), add all scripts there
+# Create scripts folder in same directory as server (or modify SCRIPTS_PATH), add all scripts there, sudo chmod +x all of them.
 # Register all files in the scripts path with catkin (edit CMakeLists.txt, then catkin_make)
 # source devel/setup.sh
 # roscore
@@ -34,6 +34,7 @@ HOST_PORT = "4040"
 SCRIPTS_PATH = './scripts'
 RUNTIME_COMMAND = 'rosrun'
 RUNTIME_PARAMS = 'wb_sol'
+MAX_LOGS_BUFFER_SIZE = 5
 
 app = Flask(__name__)
 sio = SocketIO(app, cors_allowed_origins="*")
@@ -90,8 +91,8 @@ def process_error_msg(data):
         
         log('error', 'Unknown error code received: ' + data['code'] + '. No action taken.')
         
-    except:
-        log('error', 'Can\'t parse json data: ' + str(data))
+    except Exception as e:
+        log('error', 'Can\'t parse json data: ' + str(data) + '. Exception: ' + str(e))
 
     emit_logs()
 
@@ -113,26 +114,26 @@ def run_script(data):
             
         #Open python script and start reading output
         try:
-            proc = subprocess.Popen([RUNTIME_COMMAND, RUNTIME_PARAMS, SCRIPTS_PATH + '/' + data['arg1'], data['arg2']], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-            output = proc.stdout.readline()
-        except:
-            log('error', 'Failed to launch script ' + data['arg1'])
+            proc = subprocess.Popen([RUNTIME_COMMAND, RUNTIME_PARAMS, SCRIPTS_PATH + '/' + data['arg1'], data['arg2']], 
+                                    stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True)
+        except Exception as e:
+            log('error', 'Failed to launch script ' + data['arg1'] + '. Exception: ' + str(e))
             return
 
         #Continuously stream output (synchronously)
-        while output != '' or proc.poll() is None:
+        while True:
+            output = proc.stdout.readline()
+
+            if output == '' and proc.poll() is not None:
+                break
             if output:
                 log('script-output', output.strip())
-                emit_logs()
-
-            rc = proc.poll()
-            output = proc.stdout.readline()
 
         #Log ending status
         if (proc.returncode == 0):
             log('info', 'Script ' + data['arg1'] + ' executed successfully.')
         else:
-            log('error', 'Script ' + data['arg1'] + ' failed with exit code ' + proc.returncode)
+            log('error', 'Script ' + data['arg1'] + ' failed with exit code ' + str(proc.returncode))
             
     else:
         log('error', 'Could not find script.')
@@ -156,12 +157,18 @@ def log(messageType, message):
 
     """
 
-    Save log in queue to be sent back to client
+    Save log in queue to be sent back to client. If max queue capacity reached, emit all queued up logs to client.
 
     """
 
     logs.append({'type': messageType, 'message': message, 'timestamp': str(datetime.now())})
+    
+    # Discharge queue if max capacity reached
+    if (len(logs) >= MAX_LOGS_BUFFER_SIZE):
+        emit_logs()
+    
     print(messageType + ':', message)
+
 
 def emit_logs():
     """
@@ -181,7 +188,5 @@ if __name__ == '__main__':
         scripts = [f for f in listdir(SCRIPTS_PATH) if isfile(join(SCRIPTS_PATH, f))]
         sio.run(app, host=HOST_IP, port=HOST_PORT)
         log('info', 'Script server initialized.')
-    except:
-        log('error', 'Init: Server setup failed')
-
-
+    except Exception as e:
+        log('error', 'Init: Server setup failed' + '. Exception: ' + str(e))

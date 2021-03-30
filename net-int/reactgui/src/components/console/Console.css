@@ -1,14 +1,14 @@
 #console {
-    bottom: 0;
-    position: absolute;
-    resize: vertical;
+  bottom: 0;
+  position: absolute;
+  resize: vertical;
 }
 
 #in {
-    bottom: 0;
-    position: relative;
-    resize: none;
+  bottom: 0;
+  position: relative;
+  resize: none;
 }
 #outputText {
-    resize: vertical;
+  resize: vertical;
 }
