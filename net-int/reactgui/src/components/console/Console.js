@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "./Console.css";
 
-const socket = require("socket.io-client")("http://localhost:4040");
+const socket = require("socket.io-client")("http://localhost:4045");
 
 class Console extends Component {
   static thisConsole;
@@ -99,8 +99,22 @@ class Console extends Component {
           temp += "$>" + this.state.text + "\n";
           let data = '{ “command” : “run”, “arg1” : "' + commandInfo[1] + '" }'; // create data
           console.log(data); // debug
-          socket.emit("Send Command", data); // send data to server
+          socket.emit("Send Commands", data); // send data to server
         }
+        this.consoleStorage.removeItem("ConsoleData");
+        this.consoleStorage.setItem("ConsoleData", temp);
+        this.setState({
+          text: "", // clear the input field
+        });
+        this.setState({
+          consoleWindow: this.consoleStorage.getItem("ConsoleData"),
+        });
+      } else if (commandInfo[0] === "/list") {
+        // args are present
+        temp += "$>" + this.state.text + "\n";
+        let data = '{ “command” : “list”' + '" }'; // create data
+        console.log(data); // debug
+        socket.emit("Send Commands", data); // send data to server
         this.consoleStorage.removeItem("ConsoleData");
         this.consoleStorage.setItem("ConsoleData", temp);
         this.setState({
