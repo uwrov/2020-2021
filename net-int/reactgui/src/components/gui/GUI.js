@@ -26,8 +26,8 @@ class GUI extends React.Component {
     window3 = WT.add(window3, new WT.Leaf("widget"));
     window3 = WT.add(window3, new WT.Leaf("widget"));
     window2 = WT.add(window2, window3);
-    this.state.windows = WT.add(this.state.windows, new WT.Leaf("widget"));
-    this.state.windows = WT.add(this.state.windows, new WT.Leaf("widget"));
+    this.state.windows = WT.add(this.state.windows, new WT.Leaf("settings"));
+    this.state.windows = WT.add(this.state.windows, new WT.Leaf("ip_camera"));
     this.state.windows = WT.add(this.state.windows, new WT.Leaf("widget"));
     this.state.windows = WT.add(this.state.windows, window2);
   }
