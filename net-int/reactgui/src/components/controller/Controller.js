@@ -60,16 +60,17 @@ export default class Controller extends React.Component {
       // Pressed space
       if (event.keyCode === this.state.config.up) {
         this.setState({
-          lin_z: 5,
+          lin_z: 1,
         });
       }
 
       // Pressed shift
       if (event.keyCode === this.state.config.down) {
         this.setState({
-          lin_z: -5,
+          lin_z: -1,
         });
       }
+      console.log(this.state);
       socket.emit("Send State", this.state);
     });
 
@@ -98,6 +99,7 @@ export default class Controller extends React.Component {
           lin_z: 0,
         });
       }
+      console.log(this.state);
       socket.emit("Send State", this.state);
     });
   }
