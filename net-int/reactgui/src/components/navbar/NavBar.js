@@ -1,6 +1,7 @@
 import React from 'react';
 import "./Navbar.css";
 import {NavbarItems} from "./NavbarItems";
+import {uses} from 'react';
 
 class NavBar extends React.Component {
 	
@@ -32,6 +33,16 @@ class NavBar extends React.Component {
         }
     }
     
+    NavItem(item){
+    	if(item.dropdown){
+    		return(
+    			<a className={item.cName + this.state.buttonClicks.get(item.title)} 
+                onClick = {() => {this.handleButtonClick(item.title)}}>
+                {item.title}
+                </a>
+            )
+    	}
+    }
     
 	render() {
 		return(
