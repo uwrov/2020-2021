@@ -34,21 +34,46 @@ class GUI extends React.Component {
 
   addWidget = (widgetName) => {
     console.log(widgetName);
-    this.addTab(widgetName, 0);
+    let root = this.state.windows;
     switch (widgetName) {
       case "settings":
-        //this.addTab("settings", 1);
+        WT.add(root, new WT.Leaf("settings"));
         break;
       case "mainCam":
-        // new Camera();
+        WT.add(root, new WT.Leaf("ip_camera"));
         break;
       case "controller":
-        //new Controller();
+        WT.add(root, new WT.Leaf("controller"));
         break;
       case "console":
-        //new Console();
+        WT.add(root, new WT.Leaf("console"));
         break;
     }
+    this.setState({
+      windows: root
+    });
+  };
+
+  addWidget = (widgetName) => {
+    console.log(widgetName);
+    let root = this.state.windows;
+    switch (widgetName) {
+      case "settings":
+        WT.add(root, new WT.Leaf("settings"));
+        break;
+      case "mainCam":
+        WT.add(root, new WT.Leaf("ip_camera"));
+        break;
+      case "controller":
+        WT.add(root, new WT.Leaf("controller"));
+        break;
+      case "console":
+        WT.add(root, new WT.Leaf("console"));
+        break;
+    }
+    this.setState({
+      windows: root
+    });
   };
 
   //Render Nav Bar, Widget Display, Console, and Settings

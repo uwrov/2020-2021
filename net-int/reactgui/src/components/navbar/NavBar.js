@@ -26,11 +26,12 @@ class NavBar extends React.Component {
     handleButtonClick = (title) => {
     	let newVal = !this.state.buttonClicks.get(title);
         this.setState({ buttonClicks: this.state.buttonClicks.set(title, newVal)});
-        if (newVal){
-            this.props.addWidget(title);
-        } else{
-        	this.props.removeWidget(title);
-        }
+		this.props.addWidget(title);
+		// if (newVal){
+        //     this.props.addWidget(title);
+        // } else{
+        // 	this.props.removeWidget(title);
+        // }
     }
 
     NavItem = (item) =>{
