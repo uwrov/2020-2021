@@ -4,7 +4,7 @@
   background-color: #a9a9a9;
   border-radius: 50%;
   display: inline-block;
-  position: absolute;
+  position: relative;
   top: 7px;
   left: 5px;
   border-style: solid;
@@ -24,7 +24,7 @@
   height: 25px;
   width: 75px;
   background-color: #a9a9a9;
-  position: absolute;
+  position: relative;
   top: 7px;
   left: 200px;
   border-style: solid;
@@ -40,7 +40,7 @@
 }
 
 .address {
-  position: absolute;
+  position: relative;
   left: 40px;
   top: 10px;
 }
