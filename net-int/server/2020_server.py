@@ -7,11 +7,7 @@ from geometry_msgs.msg import Twist
 from geometry_msgs.msg import Wrench
 
 HOST_IP = "0.0.0.0"
-<<<<<<< HEAD
 HOST_PORT = "4850"
-=======
-HOST_PORT = "4040"
->>>>>>> 581edac1cee73e42a70c1a8dff91c87c3b6926df
 
 app = Flask(__name__)
 sio = SocketIO(app, cors_allowed_origins="*")
@@ -49,7 +45,7 @@ def send_state(state):
     None
     """
     #msg = Twist()
-    msg = Wrench()	
+    msg = Wrench()
     if current is None or msg.force.x != current['lin_x'] or msg.force.y != current['lin_y'] or msg.force.y != current['lin_y'] or msg.torque.x != current['ang_x'] or msg.torque.y != current['ang_y']
     or msg.torque.z != current['ang_z']:
 	"""
@@ -77,8 +73,8 @@ def send_state(state):
 	 current.force.z = state["lin_z"]
 	 current.torque.x = state["ang_x"]
 	 current.torque.y = state["ang_y"]
-	 current.torque.z = state["ang_z"] 
-        
+	 current.torque.z = state["ang_z"]
+
     #while not rospy.is_shutdown():
     rospy.loginfo("Sending Command v:" + str(current.linear.x))
     velocity_publisher.publish(current)
