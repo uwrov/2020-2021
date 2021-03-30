@@ -12,7 +12,10 @@ export class Window {
     this.hasLeafChildren = false;
     this.child = [];
     this.openTab = 0;
-    this.style = {};
+    this.style = {
+      width: "100px",
+      height: "100px"
+    };
   }
 }
 
@@ -140,6 +143,29 @@ export function setTab(object, windowId, tabId) {
 }
 
 /**
+* Resizing Widget Tree
+*
+*
+*
+*/
+export function averageSize(object, width, height, stackWindows=false) {
+  object.style.width = width + "px";
+  object.style.height = height + "px";
+  if(!object.hasLeafChildren && object.child.length > 0) {
+    let num = object.child.length;
+    let newW = width;
+    let newH = height;
+    if(stackWindows)
+      newH = height / num;
+    else
+      newW = width / num;
+    object.child.forEach((object) => {
+      averageSize(object, newW, newH, !stackWindows)
+    });
+  }
+}
+
+/**
  *  Returns the DOM representation of the given Widget Tree structure
  *  that is to be rendered by ReactDOM.
  *
@@ -153,7 +179,7 @@ export function renderWindows(root, callback, currNode = root) {
   if (currNode !== null && currNode instanceof Window) {
     if(currNode.hasLeafChildren) {
       return (
-        <div className="widget-window">
+        <div className="widget-window" style={currNode.style}>
           {currNode.child.map((c, index) => {
             return (
               <div className="widget-tab" onClick={() => {
@@ -169,7 +195,7 @@ export function renderWindows(root, callback, currNode = root) {
       );
     } else {
       return (
-        <div className="window-wrapper">
+        <div className="window-wrapper" style={currNode.style}>
           {currNode.child.map((c) => {
             return renderWindows(root, callback, c);
           })}
@@ -200,4 +226,5 @@ export default {
   setTab,
   renderWindows,
   generateComponent,
+  averageSize
 };
