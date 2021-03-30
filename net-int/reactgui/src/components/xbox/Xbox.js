@@ -3,6 +3,8 @@ import "./Xbox.css";
 import Gamepad from "react-gamepad";
 import Draggable from "react-draggable";
 
+const socket = require("socket.io-client")("http://localhost:4040");
+
 export default class Xbox extends React.Component {
   constructor(props) {
     super();
@@ -29,6 +31,19 @@ export default class Xbox extends React.Component {
       lsY: 0,
       rsX: 0,
       rsY: 0,
+      vect: {
+        lin_x: 0,
+        lin_y: 0,
+        lin_z: 0,
+      },
+      config: {
+        front: 87,
+        back: 83,
+        left: 65,
+        right: 68,
+        up: 84,
+        down: 71,
+      }
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleAxis = this.handleAxis.bind(this);
@@ -178,6 +193,7 @@ export default class Xbox extends React.Component {
         document.getElementById("right").style.opacity = "100%";
       }
     }
+    //socket.emit("Send State", this.state.vect);
   }
 
   handleAxis(axisName, value, presiousValue) {
@@ -214,6 +230,14 @@ export default class Xbox extends React.Component {
       document.getElementById("rt").style.filter =
         "invert(" + Math.abs(value) + ")";
     }
+    this.setState({
+      vect: {
+        lin_x: this.state.lsX,
+        lin_y: this.state.lsY
+      }
+    });
+    console.log(this.state.vect);
+    socket.emit("Send State", this.state.vect);
   }
 
   render() {
