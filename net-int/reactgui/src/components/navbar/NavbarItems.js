@@ -1,25 +1,25 @@
 export const NavbarItems = [
 	{
 		title: 'settings',
-		dropdown: 'false',
+		dropdown: false,
 		defaultWidget: '',
 		cName: 'navButton'
 	},
 	{
 		title: 'mainCam',
-		dropdown: 'true',
+		dropdown: true,
 		defaultWidget: '',
 		cName: 'navButton'
 	},
 	{
 		title: 'controller',
-		dropdown: 'false',
+		dropdown: false,
 		defaultWidget: '',
 		cName: 'navButton'
 	},
 	{
 		title: 'console',
-		dropdown: 'false',
+		dropdown: false,
 		defaultWidget: '',
 		cName: 'navButton'
 	}

@@ -27,6 +27,7 @@ class NavBar extends React.Component {
     	let newVal = !this.state.buttonClicks.get(title);
         this.setState({ buttonClicks: this.state.buttonClicks.set(title, newVal)});
 		this.props.addWidget(title);
+		// IF you want one click to add and the other to close
 		// if (newVal){
         //     this.props.addWidget(title);
         // } else{
@@ -35,11 +36,12 @@ class NavBar extends React.Component {
     }
 
     NavItem = (item) =>{
+		console.log(item);
     	if(item.dropdown){
     		return(
     			<a className={item.cName + this.state.buttonClicks.get(item.title)}
                 onClick = {() => {this.handleButtonClick(item.title)}}>
-                {item.title}
+                {item.title} test test test
                 </a>
             )
     	} else {
