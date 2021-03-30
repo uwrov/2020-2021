@@ -28,8 +28,6 @@ export class Leaf {
 // parent window had leaves, adds a new window between the parent window and the leaves (Case 1)
 // If adding a leaf to a window, adds the leaf to the window if it has other leafs (Case 3)
 // Otherwise, finds the leftmost window with leaves and adds the leaf to that window (Case 4)
-// If adding a leaf to root for the first time, adds a new window between root and the leaf (Case 5)
-
 export function add(object, node,isTest = 0) {
    if (object instanceof Window){
       if(node instanceof Window){
@@ -51,16 +49,8 @@ export function add(object, node,isTest = 0) {
          if(object.hasLeafChildren){
             object.child.push(node);
          } else{
-            // Case 5
-            if (object.child.length ===0){
-               let newWindow = new Window(isTest);
-               newWindow.hasLeafChildren = true;
-               add(object,add(newWindow, node));
-            }
             // Case 4
-            else{
-               object.child[0]= add(object.child[0], node);
-            }
+            object.child[0]= add(object.child[0], node);
          }
       } else {
         throw new Error("The second param must be of type Window or Leaf");
