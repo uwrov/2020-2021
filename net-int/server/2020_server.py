@@ -7,7 +7,7 @@ from geometry_msgs.msg import Twist
 from geometry_msgs.msg import Wrench
 
 HOST_IP = "0.0.0.0"
-HOST_PORT = "4850"
+HOST_PORT = "4040"
 
 app = Flask(__name__)
 sio = SocketIO(app, cors_allowed_origins="*")
