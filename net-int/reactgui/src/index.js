@@ -19,6 +19,8 @@ ReactDOM.render(<GUI />, document.getElementById('root'));
 //ReactDOM.render(<GUI />, document.getElementById("root"));
 // ReactDOM.render(<Controller />, document.getElementById('root'));
 //ReactDOM.render(button.render(), document.getElementById('root'));
+// ReactDOM.render(<IpCamera />, document.getElementById('root'));
+ReactDOM.render(<RosCamera />, document.getElementById('root'));
 //ReactDOM.render(<IpCamera />, document.getElementById('root'));
 
 //Tests.runAllTests();
