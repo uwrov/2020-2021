@@ -23,14 +23,7 @@
 }
 
 .widget-tab {
-  /*background: #f0dba6;
-  border-bottom: 30px solid #f0dba6;
-  border-left: 30px solid transparent;
-  border-right: 30px solid transparent;
-  height: 0px;
-  width: 75px;*/
   display: inline-block;
-  text-align: center;
   margin: 0px -2px;
   border-bottom: 30px solid #f0dba6;
   border-left: 15px solid transparent;
