@@ -12,6 +12,7 @@ class GUI extends React.Component {
     websocket: null,
     settings: {},
     windows: new WT.Window(),
+    consoleShow: true,
   };
 
   constructor(props) {
@@ -33,55 +34,41 @@ class GUI extends React.Component {
   }
 
   addWidget = (widgetName) => {
-    console.log(widgetName);
     let root = this.state.windows;
     switch (widgetName) {
       case "settings":
         WT.add(root, new WT.Leaf("settings"));
+        this.setState({
+          windows: root
+        });
         break;
       case "mainCam":
         WT.add(root, new WT.Leaf("ip_camera"));
+        this.setState({
+          windows: root
+        });
         break;
       case "controller":
         WT.add(root, new WT.Leaf("controller"));
+        this.setState({
+          windows: root
+        });
         break;
       case "console":
-        WT.add(root, new WT.Leaf("console"));
+        this.setState({
+          consoleShow: !this.state.consoleShow
+        });
         break;
     }
-    this.setState({
-      windows: root
-    });
   };
 
-  addWidget = (widgetName) => {
-    console.log(widgetName);
-    let root = this.state.windows;
-    switch (widgetName) {
-      case "settings":
-        WT.add(root, new WT.Leaf("settings"));
-        break;
-      case "mainCam":
-        WT.add(root, new WT.Leaf("ip_camera"));
-        break;
-      case "controller":
-        WT.add(root, new WT.Leaf("controller"));
-        break;
-      case "console":
-        WT.add(root, new WT.Leaf("console"));
-        break;
-    }
-    this.setState({
-      windows: root
-    });
-  };
 
   //Render Nav Bar, Widget Display, Console, and Settings
   render() {
     return (
       <div className="gui">
         <Navbar addWidget={this.addWidget} removeWidget={this.removeWidget} />
-        <Console show={true} />
+        <Console show={this.state.consoleShow} />
 
         <div className="widgetDisplay">
           {
