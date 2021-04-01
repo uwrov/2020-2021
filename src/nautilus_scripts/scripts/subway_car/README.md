@@ -1,6 +1,11 @@
 # Subway Car Runner
 
-Run the driver for the subway car photomosaic task with `rosrun nautilus_scripts subway_car_runner.py`. This node takes in images from the camera feed on command and stitches them into a photomosaic.
+## How to run
+1. Launch the sim with the subway car prop with `roslaunch nautilus_worlds nautilus_sim.launch prop:=subway_car`
+2. Run the driver for the subway car photomosaic task with `rosrun nautilus_scripts subway_car_runner.py`.
+
+## Description
+This node takes in images from the camera feed on command and stitches them into a photomosaic.
 
 This script does not have any autonomous movement. The driver must position the ROV so that it views each face of the subway car, and signal to take the picture manually.
 
