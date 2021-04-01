@@ -1,8 +1,6 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from "react";
+import ReactDOM from "react-dom";
 
-import TestGui from 'TestGui.js';
+import TestGui from "TestGui.js";
 
-
-
-ReactDOM.render(<TestGui />, document.getElementById('root'));
+ReactDOM.render(<TestGui />, document.getElementById("root"));
