@@ -4,7 +4,7 @@ import rospy
 from flask import Flask, render_template
 from flask_socketio import SocketIO, send, emit
 import base64
-# from sensor_msgs.msg import Image
+from sensor_msgs.msg import Image
 # from cv_bridge import CvBridge
 import cv2
 
@@ -100,7 +100,7 @@ if __name__ == '__main__':
         print("image server is running")
         rospy.init_node('wheely_boi', anonymous=True)
 
-        # image_subscriber = rospy.Subscriber("/image/distribute", Image, send_image) # change chatter to url dest
+        image_subscriber = rospy.Subscriber("/image/distribute", Image, send_image, 0) # change chatter to url dest
         # front_cam_subscriber = rospy.Subscriber("/nautilus/nautilus/camera1/nautilus_cam", Image, send_image)
         front_cam_subscriber = rospy.Subscriber("/nautilus/nautilus/camera1/nautilus_cam/compressed", CompressedImage, send_image, 1)
         downward_cam_subscriber = rospy.Subscriber("/nautilus/nautilus/camera2/nautilus_cam/compressed", CompressedImage, send_image, 2)
