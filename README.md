@@ -4,7 +4,7 @@
 
 **If your username is 'uwrov'**, run `setup_sim.sh`.
 
-If you do not use the VM with username 'uwrov', change any instance of `/home/uwrov` to `/home/{your username}`, in `setup_sim.sh` *before* running it.
+If you do not use the VM with username 'uwrov', change any instance of `/home/uwrov` to `/home/{your username}`, in `setup_sim.sh` ***before*** running it.
 
 After running the script, run `catkin_make` and you should be good to go!
 
@@ -55,3 +55,7 @@ Vector3 torque
 `force` describes the desired force in the xyz directions, while `torque` represents rotations in rpy.
 
 Note that nautilus can only turn along the z-axis, so only the third component of `torque` is needed.
+
+## Launching a Control Script
+All the control scripts are located in [src/nautilus_scripts/scripts]{https://github.com/uwrov/2020-2021/tree/sim/src/nautilus_scripts/scripts}. You can run them by doing a `rosrun nautilus_scripts filename.py`. Currently the working scripts are:
+- `subway_car_runner.py`
