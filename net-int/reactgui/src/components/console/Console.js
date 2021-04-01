@@ -14,6 +14,7 @@ class Console extends Component {
     this.tempArgNum = 0;
     this.state = { text: "" }; //state of the input field
     this.state = { consoleWindow: "" }; //state of the output textbox
+    this.state = { show: true};
     this.consoleStorage = window.localStorage;
     this.data = "Console created.\nListening...\n";
     var temp = "Console created.\nListening...\n";
@@ -32,6 +33,12 @@ class Console extends Component {
           consoleWindow: this.consoleStorage.getItem("ConsoleData"),
         });
       });
+    });
+  }
+
+  hideConsole = (show) => {
+    this.setState({
+      show: show
     });
   }
 
@@ -170,34 +177,39 @@ class Console extends Component {
   };
 
   render() {
-    return (
-      <div id="console">
-        <div>
-          <textarea
-            id="outputText"
-            value={this.state.consoleWindow}
-            disabled
-            onChange={this.handleChange.bind(this)}
-            onKeyPress={this.keyPressed.bind(this)}
-            rows="20"
-            cols="106"
-          />
+    if (this.state.show === true) {
+      return (
+        <div id="console">
+          <div>
+            <textarea
+              id="outputText"
+              value={this.state.consoleWindow}
+              disabled
+              onChange={this.handleChange.bind(this)}
+              onKeyPress={this.keyPressed.bind(this)}
+              rows="20"
+              cols="106"
+            />
+          </div>
+          <div>
+            <textarea
+              id="in"
+              rows="1"
+              cols="106"
+              name="t"
+              value={this.state.text}
+              placeholder="your command here"
+              type="text"
+              onChange={this.handleChange.bind(this)}
+              onKeyPress={this.keyPressed.bind(this)}
+            />
+          </div>
         </div>
-        <div>
-          <textarea
-            id="in"
-            rows="1"
-            cols="106"
-            name="t"
-            value={this.state.text}
-            placeholder="your command here"
-            type="text"
-            onChange={this.handleChange.bind(this)}
-            onKeyPress={this.keyPressed.bind(this)}
-          />
-        </div>
-      </div>
-    );
+      );
+    } else {
+      return (<div></div>);
+    }
+    
   }
 }
 
