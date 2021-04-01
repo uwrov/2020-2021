@@ -58,6 +58,7 @@ class GUI extends React.Component {
         this.setState({
           consoleShow: !this.state.consoleShow
         });
+        console.log(this.state.consoleShow)
         break;
     }
   };

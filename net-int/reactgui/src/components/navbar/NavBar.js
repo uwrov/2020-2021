@@ -36,7 +36,6 @@ class NavBar extends React.Component {
     }
 
     NavItem = (item) =>{
-		console.log(item);
     	if(item.dropdown){
     		return(
     			<a className={item.cName + this.state.buttonClicks.get(item.title)}
