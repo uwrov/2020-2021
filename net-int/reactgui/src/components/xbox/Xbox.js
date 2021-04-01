@@ -36,14 +36,6 @@ export default class Xbox extends React.Component {
         lin_y: 0,
         lin_z: 0,
       },
-      config: {
-        front: 87,
-        back: 83,
-        left: 65,
-        right: 68,
-        up: 84,
-        down: 71,
-      }
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleAxis = this.handleAxis.bind(this);
@@ -233,7 +225,8 @@ export default class Xbox extends React.Component {
     this.setState({
       vect: {
         lin_x: this.state.lsX,
-        lin_y: this.state.lsY
+        lin_y: this.state.lsY,
+        lin_z: this.state.rsY
       }
     });
     console.log(this.state.vect);
