@@ -16,7 +16,6 @@ class Console extends Component {
     this.state = { resize: "minimize",
     text: "",
     consoleWindow: "",
-    show: props.show,
     rows: 20
    };
    
@@ -192,8 +191,8 @@ class Console extends Component {
   }
 
   render() {
-    console.log(this.state.show);
-    if (this.state.show === true ) {
+    console.log(this.props.show);
+    if (this.props.show === true ) {
       return (
         <div id="console">
           <div><button  onClick={this.handleButtonClick}>{this.state.resize}</button></div>
