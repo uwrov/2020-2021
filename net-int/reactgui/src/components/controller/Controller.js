@@ -34,6 +34,7 @@ export default class Controller extends React.Component {
         this.setState({
           lin_x: -1,
         });
+        socket.emit("Send State", this.state);
       }
 
       // Pressed up
@@ -41,6 +42,7 @@ export default class Controller extends React.Component {
         this.setState({
           lin_y: 1,
         });
+        socket.emit("Send State", this.state);
       }
 
       // Pressed down
@@ -48,6 +50,7 @@ export default class Controller extends React.Component {
         this.setState({
           lin_y: -1,
         });
+        socket.emit("Send State", this.state);
       }
 
       // Pressed right
@@ -55,6 +58,7 @@ export default class Controller extends React.Component {
         this.setState({
           lin_x: 1,
         });
+        socket.emit("Send State", this.state);
       }
 
       // Pressed space
@@ -62,6 +66,7 @@ export default class Controller extends React.Component {
         this.setState({
           lin_z: 1,
         });
+        socket.emit("Send State", this.state);
       }
 
       // Pressed shift
@@ -69,9 +74,10 @@ export default class Controller extends React.Component {
         this.setState({
           lin_z: -1,
         });
+        socket.emit("Send State", this.state);
       }
-      console.log(this.state);
-      socket.emit("Send State", this.state);
+      //console.log(this.state);
+      
     });
 
     document.addEventListener("keyup", (event) => {
@@ -82,6 +88,7 @@ export default class Controller extends React.Component {
         this.setState({
           lin_x: 0,
         });
+        socket.emit("Send State", this.state);
       }
       if (
         event.keyCode === this.state.config.back ||
@@ -90,6 +97,7 @@ export default class Controller extends React.Component {
         this.setState({
           lin_y: 0,
         });
+        socket.emit("Send State", this.state);
       }
       if (
         event.keyCode === this.state.config.up ||
@@ -98,9 +106,10 @@ export default class Controller extends React.Component {
         this.setState({
           lin_z: 0,
         });
+        socket.emit("Send State", this.state);
       }
-      console.log(this.state);
-      socket.emit("Send State", this.state);
+      //console.log(this.state);
+      
     });
   }
 
