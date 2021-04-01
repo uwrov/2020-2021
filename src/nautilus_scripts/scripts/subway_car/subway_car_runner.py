@@ -16,10 +16,12 @@ from nautilus_utils.CamHolder import CamHolder
 
 # Static Variables
 cam1 = '/nautilus/nautilus/camera1/nautilus_cam/compressed'
-cam2 = '/nautilus/nautilus/camera1/nautilus_cam/compressed'
+cam2 = '/nautilus/nautilus/camera2/nautilus_cam/compressed'
 # cam1 = 'out/img/compressed'
 # cam2 = 'out/img/compressed2'
 button = '/buttonPress'
+
+output_path = '/home/uwrov/Desktop/out.png'
 
 # Mutable Variables
 cameras = CamHolder()
@@ -35,10 +37,9 @@ def main():
 
     while not rospy.is_shutdown():
         if output.is_finished():
-            cv2.imwrite('/home/uwrov/Desktop/out.png', output.get_output())
-            print("done!")
-            rospy.signal_shutdown("finished executing")
+            export_output(output.get_output())
         rospy.sleep(.5)
+
 
 def snapshot_fn(msg):
     if msg.data not in ['o', 't']:
@@ -60,6 +61,12 @@ def update_frame(msg, target_cam):
         cameras.update_frame(image_np, 1)
     else:
         cameras.update_frame(image_np, 2)
+
+
+def export_output(output):
+    cv2.imwrite(output_path, output.get_output())
+    print("done!")
+    rospy.signal_shutdown("finished executing")
 
 
 def shutdown_fn():

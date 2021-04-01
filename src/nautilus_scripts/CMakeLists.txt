@@ -25,6 +25,6 @@ catkin_python_setup()
 
 # Subway car
 catkin_install_python(PROGRAMS
-  scripts/subway_car_runner.py
+  scripts/subway_car/subway_car_runner.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
