@@ -1,7 +1,7 @@
 import React from 'react';
 import Tab from './Tab';
 
-class KeyBindings extends Tab {
+class Audio extends Tab {
   
   constructor(props) {
     super(props);
@@ -13,7 +13,7 @@ class KeyBindings extends Tab {
 
   renderSettings() {
     return(
-      <p>Key Bindings</p>
+      <p>Audio</p>
     )
   }
 
@@ -21,4 +21,4 @@ class KeyBindings extends Tab {
 
 }
 
-export default KeyBindings;
+export default Audio;

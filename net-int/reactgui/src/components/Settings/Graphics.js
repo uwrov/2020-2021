@@ -1,7 +1,7 @@
 import React from 'react';
 import Tab from './Tab';
 
-class KeyBindings extends Tab {
+class Graphics extends Tab {
   
   constructor(props) {
     super(props);
@@ -9,11 +9,15 @@ class KeyBindings extends Tab {
 
   state = {
     isOpen: false,
+    settings: {
+      id: 0,
+      color: "blue",
+    }
   }
 
   renderSettings() {
     return(
-      <p>Key Bindings</p>
+      <p>Graphics</p>
     )
   }
 
@@ -21,4 +25,4 @@ class KeyBindings extends Tab {
 
 }
 
-export default KeyBindings;
+export default Graphics;
