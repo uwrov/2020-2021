@@ -12,9 +12,15 @@ class Console extends Component {
     this.prevArgs = []; // list of prev args
     this.argCount = -1;
     this.tempArgNum = 0;
-    this.state = { text: "" }; //state of the input field
-    this.state = { consoleWindow: "" }; //state of the output textbox
-    this.state = { show: true};
+    //this.resize = "minimize";
+    this.state = { resize: "minimize",
+    text: "",
+    consoleWindow: "",
+    show: props.show,
+    rows: 20
+   };
+   
+    //this.showConsole(true)
     this.consoleStorage = window.localStorage;
     this.data = "Console created.\nListening...\n";
     var temp = "Console created.\nListening...\n";
@@ -33,12 +39,6 @@ class Console extends Component {
           consoleWindow: this.consoleStorage.getItem("ConsoleData"),
         });
       });
-    });
-  }
-
-  hideConsole = (show) => {
-    this.setState({
-      show: show
     });
   }
 
@@ -176,10 +176,27 @@ class Console extends Component {
     }
   };
 
+  handleButtonClick = () => {
+    if (this.state.resize === "minimize") {
+      this.setState({
+        resize: "maximize",
+        rows: 1
+      });
+    } else {
+      this.setState({
+        resize: "minimize",
+        rows: 20
+      });
+    }
+
+  }
+
   render() {
-    if (this.state.show === true) {
+    console.log(this.state.show);
+    if (this.state.show === true ) {
       return (
         <div id="console">
+          <div><button  onClick={this.handleButtonClick}>{this.state.resize}</button></div>
           <div>
             <textarea
               id="outputText"
@@ -187,7 +204,7 @@ class Console extends Component {
               disabled
               onChange={this.handleChange.bind(this)}
               onKeyPress={this.keyPressed.bind(this)}
-              rows="20"
+              rows={this.state.rows}
               cols="106"
             />
           </div>
