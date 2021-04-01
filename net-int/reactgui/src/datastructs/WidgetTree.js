@@ -180,17 +180,21 @@ export function renderWindows(root, callback, currNode = root) {
     if(currNode.hasLeafChildren) {
       return (
         <div className="widget-window" style={currNode.style}>
-          {currNode.child.map((c, index) => {
-            return (
-              <div className="widget-tab" onClick={() => {
-                setTab(root, currNode.WIN_ID, index);
-                callback(root);
-              }}>
-                {c.type}
-              </div>
-            );
-          })}
-          {generateComponent(currNode.child[currNode.openTab])}
+          <div className="tab-section">
+            {currNode.child.map((c, index) => {
+              return (
+                <div className="widget-tab" onClick={() => {
+                  setTab(root, currNode.WIN_ID, index);
+                  callback(root);
+                }}>
+                  {c.type}
+                </div>
+              );
+            })}
+          </div>
+          <div className="widget-content">
+            {generateComponent(currNode.child[currNode.openTab])}
+          </div>
         </div>
       );
     } else {

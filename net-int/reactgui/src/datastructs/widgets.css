@@ -1,8 +1,13 @@
 .widget-window {
   vertical-align: text-top;
   display: inline-block;
-  background: #c7acd2;
   height: 100%;
+}
+
+.widget-content {
+  overflow: auto;
+  width: 100%;
+  height: calc(100% - 30px);
 }
 
 .window-wrapper {
@@ -11,9 +16,25 @@
   height: 100%;
 }
 
-.widget-tab {
-  background: #ff3456;
-  display: inline-block;
+.tab-section {
   height: 30px;
-  width: 75px;
+  width: 100%;
+  background: #c0ab66;
+}
+
+.widget-tab {
+  /*background: #f0dba6;
+  border-bottom: 30px solid #f0dba6;
+  border-left: 30px solid transparent;
+  border-right: 30px solid transparent;
+  height: 0px;
+  width: 75px;*/
+  display: inline-block;
+  text-align: center;
+  margin: 0px -2px;
+  border-bottom: 30px solid #f0dba6;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  height: 0;
+  width: 100px;
 }
