@@ -11,22 +11,26 @@ from datetime import datetime
 from flask import Flask, render_template
 from flask_socketio import SocketIO, send, emit
 
-# Terminal 1:
-# source devel/setup.sh
-# CD into the directory src/wb_sol/urdf
-# roslaunch gazebo_ros empty_world.launch
+# Dev-environment-only prep commands:
 #
-# Terminal 2:
-# source devel/setup.sh
-# CD into the directory src/wb_sol/urdf
-# rosrun gazebo_ros spawn_model -file wb.urdf -urdf -model wheely_boi
+# 	Terminal 1:
+# 	1. source devel/setup.sh
+# 	2. CD into the directory src/wb_sol/urdf
+# 	3. roslaunch gazebo_ros empty_world.launch
 #
-# To run server (in separate terminal):
-# Create scripts folder in same directory as server (or modify SCRIPTS_PATH), add all scripts there, sudo chmod +x all of them.
-# Register all files in the scripts path with catkin (edit CMakeLists.txt, then catkin_make)
-# source devel/setup.sh
-# roscore
-# ./scripts_mgr.py or python3 scripts_mgr.py
+# 	Terminal 2:
+# 	1. source devel/setup.sh
+# 	2. CD into the directory src/wb_sol/urdf
+# 	3. rosrun gazebo_ros spawn_model -file wb.urdf -urdf -model wheely_boi
+#
+# To run server:
+#
+#	Separate terminal:
+# 	1. Create scripts folder in same directory as server (or modify SCRIPTS_PATH), add all scripts there, sudo chmod +x all of them.
+# 	2. Register all files in the scripts path with catkin (edit CMakeLists.txt, then catkin_make)
+# 	3. source devel/setup.sh
+# 	4. (Only do this in production) roscore
+# 	5. ./scripts_mgr.py or python3 scripts_mgr.py
 
 
 HOST_IP = "localhost"
@@ -37,7 +41,7 @@ RUNTIME_PARAMS = 'wb_sol'
 MAX_LOGS_BUFFER_SIZE = 5
 
 app = Flask(__name__)
-sio = SocketIO(app, cors_allowed_origins="*")
+sio = SocketIO(app, cors_allowed_origins="*", logger = True)
 scripts = []
 logs = []
 

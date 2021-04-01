@@ -5,29 +5,29 @@ import socketio
 import shlex
 import sys
 
+# Run command:
+# python3 scripts_mgr_test_client.py
+
 HOST_IP = "localhost"
 HOST_PORT = "4040"
 PROMPT = "Command> "
 COMMANDS = {'run': 0, 'list': 1, 'error': 3, 'quit': 1, 'help': 1}
 
-sio = socketio.Client(reconnection = False)
+sio = socketio.Client(reconnection = False, logger = True)
 
 @sio.event
 def connect():
     print("Connected. Type \'help\' for help.")
 
-    # Only returns execution to sio when the command entered emits event    
-    while not command():
-        pass
+    sio.start_background_task(prompt_command_background())
 
 @sio.on("Print Console Logs")
 def receive_data(data):
     for row in data:
         print(row["type"] + ":", row["message"], "[" + str(row["timestamp"]) + "]")
-    
+
     if (row["type"] != "script-output"):
-        while not command():
-            pass
+        sio.start_background_task(prompt_command_background())
 
 @sio.event
 def connect_error(err):
@@ -81,7 +81,17 @@ def command():
             payload["arg2"] = query[2:]
 
     sio.emit(event, json.dumps(payload))  
-    return True    
+    return True
+
+def prompt_command_background():
+    """
+    
+    Allows prompt for command to be shown without ignoring server packets
+
+    """
+ 
+    while not command():
+        pass
 
 if __name__ == '__main__':
 
