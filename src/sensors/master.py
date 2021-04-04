@@ -1,6 +1,6 @@
 import smbus
 import math
-import RPi.GPIO as GPIO
+# import RPi.GPIO as GPIO
 
 from Adafruit_BMP085 import BMP085
 ''' MPU6050 defined functions
@@ -104,13 +104,13 @@ def mpu6050(address) :
 def main():
     """Main function of the app"""
     Gx, Gy, Gz, Ax, Ay, Az  = mpu6050(0x68)
-    print "Gyro 1: ", "%.4f"%Gx, "| %.4f"%Gy, "| %.4f" %Gz, "| %.4f" %Ax, "| %.4f" %Ay, "| %.4f" %Az, "|", get_x_rotation(Ax, Ay, Az), "|", get_y_rotation(Ax, Ay, Az)     
+    print("Gyro 1: ", "%.4f"%Gx, "| %.4f"%Gy, "| %.4f" %Gz, "| %.4f" %Ax, "| %.4f" %Ay, "| %.4f" %Az, "|", get_x_rotation(Ax, Ay, Az), "|", get_y_rotation(Ax, Ay, Az))
     Gx, Gy, Gz, Ax, Ay, Az  = mpu6050(0x69)
-    print "Gyro 2: ", "%.4f"%Gx, "| %.4f"%Gy, "| %.4f" %Gz, "| %.4f" %Ax, "| %.4f" %Ay, "| %.4f" %Az, "|", get_x_rotation(Ax, Ay, Az), "|", get_y_rotation(Ax, Ay, Az)     
+    print("Gyro 2: ", "%.4f"%Gx, "| %.4f"%Gy, "| %.4f" %Gz, "| %.4f" %Ax, "| %.4f" %Ay, "| %.4f" %Az, "|", get_x_rotation(Ax, Ay, Az), "|", get_y_rotation(Ax, Ay, Az))     
     
-    print "Temperature: %.2f C" % temp
-    print "Pressure:    %.2f hPa" % (pressure / 100.0)
-    print "Altitude:    %.2f" % altitude
+    print("Temperature: %.2f C" % temp)
+    print("Pressure:    %.2f hPa" % (pressure / 100.0))
+    print("Altitude:    %.2f" % altitude)
 
 if __name__ == '__main__':
     main()
