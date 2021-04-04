@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 #Libraries
 import RPi.GPIO as GPIO
 import time
@@ -44,7 +46,7 @@ if __name__ == '__main__':
     try:
         while True:
             dist = distance()
-            print ("Measured Distance = %.1f cm" % dist)
+            print("Measured Distance = %.1f cm" % dist)
             time.sleep(1)
  
         # Reset by pressing CTRL + C
