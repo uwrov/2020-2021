@@ -1,6 +1,6 @@
 import smbus
 import math
-# import RPi.GPIO as GPIO
+import RPi.GPIO as GPIO
 
 from Adafruit_BMP085 import BMP085
 ''' MPU6050 defined functions
