@@ -16,6 +16,7 @@ export let WIDGET_DICT = {
   widget: <TestWidget />,
   console: <Console />,
   controller: <Xbox />,
+  key_controller: <Controller />
 };
 
 export default null;
