@@ -1,7 +1,7 @@
 #console {
   bottom: 0;
   position: absolute;
-  resize: vertical;
+  resize: none;
 }
 
 #in {
@@ -10,5 +10,5 @@
   resize: none;
 }
 #outputText {
-  resize: vertical;
+  resize: none;
 }

@@ -8,18 +8,26 @@ import sys
 # Run command:
 # python3 scripts_mgr_test_client.py
 
+# Known bug:
+# Client runs command, is getting command output continuously streaming from server, then suddenly client spontaneously polls server.
+# Continued server output stream from earlier is interpreted as garbage, causing client to think server is down and disconnect.
+
 HOST_IP = "localhost"
 HOST_PORT = "4040"
 PROMPT = "Command> "
 COMMANDS = {'run': 0, 'list': 1, 'error': 3, 'quit': 1, 'help': 1}
 
-sio = socketio.Client(reconnection = False, logger = True)
+sio = socketio.Client(reconnection = True)
 
 @sio.event
 def connect():
     print("Connected. Type \'help\' for help.")
+    print("Warning: this client is kinda garbage,\n\
+           if any funny stuff happens try pressing\n\
+           ENTER or wait your way through it.")
 
-    sio.start_background_task(prompt_command_background())
+    while not command():
+        pass
 
 @sio.on("Print Console Logs")
 def receive_data(data):
@@ -27,7 +35,8 @@ def receive_data(data):
         print(row["type"] + ":", row["message"], "[" + str(row["timestamp"]) + "]")
 
     if (row["type"] != "script-output"):
-        sio.start_background_task(prompt_command_background())
+        while not command():
+            pass
 
 @sio.event
 def connect_error(err):
@@ -82,16 +91,6 @@ def command():
 
     sio.emit(event, json.dumps(payload))  
     return True
-
-def prompt_command_background():
-    """
-    
-    Allows prompt for command to be shown without ignoring server packets
-
-    """
- 
-    while not command():
-        pass
 
 if __name__ == '__main__':
 

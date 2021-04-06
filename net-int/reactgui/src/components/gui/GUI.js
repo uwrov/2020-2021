@@ -75,8 +75,9 @@ class GUI extends React.Component {
           {
             WT.renderWindows(this.state.windows, this.updateWidgets)
             //Render Widgets
-            //          <WidgetTreeDebugger tree={this.state.windows}/>
+            //<WidgetTreeDebugger tree={this.state.windows}/>
           }
+
         </div>
       </div>
     );

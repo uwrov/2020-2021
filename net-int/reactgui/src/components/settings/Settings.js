@@ -67,7 +67,7 @@ class Settings extends React.Component {
 
   displaySidebar = () => {
     const numbers = this.state.settings;
-    const list = numbers.map((number) => 
+    const list = numbers.map((number) =>
       <div key={number.toString()} id={number.toString()} className="single-setting">{number.toString()}
       </div>
     );
