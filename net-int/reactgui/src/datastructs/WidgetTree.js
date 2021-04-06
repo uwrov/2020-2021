@@ -12,10 +12,20 @@ export class Window {
     this.hasLeafChildren = false;
     this.child = [];
     this.openTab = 0;
+    this.height = 100;
+    this.width = 100;
     this.style = {
       width: "100px",
       height: "100px"
     };
+    this.drag = false;
+  }
+
+  updateStyle() {
+    this.style = {
+      width: this.width + "px",
+      height: this.height + "px",
+    }
   }
 }
 
@@ -149,8 +159,9 @@ export function setTab(object, windowId, tabId) {
 *
 */
 export function averageSize(object, width, height, stackWindows=false) {
-  object.style.width = width + "px";
-  object.style.height = height + "px";
+  object.width = width;
+  object.height = height;
+  object.updateStyle();
   if(!object.hasLeafChildren && object.child.length > 0) {
     let num = object.child.length;
     let newW = width;
@@ -179,7 +190,18 @@ export function renderWindows(root, callback, currNode = root) {
   if (currNode !== null && currNode instanceof Window) {
     if(currNode.hasLeafChildren) {
       return (
-        <div className="widget-window" style={currNode.style}>
+        <div className="widget-window" style={currNode.style}
+        onMouseDown={
+          (event) => {
+            onMouseDown(event, currNode)
+          }
+        }
+        onMouseMove={
+          (event) => {
+            onMouseMove(event, callback, root);
+          }
+        }
+        onMouseUp={onMouseUp}>
           <div className="tab-section">
             {currNode.child.map((c, index) => {
               return (
@@ -206,6 +228,32 @@ export function renderWindows(root, callback, currNode = root) {
         </div>
       )
     }
+  }
+}
+
+/**
+*
+*                    RESIZE HANDLERS
+*
+*/
+let dragWindow = null;
+
+function onMouseDown(event, currNode) {
+  dragWindow = currNode
+}
+
+function onMouseMove(event, callback, root) {
+  if(dragWindow !== null) {
+    dragWindow.height += event.movementY;
+    dragWindow.width += event.movementX;
+    dragWindow.updateStyle();
+    callback(root);  //rerendering widgets
+  }
+}
+
+function onMouseUp(event) {
+  if(dragWindow !== null) {
+    dragWindow = null;
   }
 }
 
