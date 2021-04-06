@@ -1,6 +1,6 @@
 # Get the required scripts into the ros installation folder
 cd ~
-mkdir -p ros_catkkin_ws/install/share/uuv_assistants/templates
+mkdir -p ros_catkin_ws/install/share/uuv_assistants/templates
 cp -r ros_catkin_ws/src/uuv_simulator/uuv_assistants/templates  ros_catkin_ws/install/share/uuv_assistants/templates
 
 # Add thrusters to python path
