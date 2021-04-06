@@ -186,14 +186,14 @@ export function averageSize(object, width, height, stackWindows=false) {
  *
  *  @return {React.Component} DOM representation of the WidgetTree
  */
-export function renderWindows(root, callback, currNode = root) {
+export function renderWindows(root, callback, adjNode, currNode = root ) {
   if (currNode !== null && currNode instanceof Window) {
     if(currNode.hasLeafChildren) {
       return (
         <div className="widget-window" style={currNode.style}
         onMouseDown={
           (event) => {
-            onMouseDown(event, currNode)
+            onMouseDown(event, currNode, adjNode)
           }
         }
         onMouseMove={
@@ -222,8 +222,12 @@ export function renderWindows(root, callback, currNode = root) {
     } else {
       return (
         <div className="window-wrapper" style={currNode.style}>
-          {currNode.child.map((c) => {
-            return renderWindows(root, callback, c);
+          {currNode.child.map((curNode, index, arr) => {
+            if(index!== arr.length-1){
+              return renderWindows(root, callback, arr[index+1], curNode);
+            } else{
+              return renderWindows(root, callback, arr[index], curNode);
+            }
           })}
         </div>
       )
@@ -237,23 +241,29 @@ export function renderWindows(root, callback, currNode = root) {
 *
 */
 let dragWindow = null;
+let adjWindow = null;
 
-function onMouseDown(event, currNode) {
+function onMouseDown(event, currNode, adjNode) {
   dragWindow = currNode
+  adjWindow= adjNode
 }
 
 function onMouseMove(event, callback, root) {
   if(dragWindow !== null) {
     dragWindow.height += event.movementY;
     dragWindow.width += event.movementX;
+    adjWindow.height -= event.movementY;
+    adjWindow.height -= event.movementX;
     dragWindow.updateStyle();
+    adjWindow.updateStyle();
     callback(root);  //rerendering widgets
   }
 }
 
-function onMouseUp(event) {
+function onMouseUp() {
   if(dragWindow !== null) {
     dragWindow = null;
+    adjWindow = null;
   }
 }
 
