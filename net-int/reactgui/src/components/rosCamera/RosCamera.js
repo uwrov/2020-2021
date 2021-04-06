@@ -10,6 +10,8 @@ export default class Camera extends React.Component {
         "https://cdn.mos.cms.futurecdn.net/42E9as7NaTaAi4A6JcuFwG-1200-80.jpg",
       img_src_2:
         "https://cdn.mos.cms.futurecdn.net/42E9as7NaTaAi4A6JcuFwG-1200-80.jpg",
+      img_src_3:
+        "https://cdn.mos.cms.futurecdn.net/42E9as7NaTaAi4A6JcuFwG-1200-80.jpg"
     };
 
     console.log(this.socket);
@@ -32,8 +34,10 @@ export default class Camera extends React.Component {
     let imageurl = "data:image/png;base64, " + data;
     if (image.id == 1) {
       this.setState({ img_src_1: imageurl })
-    } else if (image.id == 0) {
+    } else if (image.id == 2) {
       this.setState({ img_src_2: imageurl })
+    } else if (image.id == 3) {
+      this.setState({ img_src_3: imageurl })
     }
     // this.setState({ img_src: imageurl });
     var d2 = new Date();
@@ -46,6 +50,7 @@ export default class Camera extends React.Component {
       <div className="camera1">
         <img src={this.state.img_src_1} alt="Image Display" className="image_1" />
         <img src={this.state.img_src_2} alt="Image Display" className="image_2" />
+        <img src={this.state.img_src_3} alt="Image Display" className="image_3" />
       </div>
     );
   }
