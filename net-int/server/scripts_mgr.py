@@ -41,7 +41,7 @@ RUNTIME_PARAMS = 'wb_sol'
 MAX_LOGS_BUFFER_SIZE = 5
 
 app = Flask(__name__)
-sio = SocketIO(app, cors_allowed_origins="*", logger = True)
+sio = SocketIO(app, cors_allowed_origins="*")
 scripts = []
 logs = []
 

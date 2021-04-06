@@ -10,7 +10,7 @@ import base64
 HOST_IP = "localhost"
 HOST_PORT = "4040"
 
-image_publisher = None;
+image_publisher = None
 bridge = CvBridge()
 
 sio = socketio.Client()

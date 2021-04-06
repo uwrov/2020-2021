@@ -44,7 +44,7 @@ def send_state(state):
     -------
     None
     """
-    
+
     if (current is None
             or state["lin_x"] != current['lin_x'] or
             state["lin_y"] != current['lin_y'] or
@@ -63,11 +63,11 @@ def send_state(state):
         rospy.loginfo("Sending Command v:" + str(current))
         velocity_publisher.publish(msg)
         rate.sleep()
-        
-        	
-        
+
+
+
     #while not rospy.is_shutdown():
-    
+
     #rospy.signal_shutdown('task done')
 
 # def send_sensor_data():
@@ -82,7 +82,7 @@ if __name__ == '__main__':
     """ Sets up rospy and starts server """
     try:
         rospy.init_node('wheely_boi', anonymous=True)
-        velocity_publisher = rospy.Publisher('/wheely_boi/wheely_boi/cmd', Wrench, queue_size=10)
+        velocity_publisher = rospy.Publisher('/nautilus/thruster_manager/input', Wrench, queue_size=10)
         rate = rospy.Rate(10)
         sio.run(app, host=HOST_IP, port=HOST_PORT)
     except rospy.ROSInterruptException: pass
