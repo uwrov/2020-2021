@@ -49,7 +49,7 @@ def send_image(data, id):
     None
     """
 
-    if id == 1 or id == 2:
+    if id == 'front_cam' or id == 'down_cam':
         buffer = np.fromstring(data.data, np.uint8)
     else:
         image = br.imgmsg_to_cv2(data)
@@ -98,7 +98,6 @@ The cameras on nautilus publish sensor_msgs/Image to:
 3. adjust sensors width, height, update rate
 """
 if __name__ == '__main__':
-    global topics
     """ Sets up rospy and starts server """
     try:
         print("image server is running")
@@ -106,7 +105,7 @@ if __name__ == '__main__':
 
         image_subscriber = rospy.Subscriber(topics['img_sub'], Image, send_image, 'img_sub') # change chatter to url dest
         front_cam_subscriber = rospy.Subscriber(topics['front_cam'], CompressedImage, send_image, 'front_cam')
-        downward_cam_subscriber = rospy.Subscriber(topics['back_cam'], CompressedImage, send_image, 'back_cam')
+        downward_cam_subscriber = rospy.Subscriber(topics['down_cam'], CompressedImage, send_image, 'down_cam')
 
         br = CvBridge()
         sio.run(app, host=HOST_IP, port=HOST_PORT)

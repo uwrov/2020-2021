@@ -32,11 +32,11 @@ export default class Camera extends React.Component {
     );
     //const string_char = String.fromCharCode.apply(null, typed_array);
     let imageurl = "data:image/png;base64, " + data;
-    if (image.id == 1) {
+    if (image.id == "front_cam") {
       this.setState({ img_src_1: imageurl })
-    } else if (image.id == 2) {
+    } else if (image.id == "down_cam") {
       this.setState({ img_src_2: imageurl })
-    } else if (image.id == 3) {
+    } else if (image.id == "img_sub") {
       this.setState({ img_src_3: imageurl })
     }
     // this.setState({ img_src: imageurl });
