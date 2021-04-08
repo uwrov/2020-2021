@@ -191,7 +191,6 @@ class Console extends Component {
   }
 
   render() {
-    console.log(this.props.show);
     if (this.props.show === true ) {
       return (
         <div id="console">
