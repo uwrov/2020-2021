@@ -219,14 +219,25 @@ export function renderWindows(root, callback, currNode = root, isSideBySide = fa
         onMouseUp={adjNode === null? () => {}:onMouseUp}>
           <div className="tab-section">
             {currNode.child.map((c, index) => {
-              return (
-                <div className="widget-tab" onClick={() => {
-                  setTab(root, currNode.WIN_ID, index);
-                  callback(root);
-                }}>
-                  {c.type}
-                </div>
-              );
+              if(currNode.openTab == index) {
+                return (
+                  <div className="widget-tab widget-tab-focused" onClick={() => {
+                    setTab(root, currNode.WIN_ID, index);
+                    callback(root);
+                  }}>
+                    {c.type}
+                  </div>
+                );
+              } else {
+                return (
+                  <div className="widget-tab" onClick={() => {
+                    setTab(root, currNode.WIN_ID, index);
+                    callback(root);
+                  }}>
+                    {c.type}
+                  </div>
+                );
+              }
             })}
           </div>
           <div className="widget-content">

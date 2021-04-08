@@ -1,4 +1,3 @@
-
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -47,7 +46,7 @@ code {
   position: relative;
 }
 
-#settings-title {
+.settings-title {
   display: inline-block;
   margin-top: 15%;
   text-align: left;
@@ -67,12 +66,7 @@ code {
   background-color:#FCFCFC;
 }
 
-#root {
-  width: 100%;
-  height: 100%;
-}
-
-#options {
+.options {
   height: 90%;
   display: flex;
   flex-direction: column;
@@ -80,12 +74,12 @@ code {
   flex-basis: 50%;
 }
 
-#settings-title {
+.settings-title {
   font-family: Arial, sans-serif;
   font-size: 20px;
 }
 
-#settings-icon {
+.settings-icon {
   margin: 10% 2%;
   width: 15%;
 }
