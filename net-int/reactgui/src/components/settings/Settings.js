@@ -31,8 +31,8 @@ class Settings extends React.Component {
         <div className="settings-widget">
           <div className="sidebar">
           <div className="window">
-            <img id="settings-icon" src="settingsImages/sicon.png"></img>
-            <p id="settings-title">Settings</p>
+            <img className="settings-icon" src="settingsImages/sicon.png"></img>
+            <p className="settings-title">Settings</p>
           </div>
             {this.renderClosedTabs()}
           </div>
@@ -43,7 +43,7 @@ class Settings extends React.Component {
 
   renderClosedTabs() {
     return (
-      <div id="options">
+      <div className="options">
         {
           this.state.tabs.map(
             element => element.renderClosed()
@@ -62,19 +62,6 @@ class Settings extends React.Component {
         this.state.tabs[i].state.isOpen = false;
       }
     }
-  }
-
-
-  displaySidebar = () => {
-    const numbers = this.state.settings;
-    const list = numbers.map((number) =>
-      <div key={number.toString()} id={number.toString()} className="single-setting">{number.toString()}
-      </div>
-    );
-
-    return (
-    <div>{list}</div>
-    );
   }
 }
 
