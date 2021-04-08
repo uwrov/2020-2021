@@ -33,7 +33,7 @@ from flask_socketio import SocketIO, send, emit
 # 	5. ./scripts_mgr.py or python3 scripts_mgr.py
 
 
-HOST_IP = "localhost"
+HOST_IP = "0.0.0.0"
 HOST_PORT = "4040"
 SCRIPTS_PATH = './scripts'
 RUNTIME_COMMAND = 'rosrun'
@@ -48,7 +48,7 @@ logs = []
 
 @sio.on("Send Commands")
 def json_request(data):
-    
+
     """
 
     Register event to receive JSON commands
@@ -63,14 +63,14 @@ def json_request(data):
             return
 
         #Only one script can be run at a time, can change this to async if needed
-        if (data['command'] == 'run'): 
+        if (data['command'] == 'run'):
             run_script(data)
-            
+
         elif (data['command'] == 'list'):
             list_scripts()
         else:
             log('error', 'Command not found: ' + str(data))
-        
+
     except Exception as e:
         log('error', 'Error in command execution: ' + str(e) + ', Command received: ' + str(data))
 
@@ -79,7 +79,7 @@ def json_request(data):
 
 @sio.on("Error Message")
 def process_error_msg(data):
-    
+
     """
 
     Read and process error messages from client
@@ -92,9 +92,9 @@ def process_error_msg(data):
         if (not 'code' in data):
             log('error', 'Error code not found: ' + str(data))
             return
-        
+
         log('error', 'Unknown error code received: ' + data['code'] + '. No action taken.')
-        
+
     except Exception as e:
         log('error', 'Can\'t parse json data: ' + str(data) + '. Exception: ' + str(e))
 
@@ -102,7 +102,7 @@ def process_error_msg(data):
 
 
 def run_script(data):
-    
+
     """
 
     Look for and run a specified script, with parameters. Send back output and ending status.
@@ -115,10 +115,10 @@ def run_script(data):
             data['arg2'] = ''
         if (type(data['arg2']) == list):
             data['arg2'] = ' '.join(data['arg2'])
-            
+
         #Open python script and start reading output
         try:
-            proc = subprocess.Popen([RUNTIME_COMMAND, RUNTIME_PARAMS, SCRIPTS_PATH + '/' + data['arg1'], data['arg2']], 
+            proc = subprocess.Popen([RUNTIME_COMMAND, RUNTIME_PARAMS, SCRIPTS_PATH + '/' + data['arg1'], data['arg2']],
                                     stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True)
         except Exception as e:
             log('error', 'Failed to launch script ' + data['arg1'] + '. Exception: ' + str(e))
@@ -138,7 +138,7 @@ def run_script(data):
             log('info', 'Script ' + data['arg1'] + ' executed successfully.')
         else:
             log('error', 'Script ' + data['arg1'] + ' failed with exit code ' + str(proc.returncode))
-            
+
     else:
         log('error', 'Could not find script.')
 
@@ -156,7 +156,7 @@ def list_scripts():
     else:
         log('info', 'No scripts found.')
 
-   
+
 def log(messageType, message):
 
     """
@@ -166,11 +166,11 @@ def log(messageType, message):
     """
 
     logs.append({'type': messageType, 'message': message, 'timestamp': str(datetime.now())})
-    
+
     # Discharge queue if max capacity reached
     if (len(logs) >= MAX_LOGS_BUFFER_SIZE):
         emit_logs()
-    
+
     print(messageType + ':', message)
 
 

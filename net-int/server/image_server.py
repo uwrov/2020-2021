@@ -9,7 +9,8 @@ from cv_bridge import CvBridge
 import cv2
 import numpy as np
 
-HOST_IP = "localhost"
+# HOST_IP = "localhost"
+HOST_IP = "0.0.0.0"
 HOST_PORT = "4040"
 
 app = Flask(__name__)
