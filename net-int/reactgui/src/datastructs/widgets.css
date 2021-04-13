@@ -31,3 +31,9 @@
   height: 0;
   width: 100px;
 }
+
+.widget-tab-focused {
+  border-bottom: 30px solid #eeeeee;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+}

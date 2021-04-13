@@ -22,7 +22,7 @@ export default class Controller extends React.Component {
         right: 68,
         up: 84,
         down: 71,
-      },
+      }
     };
 
     // This event listener will be triggered everytime up, down,
