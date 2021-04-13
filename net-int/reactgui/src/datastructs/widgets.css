@@ -2,6 +2,7 @@
   vertical-align: text-top;
   display: inline-block;
   height: 100%;
+  position:relative;
 }
 
 .widget-content {
@@ -14,6 +15,32 @@
   vertical-align: text-top;
   display: inline-block;
   height: 100%;
+  position:relative;
+}
+
+.drag-section-right{
+  width: 10px;
+  height: 100%;
+  color: darkgrey;
+  position:absolute;
+  top:0px;
+  right:0px;
+}
+.drag-section-right:hover {
+  pointer:col-resize;
+}
+
+.drag-section-bottom{
+  width: 100%;
+  height: 10px;
+  color: darkgrey;
+  position:absolute;
+  bottom: 0px;
+  left: 0px;
+}
+
+.drag-section-bottom:hover {
+  pointer:row-resize;
 }
 
 .tab-section {
