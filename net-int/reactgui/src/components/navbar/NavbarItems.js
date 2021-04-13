@@ -1,24 +1,34 @@
 export const NavbarItems = [
 	{
-		title: 'settings',
+		title: 'Settings',
 		dropdown: false,
 		defaultWidget: '',
 		cName: 'navButton'
 	},
 	{
-		title: 'mainCam',
+		title: 'Cameras',
 		dropdown: true,
+		dropdownElements:[
+			{
+				title: 'IP Camera',
+				cName: 'navButton'
+			},
+			{
+				title: 'ROS Camera',
+				cName: 'navButton'
+			}
+		],
 		defaultWidget: '',
 		cName: 'navButton'
 	},
 	{
-		title: 'controller',
+		title: 'Controller',
 		dropdown: false,
 		defaultWidget: '',
 		cName: 'navButton'
 	},
 	{
-		title: 'console',
+		title: 'Console',
 		dropdown: false,
 		defaultWidget: '',
 		cName: 'navButton'

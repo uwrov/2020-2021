@@ -36,25 +36,31 @@ class GUI extends React.Component {
   addWidget = (widgetName) => {
     let root = this.state.windows;
     switch (widgetName) {
-      case "settings":
+      case "Settings":
         WT.add(root, new WT.Leaf("settings"));
         this.setState({
           windows: root
         });
         break;
-      case "mainCam":
+      case "IP Camera":
         WT.add(root, new WT.Leaf("ip_camera"));
         this.setState({
           windows: root
         });
         break;
-      case "controller":
+      case "ROS Camera":
+        WT.add(root, new WT.Leaf("ros_camera"));
+        this.setState({
+          windows: root
+        });
+        break;
+      case "Controller":
         WT.add(root, new WT.Leaf("controller"));
         this.setState({
           windows: root
         });
         break;
-      case "console":
+      case "Console":
         this.setState({
           consoleShow: !this.state.consoleShow
         });
