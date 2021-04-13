@@ -34,40 +34,47 @@ export default class Camera extends React.Component {
   render() {
     return (
       <div className="camera">
-        <div
-          className="button"
-          onClick={() => {
-            let curr = this.state.hide;
-            this.setState({
-              hide: !curr,
-            });
-          }}
-        ></div>
-        {!this.state.hide ? (
-          <input
-            type="text"
-            className="address"
-            onChange={(e) => {
+        <div className="buttons-wrapper">
+          <label className="switch">
+          <input type="checkbox"></input>
+          <span class="slider round" onClick={() => {
+              let curr = this.state.hide;
               this.setState({
-                ip_add_pre: e.target.value,
+                hide: !curr,
               });
-            }}
-          />
-        ) : null}
-        {!this.state.hide ? (
-          <div
-            className="submit"
-            onClick={() => {
-              this.setState({
-                ip_add_post: this.state.ip_add_pre,
-              });
-            }}
-          >
-            {" "}
-            Submit{" "}
+            }}></span>
+
+
+          </label>
+          <div className="camera-buttons">
+          {!this.state.hide ? (
+            <input
+              type="text"
+              className="ip-textbox"
+              placeholder="  IP-Address..."
+              onChange={(e) => {
+                this.setState({
+                  ip_add_pre: e.target.value,
+                });
+              }}
+            />
+          ) : null}
+          {!this.state.hide ? (
+            <div
+              className="submit-button"
+              onClick={() => {
+                this.setState({
+                  ip_add_post: this.state.ip_add_pre,
+                });
+              }}
+            >
+              {" "}
+              Submit{" "}
+            </div>
+          ) : null}
           </div>
-        ) : null}
-        <img src={this.state.ip_add_post} alt="IP Camera" className="image" />
+        </div>
+          <img src={this.state.ip_add_post} alt="IP Camera" className="ip-camera" />
       </div>
     );
   }

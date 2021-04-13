@@ -12,7 +12,7 @@ export default class Camera extends React.Component {
 
     console.log(this.socket);
 
-    // get id
+    // make a getid socket
 
     this.socket.on("Image Display", (image) => {
       console.log("got image");

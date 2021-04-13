@@ -19,6 +19,11 @@ sio = SocketIO(app, cors_allowed_origins="*")
 image_subscriber = None
 br = None
 
+topics = {
+    "front_cam": "/nautilus/nautilus/camera1/nautilus_cam/compressed",
+    "down_cam": "/nautilus/nautilus/camera2/nautilus_cam/compressed",
+    "img_sub": "/image/distribute"
+}
 # CD into the directory src/wb_sol/urdf
 # roslaunch gazebo_ros empty_world.launch
 # rosrun gazebo_ros spawn_model -file wb.urdf -urdf -model wheely_boi
@@ -44,13 +49,35 @@ def send_image(data, id):
     None
     """
 
-    if id == 1 or id == 2:
+    if id == 'front_cam' or id == 'down_cam':
         buffer = np.fromstring(data.data, np.uint8)
     else:
         image = br.imgmsg_to_cv2(data)
         retval, buffer = cv2.imencode('.png', image)
     img = base64.b64encode(buffer)
     sio.emit("Image Display", {'image': img, 'id': id}, broadcast = True)
+
+@sio.on("Get IDs")
+def send_ids():
+    """
+    Sends topics map to client
+
+    This method sends all topic ids to the client as a JSON object stored as
+    'ids'. THis method gets called by "Get IDs" and emits "IDs"
+    back to the client.
+
+    Parameters
+    -------
+    data : None
+
+    Returns
+    -------
+    None
+    """
+    global topics
+    print("sending list of IDs")
+    ids = topics.keys()
+    sio.emit("IDs", {'ids':ids}, broadcast = True)
 
 
 """
@@ -76,9 +103,9 @@ if __name__ == '__main__':
         print("image server is running")
         rospy.init_node('wheely_boi', anonymous=True)
 
-        image_subscriber = rospy.Subscriber("/image/distribute", Image, send_image, 3) # change chatter to url dest
-        front_cam_subscriber = rospy.Subscriber("/nautilus/nautilus/camera1/nautilus_cam/compressed", CompressedImage, send_image, 1)
-        downward_cam_subscriber = rospy.Subscriber("/nautilus/nautilus/camera2/nautilus_cam/compressed", CompressedImage, send_image, 2)
+        image_subscriber = rospy.Subscriber(topics['img_sub'], Image, send_image, 'img_sub') # change chatter to url dest
+        front_cam_subscriber = rospy.Subscriber(topics['front_cam'], CompressedImage, send_image, 'front_cam')
+        downward_cam_subscriber = rospy.Subscriber(topics['down_cam'], CompressedImage, send_image, 'down_cam')
 
         br = CvBridge()
         sio.run(app, host=HOST_IP, port=HOST_PORT)
