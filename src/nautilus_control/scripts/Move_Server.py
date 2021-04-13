@@ -3,7 +3,6 @@ import json
 import rospy
 from flask import Flask, render_template
 from flask_socketio import SocketIO, send, emit
-from geometry_msgs.msg import Twist
 from geometry_msgs.msg import Wrench
 
 HOST_IP = "0.0.0.0"

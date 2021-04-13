@@ -103,7 +103,7 @@ if __name__ == '__main__':
         print("image server is running")
         rospy.init_node('wheely_boi', anonymous=True)
 
-        image_subscriber = rospy.Subscriber(topics['img_sub'], Image, send_image, 'img_sub') # change chatter to url dest
+        image_subscriber = rospy.Subscriber(topics['img_sub'], Image, send_image, 'img_sub')
         front_cam_subscriber = rospy.Subscriber(topics['front_cam'], CompressedImage, send_image, 'front_cam')
         downward_cam_subscriber = rospy.Subscriber(topics['down_cam'], CompressedImage, send_image, 'down_cam')
 
