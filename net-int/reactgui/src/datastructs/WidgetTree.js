@@ -184,9 +184,8 @@ export function updateSizes(object, offset, updateWidths=true, avgOffsetLayer = 
   }
   object.updateStyle();
   if(!object.hasLeafChildren && object.child.length > 0) {
-    //FIXME
     object.child.forEach((object) => {
-      averageSize(object, avgOffsetLayer? offset/ object.child.length: offset, updateWidths, !avgOffsetLayer)
+      updateSizes(object, avgOffsetLayer? offset/ object.child.length: offset, updateWidths, !avgOffsetLayer)
     });
   }
 }
