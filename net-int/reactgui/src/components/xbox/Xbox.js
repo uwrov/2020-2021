@@ -42,185 +42,213 @@ export default class Xbox extends React.Component {
   }
 
   handleChange(buttonName, pressed) {
-    if (buttonName === "A") {
-      this.setState({
-        A: pressed,
-      });
-      if (pressed) {
-        document.getElementById("a").style.top = "247px";
-        document.getElementById("a").style.opacity = "50%";
-      } else {
-        document.getElementById("a").style.top = "243px";
-        document.getElementById("a").style.opacity = "100%";
-      }
-    } else if (buttonName === "B") {
-      this.setState({
-        B: pressed,
-      });
-      if (pressed) {
-        document.getElementById("b").style.top = "194px";
-        document.getElementById("b").style.opacity = "50%";
-      } else {
-        document.getElementById("b").style.top = "187px";
-        document.getElementById("b").style.opacity = "100%";
-      }
-    } else if (buttonName === "X") {
-      this.setState({
-        X: pressed,
-      });
-      if (pressed) {
-        document.getElementById("x").style.top = "194px";
-        document.getElementById("x").style.opacity = "50%";
-      } else {
-        document.getElementById("x").style.top = "187px";
-        document.getElementById("x").style.opacity = "100%";
-      }
-    } else if (buttonName === "Y") {
-      this.setState({
-        Y: pressed,
-      });
-      if (pressed) {
-        document.getElementById("y").style.top = "139px";
-        document.getElementById("y").style.opacity = "50%";
-      } else {
-        document.getElementById("y").style.top = "135px";
-        document.getElementById("y").style.opacity = "100%";
-      }
-    } else if (buttonName === "Start") {
-      this.setState({
-        start: pressed,
-      });
-      if (pressed) {
-        document.getElementById("start").style.opacity = "50%";
-      } else {
-        document.getElementById("start").style.opacity = "100%";
-      }
-    } else if (buttonName === "Back") {
-      this.setState({
-        back: pressed,
-      });
-      if (pressed) {
-        document.getElementById("back").style.opacity = "50%";
-      } else {
-        document.getElementById("back").style.opacity = "100%";
-      }
-    } else if (buttonName === "LT") {
-      this.setState({
-        lt: pressed,
-      });
-    } else if (buttonName === "RT") {
-      this.setState({
-        rt: pressed,
-      });
-    } else if (buttonName === "LB") {
-      this.setState({
-        lb: pressed,
-      });
-      if (pressed) {
-        document.getElementById("bumpl").style.opacity = "50%";
-      } else {
-        document.getElementById("bumpl").style.opacity = "100%";
-      }
-    } else if (buttonName === "RB") {
-      this.setState({
-        rb: pressed,
-      });
-      if (pressed) {
-        document.getElementById("bumpr").style.opacity = "50%";
-      } else {
-        document.getElementById("bumpr").style.opacity = "100%";
-      }
-    } else if (buttonName === "LS") {
-      this.setState({
-        ls: pressed,
-      });
-      if (pressed) {
-        document.getElementById("stick").style.opacity = "50%";
-      } else {
-        document.getElementById("stick").style.opacity = "100%";
-      }
-    } else if (buttonName === "RS") {
-      this.setState({
-        rs: pressed,
-      });
-      if (pressed) {
-        document.getElementById("stick2").style.opacity = "50%";
-      } else {
-        document.getElementById("stick2").style.opacity = "100%";
-      }
-    } else if (buttonName === "DPadUp") {
-      this.setState({
-        up: pressed,
-      });
-      if (pressed) {
-        document.getElementById("up").style.opacity = "50%";
-      } else {
-        document.getElementById("up").style.opacity = "100%";
-      }
-    } else if (buttonName === "DPadDown") {
-      this.setState({
-        down: pressed,
-      });
-      if (pressed) {
-        document.getElementById("down").style.opacity = "50%";
-      } else {
-        document.getElementById("down").style.opacity = "100%";
-      }
-    } else if (buttonName === "DPadLeft") {
-      this.setState({
-        left: pressed,
-      });
-      if (pressed) {
-        document.getElementById("left").style.opacity = "50%";
-      } else {
-        document.getElementById("left").style.opacity = "100%";
-      }
-    } else if (buttonName === "DPadRight") {
-      this.setState({
-        right: pressed,
-      });
-      if (pressed) {
-        document.getElementById("right").style.opacity = "50%";
-      } else {
-        document.getElementById("right").style.opacity = "100%";
-      }
+    switch (buttonName) {
+      case "A":
+        this.setState({
+          A: pressed,
+        });
+        if (pressed) {
+          document.getElementById("a").style.top = "247px";
+          document.getElementById("a").style.opacity = "50%";
+        } else {
+          document.getElementById("a").style.top = "243px";
+          document.getElementById("a").style.opacity = "100%";
+        }
+
+      case "B":
+        this.setState({
+          B: pressed,
+        });
+        if (pressed) {
+          document.getElementById("b").style.top = "194px";
+          document.getElementById("b").style.opacity = "50%";
+        } else {
+          document.getElementById("b").style.top = "187px";
+          document.getElementById("b").style.opacity = "100%";
+        }
+        break;
+      case "X":
+        this.setState({
+          X: pressed,
+        });
+        if (pressed) {
+          document.getElementById("x").style.top = "194px";
+          document.getElementById("x").style.opacity = "50%";
+        } else {
+          document.getElementById("x").style.top = "187px";
+          document.getElementById("x").style.opacity = "100%";
+        }
+        break;
+      case "Y":
+        this.setState({
+          Y: pressed,
+        });
+        if (pressed) {
+          document.getElementById("y").style.top = "139px";
+          document.getElementById("y").style.opacity = "50%";
+        } else {
+          document.getElementById("y").style.top = "135px";
+          document.getElementById("y").style.opacity = "100%";
+        }
+        break;
+      case "Start":
+        this.setState({
+          start: pressed,
+        });
+        if (pressed) {
+          document.getElementById("start").style.opacity = "50%";
+        } else {
+          document.getElementById("start").style.opacity = "100%";
+        }
+        break;
+      case "Back":
+        this.setState({
+          back: pressed,
+        });
+        if (pressed) {
+          document.getElementById("back").style.opacity = "50%";
+        } else {
+          document.getElementById("back").style.opacity = "100%";
+        }
+        break;
+      case "LT":
+        this.setState({
+          lt: pressed,
+        });
+        break;
+      case "RT":
+        this.setState({
+          rt: pressed,
+        });
+        break;
+      case "LB":
+        this.setState({
+          lb: pressed,
+        });
+        if (pressed) {
+          document.getElementById("bumpl").style.opacity = "50%";
+        } else {
+          document.getElementById("bumpl").style.opacity = "100%";
+        }
+        break;
+      case "RB":
+        this.setState({
+          rb: pressed,
+        });
+        if (pressed) {
+          document.getElementById("bumpr").style.opacity = "50%";
+        } else {
+          document.getElementById("bumpr").style.opacity = "100%";
+        }
+        break;
+      case "LS":
+        this.setState({
+          ls: pressed,
+        });
+        if (pressed) {
+          document.getElementById("stick").style.opacity = "50%";
+        } else {
+          document.getElementById("stick").style.opacity = "100%";
+        }
+        break;
+      case "RS":
+        this.setState({
+          rs: pressed,
+        });
+        if (pressed) {
+          document.getElementById("stick2").style.opacity = "50%";
+        } else {
+          document.getElementById("stick2").style.opacity = "100%";
+        }
+        break;
+      case "DPadUp":
+        this.setState({
+          up: pressed,
+        });
+        if (pressed) {
+          document.getElementById("up").style.opacity = "50%";
+        } else {
+          document.getElementById("up").style.opacity = "100%";
+        }
+        break;
+      case "DPadDown":
+        this.setState({
+          down: pressed,
+        });
+        if (pressed) {
+          document.getElementById("down").style.opacity = "50%";
+        } else {
+          document.getElementById("down").style.opacity = "100%";
+        }
+        break;
+      case "DPadLeft":
+        this.setState({
+          left: pressed,
+        });
+        if (pressed) {
+          document.getElementById("left").style.opacity = "50%";
+        } else {
+          document.getElementById("left").style.opacity = "100%";
+        }
+        break;
+      case "DPadRight":
+        this.setState({
+          right: pressed,
+        });
+        if (pressed) {
+          document.getElementById("right").style.opacity = "50%";
+        } else {
+          document.getElementById("right").style.opacity = "100%";
+        }
+        break;
+      default:
+        console.log("Error: buttonName not defined");
     }
     //socket.emit("Send State", this.state.vect);
   }
 
   handleAxis(axisName, value, presiousValue) {
-    if (axisName === "LeftStickX") {
-      this.setState({
-        lsX: value,
-      });
-      document.getElementById("stick").style.left = 98 + value * 20 + "px";
-    } else if (axisName === "RightStickX") {
-      this.setState({
-        rsX: value,
-      });
-      document.getElementById("stick2").style.left = 394 + value * 20 + "px";
-    } else if (axisName === "LeftStickY") {
-      this.setState({
-        lsY: value,
-      });
-      document.getElementById("stick").style.top = 175 + value * -20 + "px";
-    } else if (axisName === "RightStickY") {
-      this.setState({
-        rsY: value,
-      });
-      document.getElementById("stick2").style.top = 296 + value * -20 + "px";
-    } else if (axisName === "LeftTrigger") {
-      this.setState({
-        ltAxis: value,
-      });
-      document.getElementById("lt").style.filter =
-        "invert(" + Math.abs(value) + ")";
-    } else if (axisName === "RightTrigger") {
-      this.setState({
-        rtAxis: value,
-      });
-      document.getElementById("rt").style.filter =
-        "invert(" + Math.abs(value) + ")";
+    switch (axisName) {
+      case "LeftStickX":
+        this.setState({
+          lsX: value,
+        });
+        document.getElementById("stick").style.left = 98 + value * 20 + "px";
+        break;
+      case "RightStickX":
+        this.setState({
+          rsX: value,
+        });
+        document.getElementById("stick2").style.left = 394 + value * 20 + "px";
+        break;
+      case "LeftStickY":
+        this.setState({
+          lsY: value,
+        });
+        document.getElementById("stick").style.top = 175 + value * -20 + "px";
+        break;
+      case "RightStickY":
+        this.setState({
+          rsY: value,
+        });
+        document.getElementById("stick2").style.top = 296 + value * -20 + "px";
+        break;
+      case "LeftTrigger":
+        this.setState({
+          ltAxis: value,
+        });
+        document.getElementById("lt").style.filter =
+          "invert(" + Math.abs(value) + ")";
+        break;
+      case "RightTrigger":
+        this.setState({
+          rtAxis: value,
+        });
+        document.getElementById("rt").style.filter =
+          "invert(" + Math.abs(value) + ")";
+        break;
+      default:
+        console.log("Error: axisName not defined")
     }
     this.setState({
       vect: {
