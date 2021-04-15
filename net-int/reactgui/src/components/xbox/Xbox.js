@@ -36,80 +36,132 @@ export default class Xbox extends React.Component {
         lin_y: 0,
         lin_z: 0,
       },
+      stick: "",
+      stick2: ""
     };
+
+    BUTTON_OPACITY = {
+      true: "50%",
+      false: "100%"
+    };
+
+    BUTTON_TOP = {
+      true: 7,
+      false: 0
+    };
+
+    BUTTON_LEFT = {
+
+    }
+
+    style = {
+      A: {
+        top: 243 + BUTTON_TOP[this.state.A] + "px",
+        opacity: BUTTON_OPACITY[this.state.A]
+      },
+      B: {
+        top: 187 + BUTTON_TOP[this.state.B] + "px",
+        opacity: BUTTON_OPACITY[this.state.B]
+      },
+      X: {
+        top: 187 + BUTTON_TOP[this.state.X] + "px",
+        opacity: BUTTON_OPACITY[this.state.X]
+      },
+      Y: {
+        top: 135 + BUTTON_TOP[this.state.Y] + "px",
+        opacity: BUTTON_OPACITY[this.state.Y]
+      },
+      start: {
+        opacity: BUTTON_OPACITY[this.state.start]
+      },
+      back: {
+        opacity: BUTTON_OPACITY[this.state.back]
+      },
+      lb:{
+        opacity: BUTTON_OPACITY[this.state.lb]
+      },
+      rb:{
+        opacity: BUTTON_OPACITY[this.state.rb]
+      },
+      ls:{
+        opacity: BUTTON_OPACITY[this.state.ls]
+      },
+      rs:{
+        opacity: BUTTON_OPACITY[this.state.rs]
+      },
+      up:{
+        opacity: BUTTON_OPACITY[this.state.up]
+      },
+      down:{
+        opacity: BUTTON_OPACITY[this.state.down]
+      },
+      left:{
+        opacity: BUTTON_OPACITY[this.state.left]
+      },
+      right:{
+        opacity: BUTTON_OPACITY[this.state.right]
+      },
+      lsX:{
+        left: 98 + this.state.lsX * 20 + "px"
+      },
+      rsX:{
+        left: 394 + this.state.rsX * 20 + "px"
+      },
+      lsY:{
+        top : 175 + this.state.lsY * -20 + "px"
+      },
+      rsY:{
+        top : 296 + this.state.rsY * -20 + "px"
+      },
+      lt: {
+        filter : "invert(" + Math.abs(this.state.lt) + ")"
+      },
+      rt: {
+        filter : "invert(" + Math.abs(this.state.rt) + ")"
+      },
+      stick:{
+        left: this.state.stick
+      },
+      stick2:{
+        top: this.state.stick2
+      }
+
+    };
+
     this.handleChange = this.handleChange.bind(this);
     this.handleAxis = this.handleAxis.bind(this);
   }
-
   handleChange(buttonName, pressed) {
     switch (buttonName) {
       case "A":
         this.setState({
           A: pressed,
         });
-        if (pressed) {
-          document.getElementById("a").style.top = "247px";
-          document.getElementById("a").style.opacity = "50%";
-        } else {
-          document.getElementById("a").style.top = "243px";
-          document.getElementById("a").style.opacity = "100%";
-        }
-
+        break;
       case "B":
         this.setState({
           B: pressed,
         });
-        if (pressed) {
-          document.getElementById("b").style.top = "194px";
-          document.getElementById("b").style.opacity = "50%";
-        } else {
-          document.getElementById("b").style.top = "187px";
-          document.getElementById("b").style.opacity = "100%";
-        }
         break;
       case "X":
         this.setState({
           X: pressed,
         });
-        if (pressed) {
-          document.getElementById("x").style.top = "194px";
-          document.getElementById("x").style.opacity = "50%";
-        } else {
-          document.getElementById("x").style.top = "187px";
-          document.getElementById("x").style.opacity = "100%";
-        }
         break;
       case "Y":
         this.setState({
           Y: pressed,
         });
-        if (pressed) {
-          document.getElementById("y").style.top = "139px";
-          document.getElementById("y").style.opacity = "50%";
-        } else {
-          document.getElementById("y").style.top = "135px";
-          document.getElementById("y").style.opacity = "100%";
-        }
         break;
       case "Start":
         this.setState({
           start: pressed,
         });
-        if (pressed) {
-          document.getElementById("start").style.opacity = "50%";
-        } else {
-          document.getElementById("start").style.opacity = "100%";
-        }
         break;
       case "Back":
         this.setState({
           back: pressed,
         });
-        if (pressed) {
-          document.getElementById("back").style.opacity = "50%";
-        } else {
-          document.getElementById("back").style.opacity = "100%";
-        }
         break;
       case "LT":
         this.setState({
@@ -125,81 +177,41 @@ export default class Xbox extends React.Component {
         this.setState({
           lb: pressed,
         });
-        if (pressed) {
-          document.getElementById("bumpl").style.opacity = "50%";
-        } else {
-          document.getElementById("bumpl").style.opacity = "100%";
-        }
         break;
       case "RB":
         this.setState({
           rb: pressed,
         });
-        if (pressed) {
-          document.getElementById("bumpr").style.opacity = "50%";
-        } else {
-          document.getElementById("bumpr").style.opacity = "100%";
-        }
         break;
       case "LS":
         this.setState({
           ls: pressed,
         });
-        if (pressed) {
-          document.getElementById("stick").style.opacity = "50%";
-        } else {
-          document.getElementById("stick").style.opacity = "100%";
-        }
         break;
       case "RS":
         this.setState({
           rs: pressed,
         });
-        if (pressed) {
-          document.getElementById("stick2").style.opacity = "50%";
-        } else {
-          document.getElementById("stick2").style.opacity = "100%";
-        }
         break;
       case "DPadUp":
         this.setState({
           up: pressed,
         });
-        if (pressed) {
-          document.getElementById("up").style.opacity = "50%";
-        } else {
-          document.getElementById("up").style.opacity = "100%";
-        }
         break;
       case "DPadDown":
         this.setState({
           down: pressed,
         });
-        if (pressed) {
-          document.getElementById("down").style.opacity = "50%";
-        } else {
-          document.getElementById("down").style.opacity = "100%";
-        }
         break;
       case "DPadLeft":
         this.setState({
           left: pressed,
         });
-        if (pressed) {
-          document.getElementById("left").style.opacity = "50%";
-        } else {
-          document.getElementById("left").style.opacity = "100%";
-        }
         break;
       case "DPadRight":
         this.setState({
           right: pressed,
         });
-        if (pressed) {
-          document.getElementById("right").style.opacity = "50%";
-        } else {
-          document.getElementById("right").style.opacity = "100%";
-        }
         break;
       default:
         console.log("Error: buttonName not defined");
@@ -212,40 +224,40 @@ export default class Xbox extends React.Component {
       case "LeftStickX":
         this.setState({
           lsX: value,
+          stick: 98 + value * 20 + "px"
         });
-        document.getElementById("stick").style.left = 98 + value * 20 + "px";
+        // document.getElementById("stick").style.left = 98 + value * 20 + "px";
         break;
       case "RightStickX":
         this.setState({
           rsX: value,
+          stick2: 394 + value * 20 + "px"
         });
-        document.getElementById("stick2").style.left = 394 + value * 20 + "px";
+        // document.getElementById("stick2").style.left = 394 + value * 20 + "px";
         break;
       case "LeftStickY":
         this.setState({
           lsY: value,
+          stick: 175 + value * -20 + "px";
         });
-        document.getElementById("stick").style.top = 175 + value * -20 + "px";
+        // document.getElementById("stick").style.top = 175 + value * -20 + "px";
         break;
       case "RightStickY":
         this.setState({
           rsY: value,
+          stick2:  296 + value * -20 + "px
         });
-        document.getElementById("stick2").style.top = 296 + value * -20 + "px";
+        // document.getElementById("stick2").style.top = 296 + value * -20 + "px";
         break;
       case "LeftTrigger":
         this.setState({
           ltAxis: value,
         });
-        document.getElementById("lt").style.filter =
-          "invert(" + Math.abs(value) + ")";
         break;
       case "RightTrigger":
         this.setState({
           rtAxis: value,
         });
-        document.getElementById("rt").style.filter =
-          "invert(" + Math.abs(value) + ")";
         break;
       default:
         console.log("Error: axisName not defined")
@@ -268,23 +280,24 @@ export default class Xbox extends React.Component {
         onAxisChange={this.handleAxis}
       >
         <div className="gamepad">
+        // TODO: FILL IN THE REST FIX style= this.style.A... does not work
           <img src="/xboxImages/bg.png" id="bg" />
-          <img src="/xboxImages/a.png" id="a" />
-          <img src="/xboxImages/b.png" id="b" />
-          <img src="/xboxImages/x.png" id="x" />
-          <img src="/xboxImages/y.png" id="y" />
-          <img src="/xboxImages/left.png" id="left" />
-          <img src="/xboxImages/right.png" id="right" />
-          <img src="/xboxImages/up.png" id="up" />
-          <img src="/xboxImages/down.png" id="down" />
-          <img src="/xboxImages/stick.png" id="stick" />
-          <img src="/xboxImages/stick2.png" id="stick2" />
-          <img src="/xboxImages/bumperleft.png" id="bumpl" />
-          <img src="/xboxImages/bumperright.png" id="bumpr" />
-          <img src="/xboxImages/lt.png" id="lt" />
-          <img src="/xboxImages/rt.png" id="rt" />
-          <img src="/xboxImages/left.png" id="back" />
-          <img src="/xboxImages/right.png" id="start" />
+          <img src="/xboxImages/a.png" id="a" style={this.style.A}/>
+          <img src="/xboxImages/b.png" id="b" style={this.style.B}/>
+          <img src="/xboxImages/x.png" id="x" style={this.style.X}/>
+          <img src="/xboxImages/y.png" id="y" style={this.style.Y}/>
+          <img src="/xboxImages/left.png" id="left" style={this.style.left}/>
+          <img src="/xboxImages/right.png" id="right" style={this.style.right}/>
+          <img src="/xboxImages/up.png" id="up" style={this.style.up}/>
+          <img src="/xboxImages/down.png" id="down" style={this.style.down}/>
+          <img src="/xboxImages/stick.png" id="stick" style={this.style.stick}/> //!
+          <img src="/xboxImages/stick2.png" id="stick2" style={this.style.stick2}/> //!
+          <img src="/xboxImages/bumperleft.png" id="bumpl" style={this.style.lb}/>
+          <img src="/xboxImages/bumperright.png" id="bumpr" style={this.style.rb}/>
+          <img src="/xboxImages/lt.png" id="lt" style={this.style.lt}/>
+          <img src="/xboxImages/rt.png" id="rt" style={this.style.rt}/>
+          <img src="/xboxImages/left.png" id="back" style={this.style.back}/>
+          <img src="/xboxImages/right.png" id="start" style={this.style.start}/>
         </div>
       </Gamepad>
     );
