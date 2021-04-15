@@ -27,8 +27,8 @@ def streaming(msg, rate, stream, image_pub):
         rate.sleep()
 
 if __name__ == '__main__':
-    src = 'http://192.168.1.10:8081/'
-    src2 = 'http://192.168.1.10:8081/' # change sources as necessary 
+    src = 'http://192.168.1.5:8081/'
+    src2 = 'http://192.168.1.5:8081/' # change sources as necessary 
     stream = cv2.VideoCapture(src)
     stream2 = cv2.VideoCapture(src2)
     
