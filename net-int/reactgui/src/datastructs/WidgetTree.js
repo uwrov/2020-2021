@@ -220,27 +220,29 @@ export function renderWindows(root, callback, currNode = root, isSideBySide = fa
         <div className="widget-window" style={currNode.style}>
           {createDragSection(root, callback, currNode, isSideBySide,adjNode)}
           <div className="tab-section">
-            {currNode.child.map((c, index) => {
-              if(currNode.openTab == index) {
-                return (
-                  <div className="widget-tab widget-tab-focused" onClick={() => {
-                    setTab(root, currNode.WIN_ID, index);
-                    callback(root);
-                  }}>
-                    {c.type}
-                  </div>
-                );
-              } else {
-                return (
-                  <div className="widget-tab" onClick={() => {
-                    setTab(root, currNode.WIN_ID, index);
-                    callback(root);
-                  }}>
-                    {c.type}
-                  </div>
-                );
-              }
-            })}
+            <div className="grouped-tabs">
+              {currNode.child.map((c, index) => {
+                if(currNode.openTab == index) {
+                  return (
+                    <div className="widget-tab widget-tab-focused" onClick={() => {
+                      setTab(root, currNode.WIN_ID, index);
+                      callback(root);
+                    }}>
+                      <a>{c.type}</a>
+                    </div>
+                  );
+                } else {
+                  return (
+                    <div className="widget-tab" onClick={() => {
+                      setTab(root, currNode.WIN_ID, index);
+                      callback(root);
+                    }}>
+                      <a>{c.type}</a>
+                    </div>
+                  );
+                }
+              })}
+            </div>
           </div>
           <div className="widget-content">
             {generateComponent(currNode.child[currNode.openTab])}
