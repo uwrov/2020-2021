@@ -176,6 +176,33 @@ export function averageSize(object, width, height, stackWindows=false) {
   }
 }
 
+export function updateSizes(object, offset, updateWidths=true, avgOffsetLayer = false) {
+  if (updateWidths){
+    object.width += offset;
+  } else{
+    object.height += offset;
+  }
+  object.updateStyle();
+  if(!object.hasLeafChildren && object.child.length > 0) {
+    object.child.forEach((object) => {
+      updateSizes(object, avgOffsetLayer? offset/ object.child.length: offset, updateWidths, !avgOffsetLayer)
+    });
+  }
+}
+
+export function createDragSection(root, callback, currNode, isSideBySide,adjNode){
+  if (adjNode !== null) {
+    return (
+        <div className= {isSideBySide? "drag-section-right":"drag-section-bottom"}
+          onMouseDown={(event) => {onMouseDown(event, currNode, adjNode, isSideBySide);}}
+          onMouseMove={(event) => {onMouseMove(event, callback, root);}}
+          onMouseUp={onMouseUp}>
+        </div>
+    )
+  }
+}
+
+
 /**
  *  Returns the DOM representation of the given Widget Tree structure
  *  that is to be rendered by ReactDOM.
@@ -186,46 +213,34 @@ export function averageSize(object, width, height, stackWindows=false) {
  *
  *  @return {React.Component} DOM representation of the WidgetTree
  */
-export function renderWindows(root, callback, adjNode, currNode = root ) {
+export function renderWindows(root, callback, currNode = root, isSideBySide = false,adjNode = null) {
   if (currNode !== null && currNode instanceof Window) {
     if(currNode.hasLeafChildren) {
       return (
-        <div className="widget-window" style={currNode.style}
-        onMouseDown={
-          (event) => {
-            onMouseDown(event, currNode, adjNode)
-          }
-        }
-        onMouseMove={
-          (event) => {
-            onMouseMove(event, callback, root);
-          }
-        }
-        onMouseUp={onMouseUp}>
+        <div className="widget-window" style={currNode.style}>
+          {createDragSection(root, callback, currNode, isSideBySide,adjNode)}
           <div className="tab-section">
-            <div className = "grouped-tabs">
-              {currNode.child.map((c, index) => {
-                if(currNode.openTab == index) {
-                  return (
-                    <div className="widget-tab widget-tab-focused" onClick={() => {
-                      setTab(root, currNode.WIN_ID, index);
-                      callback(root);
-                    }}>
-                      <a>{c.type}</a>
-                    </div>
-                  );
-                } else {
-                  return (
-                    <div className="widget-tab" onClick={() => {
-                      setTab(root, currNode.WIN_ID, index);
-                      callback(root);
-                    }}>
-                      <a>{c.type}</a>
-                    </div>
-                  );
-                }
-              })}
-            </div>
+            {currNode.child.map((c, index) => {
+              if(currNode.openTab == index) {
+                return (
+                  <div className="widget-tab widget-tab-focused" onClick={() => {
+                    setTab(root, currNode.WIN_ID, index);
+                    callback(root);
+                  }}>
+                    {c.type}
+                  </div>
+                );
+              } else {
+                return (
+                  <div className="widget-tab" onClick={() => {
+                    setTab(root, currNode.WIN_ID, index);
+                    callback(root);
+                  }}>
+                    {c.type}
+                  </div>
+                );
+              }
+            })}
           </div>
           <div className="widget-content">
             {generateComponent(currNode.child[currNode.openTab])}
@@ -237,9 +252,11 @@ export function renderWindows(root, callback, adjNode, currNode = root ) {
         <div className="window-wrapper" style={currNode.style}>
           {currNode.child.map((curNode, index, arr) => {
             if(index!== arr.length-1){
-              return renderWindows(root, callback, arr[index+1], curNode);
+              // console.log("paired widgets",arr[index+1], curNode, !isSideBySide);
+              return renderWindows(root, callback,  curNode, !isSideBySide, arr[index+1]);
             } else{
-              return renderWindows(root, callback, arr[index], curNode);
+              // console.log("path2",arr[index], curNode);
+              return renderWindows(root, callback, curNode, !isSideBySide);
             }
           })}
         </div>
@@ -255,20 +272,25 @@ export function renderWindows(root, callback, adjNode, currNode = root ) {
 */
 let dragWindow = null;
 let adjWindow = null;
+let updatesWidth = null;
 
-function onMouseDown(event, currNode, adjNode) {
+function onMouseDown(event, currNode, adjNode, isSideBySide) {
   dragWindow = currNode
   adjWindow= adjNode
+  updatesWidth =isSideBySide;
 }
 
 function onMouseMove(event, callback, root) {
   if(dragWindow !== null) {
-    dragWindow.height += event.movementY;
-    dragWindow.width += event.movementX;
-    adjWindow.height -= event.movementY;
-    adjWindow.height -= event.movementX;
-    dragWindow.updateStyle();
-    adjWindow.updateStyle();
+    updateSizes(dragWindow,updatesWidth? event.movementX:event.movementY, updatesWidth);
+    updateSizes(adjWindow,updatesWidth? -event.movementX:-event.movementY, updatesWidth);
+    // dragWindow.height += event.movementY;
+    // dragWindow.width += event.movementX;
+    // adjWindow.height -= event.movementY;
+    // adjWindow.width -= event.movementX;
+    // console.log(event.movementY,event.movementX, dragWindow.width, adjWindow.width)
+    // dragWindow.updateStyle();
+    // adjWindow.updateStyle();
     callback(root);  //rerendering widgets
   }
 }
