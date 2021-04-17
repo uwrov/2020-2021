@@ -9,20 +9,23 @@ import cv2
 import rospy
 import numpy as np
 from sensor_msgs.msg import CompressedImage
-from std_msgs.msg import String
 from coral_bleaching.match_images import match_images
 
-#static variables
-cam1 = '/nautilus/nautilus/camera1/nautilus_cam/compressed'
+# static variables
+cam = '/nautilus/nautilus/camera1/nautilus_cam/compressed'
+button = '/buttonPress'
+output = match_images()
+
+# paths - need adjustment
 original_image_path = 'path_to_image'
+output_path = 'path_to_output'
 
 def main():
     rospy.init_node('coral_bleaching_runner')
-    rospy.Subscriber(cam1, CompressedImage, update_frame)
+    rospy.Subscriber(cam, CompressedImage, update_frame)
     old_picture = cv2.imread(original_image_path)
     rospy.Subscriber('button', snapshot_fn)
     
-    # ask about rospy.spin()
     rospy.on_shutdown(shutdown_fn)
 
     while not rospy.is_shutdown():
@@ -30,9 +33,13 @@ def main():
             export_output(output.get_output())
         rospy.sleep(.5)
 
-
 def snapshot_fn():
-
+    cap = cameras.get_frame(1)
+    if cap is not None:
+        print('adding frame', output.imageIndex)
+        cv2.imwrite('/home/uwrov/Desktop/out' + str(output.imageIndex) + '.png', cap)
+        output.add(cap)
+    return
 
 def update_frame():
 
