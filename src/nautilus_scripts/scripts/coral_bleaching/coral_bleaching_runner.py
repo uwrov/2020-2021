@@ -9,7 +9,7 @@ import cv2
 import rospy
 import numpy as np
 from sensor_msgs.msg import CompressedImage
-from coral_bleaching.match_images import match_images
+from coral_bleaching.match_images import MatchImages
 
 # static variables
 cam = '/nautilus/nautilus/camera1/nautilus_cam/compressed'
