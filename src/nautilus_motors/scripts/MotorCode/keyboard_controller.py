@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import rospy
 import time
+from numpy import around
 from geometry_msgs.msg import Wrench
 
 def am_die():
@@ -28,23 +29,23 @@ if __name__ == '__main__':
                 print('only one character please')
                 continue
 
-            if (key == ord('w')):
-                w.force.x = min(w.force.x + 0.1, 1.0)
-            elif (key == ord('s')):
-                w.force.x = max(w.force.x - 0.1, -1.0)
-            elif (key == ord('a')):
-                w.force.y = min(w.force.y - 0.1, 1.0)
-            elif (key == ord('d')):
-                w.force.y = max(w.force.y + 0.1, -1.0)
-            elif (key == ord('z')):
-                w.force.z = max(w.force.z - 0.1, -1.0)
-            elif (key == ord('c')):
-                w.force.z = min(w.force.z + 0.1, 1.0)
-            elif (key == ord('q')):
-                w.torque.z = max(w.torque.z - 0.1, -1.0)
-            elif (key == ord('e')):
-                w.torque.z = min(w.torque.z + 0.1, 1.0)
-            elif (key == ord('h')):
+            if (key == 'w'):
+                w.force.x = around(min(w.force.x + 0.1, 1.0), 1)
+            elif (key == 's'):
+                w.force.x = around(max(w.force.x - 0.1, -1.0), 1)
+            elif (key == 'a'):
+                w.force.y = around(min(w.force.y - 0.1, 1.0), 1)
+            elif (key == 'd'):
+                w.force.y = around(max(w.force.y + 0.1, -1.0), 1)
+            elif (key == 'z'):
+                w.force.z = around(max(w.force.z - 0.1, -1.0), 1)
+            elif (key == 'c'):
+                w.force.z = around(min(w.force.z + 0.1, 1.0), 1)
+            elif (key == 'q'):
+                w.torque.z = around(max(w.torque.z - 0.1, -1.0), 1)
+            elif (key == 'e'):
+                w.torque.z = around(min(w.torque.z + 0.1, 1.0), 1)
+            elif (key == 'h'):
                 w.force.x, w.force.y, w.force.z = (0,0,0)
                 w.torque.z = 0
 

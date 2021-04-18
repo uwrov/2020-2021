@@ -1,4 +1,4 @@
-#!/usr/bin python3
+#!/usr/bin/env python3
 import pigpio
 import rospy
 from geometry_msgs.msg import Wrench
@@ -9,12 +9,12 @@ ROS motor code driver
 """
 
 keyboard_topic = '/nautilus/nautilus_motors/wrench'
-pi = None
+pi = pigpio.pi()
 
-def drive(msg):
-    w = msg.data
+def drive(w):
     package = [w.force.x, w.force.y, w.force.z, w.torque.z]
     print(package)
+    assert pi is not None
     apply_control(package, pi)
 
     for i in (21, 20, 16, 12, 26, 19):
@@ -22,7 +22,7 @@ def drive(msg):
     print()
 
 def main():
-    pi = pigpio.pi()
+    print('starting listener on', keyboard_topic)
     rospy.init_node('motor_driver')
     rospy.Subscriber(keyboard_topic, Wrench, drive)
 
