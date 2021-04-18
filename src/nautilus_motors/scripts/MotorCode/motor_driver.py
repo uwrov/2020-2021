@@ -14,7 +14,12 @@ pi = None
 def drive(msg):
     w = msg.data
     package = [w.force.x, w.force.y, w.force.z, w.torque.z]
+    print(package)
     apply_control(package, pi)
+
+    for i in (21, 20, 16, 12, 26, 19):
+        print(pi.get_servo_pulsewidth(i), end=', ')
+    print()
 
 def main():
     pi = pigpio.pi()

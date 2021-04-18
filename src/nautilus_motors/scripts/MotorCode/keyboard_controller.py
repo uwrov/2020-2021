@@ -9,7 +9,7 @@ def am_die():
 if __name__ == '__main__':
     rospy.init_node('keyboard_pub')
 
-    p = rospy.Publisher('/nautilus/nautilus_motors/wrench', Wrench, queue_size=1)
+    p = rospy.Publisher('/nautilus/nautilus_motors/wrench', Wrench, queue_size=10)
     w = Wrench()
 
     print('controls:')
@@ -22,7 +22,7 @@ if __name__ == '__main__':
     while not rospy.is_shutdown():
         try:
             time.sleep(0.5)
-            key = input("Give Key (q to quit): ")
+            key = input("Give Key: ")
 
             if (len(key) != 1):
                 print('only one character please')
@@ -47,6 +47,7 @@ if __name__ == '__main__':
             elif (key == ord('h')):
                 w.force.x, w.force.y, w.force.z = (0,0,0)
                 w.torque.z = 0
+
             p.publish(w)
         except:
             break
