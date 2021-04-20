@@ -40,21 +40,21 @@ export default class Xbox extends React.Component {
       stick2: ""
     };
 
-    BUTTON_OPACITY = {
+    let BUTTON_OPACITY = {
       true: "50%",
       false: "100%"
     };
 
-    BUTTON_TOP = {
+    let BUTTON_TOP = {
       true: 7,
       false: 0
     };
 
-    BUTTON_LEFT = {
+    let BUTTON_LEFT = {
 
     }
 
-    style = {
+    let style = {
       A: {
         top: 243 + BUTTON_TOP[this.state.A] + "px",
         opacity: BUTTON_OPACITY[this.state.A]
@@ -238,14 +238,14 @@ export default class Xbox extends React.Component {
       case "LeftStickY":
         this.setState({
           lsY: value,
-          stick: 175 + value * -20 + "px";
+          stick: 175 + value * -20 + "px"
         });
         // document.getElementById("stick").style.top = 175 + value * -20 + "px";
         break;
       case "RightStickY":
         this.setState({
           rsY: value,
-          stick2:  296 + value * -20 + "px
+          stick2:  296 + value * -20 + "px"
         });
         // document.getElementById("stick2").style.top = 296 + value * -20 + "px";
         break;

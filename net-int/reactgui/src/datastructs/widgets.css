@@ -2,6 +2,7 @@
   vertical-align: text-top;
   display: inline-block;
   height: 100%;
+  position: relative;
 }
 
 .widget-content {
@@ -24,6 +25,7 @@
   position:absolute;
   top:30px;
   right:0px;
+  z-index: 100;
 }
 .drag-section-right:hover {
   cursor:col-resize;
@@ -36,6 +38,7 @@
   position:absolute;
   bottom: 0px;
   left: 0px;
+  z-index: 100;
 }
 
 .drag-section-bottom:hover {
