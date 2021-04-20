@@ -20,33 +20,34 @@
 
 .drag-section-right{
   width: 10px;
-  height: 100%;
-  color: darkgrey;
+  height: calc(100% - 30px);
+  background: darkgrey;
   position:absolute;
-  top:0px;
+  top:30px;
   right:0px;
 }
 .drag-section-right:hover {
-  pointer:col-resize;
+  cursor:col-resize;
 }
 
 .drag-section-bottom{
   width: 100%;
   height: 10px;
-  color: darkgrey;
+  background: darkgrey;
   position:absolute;
   bottom: 0px;
   left: 0px;
 }
 
 .drag-section-bottom:hover {
-  pointer:row-resize;
+  cursor:row-resize;
 }
 
 .tab-section {
   height: 30px;
   width: 100%;
   background: #c0ab66;
+  z-index: 10;
 }
 
 .widget-tab {

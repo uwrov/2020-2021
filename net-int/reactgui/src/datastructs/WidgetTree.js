@@ -194,9 +194,7 @@ export function createDragSection(root, callback, currNode, isSideBySide,adjNode
   if (adjNode !== null) {
     return (
         <div className= {isSideBySide? "drag-section-right":"drag-section-bottom"}
-          onMouseDown={(event) => {onMouseDown(event, currNode, adjNode, isSideBySide);}}
-          onMouseMove={(event) => {onMouseMove(event, callback, root);}}
-          onMouseUp={onMouseUp}>
+          onMouseDown={(event) => {onMouseDown(event, currNode, adjNode, isSideBySide);}}>
         </div>
     )
   }
@@ -217,7 +215,9 @@ export function renderWindows(root, callback, currNode = root, isSideBySide = fa
   if (currNode !== null && currNode instanceof Window) {
     if(currNode.hasLeafChildren) {
       return (
-        <div className="widget-window" style={currNode.style}>
+        <div className="widget-window" style={currNode.style}
+             onMouseMove={(event) => {onMouseMove(event, callback, root);}}
+             onMouseUp={onMouseUp}>
           {createDragSection(root, callback, currNode, isSideBySide,adjNode)}
           <div className="tab-section">
             {currNode.child.map((c, index) => {
