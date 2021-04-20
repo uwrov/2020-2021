@@ -22,6 +22,7 @@ class GUI extends React.Component {
     let window2 = new WT.Window();
     window2 = WT.add(window2, new WT.Leaf("console"));
     window2 = WT.add(window2, new WT.Leaf("widget"));
+    window2 = WT.add(window2, new WT.Leaf("key_controller"));
     let window3 = new WT.Window();
     window3 = WT.add(window3, new WT.Leaf("ros_camera"));
     window3 = WT.add(window3, new WT.Leaf("controller"));

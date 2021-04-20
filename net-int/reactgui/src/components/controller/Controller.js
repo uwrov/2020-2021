@@ -29,52 +29,45 @@ export default class Controller extends React.Component {
     // left, right, space, and/or shift is being pressed. It will
     // send the current state of the movement vector to the server.
     document.addEventListener("keydown", (event) => {
-      // Pressed left('a')
-      if (event.keyCode === this.state.config.left) {
-        this.setState({
-          lin_x: -1,
-        });
-        socket.emit("Send State", this.state);
-      }
-
-      // Pressed up
-      if (event.keyCode === this.state.config.front) {
-        this.setState({
-          lin_y: 1,
-        });
-        socket.emit("Send State", this.state);
-      }
-
-      // Pressed down
-      if (event.keyCode === this.state.config.back) {
-        this.setState({
-          lin_y: -1,
-        });
-        socket.emit("Send State", this.state);
-      }
-
-      // Pressed right
-      if (event.keyCode === this.state.config.right) {
-        this.setState({
-          lin_x: 1,
-        });
-        socket.emit("Send State", this.state);
-      }
-
-      // Pressed space
-      if (event.keyCode === this.state.config.up) {
-        this.setState({
-          lin_z: 1,
-        });
-        socket.emit("Send State", this.state);
-      }
-
-      // Pressed shift
-      if (event.keyCode === this.state.config.down) {
-        this.setState({
-          lin_z: -1,
-        });
-        socket.emit("Send State", this.state);
+      switch (event.keyCode) {
+        // Pressed left('a')
+        case this.state.config.left:
+          this.setState({
+            lin_x: -1,
+          });
+          socket.emit("Send State", this.state);
+        // Pressed up
+        case this.state.config.front:
+          this.setState({
+            lin_y: 1,
+          });
+          socket.emit("Send State", this.state);
+        // Pressed down
+        case this.state.config.back:
+          this.setState({
+            lin_y: -1,
+          });
+          socket.emit("Send State", this.state);
+        // Pressed right
+        case this.state.config.right:
+          this.setState({
+            lin_x: 1,
+          });
+          socket.emit("Send State", this.state);
+        // Pressed space
+        case this.state.config.up:
+          this.setState({
+            lin_z: 1,
+          });
+          socket.emit("Send State", this.state);
+        // Pressed shift
+        case this.state.config.down:
+          this.setState({
+            lin_z: -1,
+          });
+          socket.emit("Send State", this.state);
+        default:
+          console.log("Error: keyCode not defined");
       }
       //console.log(this.state);
 

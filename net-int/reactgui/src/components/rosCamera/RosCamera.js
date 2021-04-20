@@ -6,7 +6,7 @@ export default class Camera extends React.Component {
     super(props);
     this.socket = require("socket.io-client")("http://localhost:4040");
     this.state = {
-      channels: ["https://i2.wp.com/ceklog.kindel.com/wp-content/uploads/2013/02/firefox_2018-07-10_07-50-11.png?fit=641%2C618&ssl=1", "https://cdn.mos.cms.futurecdn.net/42E9as7NaTaAi4A6JcuFwG-1200-80.jpg", "https://www.thermofisher.com/blog/food/wp-content/uploads/sites/5/2015/08/single_strawberry__isolated_on_a_white_background.jpg", "https://images-na.ssl-images-amazon.com/images/I/71%2BqAJehpkL._SL1500_.jpg"],
+      channels: [{id : "id_1", image : "https://cdn.mos.cms.futurecdn.net/42E9as7NaTaAi4A6JcuFwG-1200-80.jpg"}, {id : "id_2", image : "https://www.thermofisher.com/blog/food/wp-content/uploads/sites/5/2015/08/single_strawberry__isolated_on_a_white_background.jpg"}],
       curr: 0
     };
 
@@ -40,8 +40,8 @@ export default class Camera extends React.Component {
   };
 
   renderOptions() {
-    return this.state.channels.map(function(url, i) {
-      return(<option value={i}>{i + 1}</option>);
+    return this.state.channels.map((item, i) => {
+      return(<option value={i}>{item.id}</option>);
     });
   }
 
@@ -56,7 +56,7 @@ export default class Camera extends React.Component {
         }}>
           {this.renderOptions()}
         </select>
-        <img src={this.state.channels[this.state.curr]} alt="Image Display" className="image" />
+        <img src={this.state.channels[this.state.curr].image} alt="Image Display" className="image" />
       </div>
     );
   }
