@@ -16,6 +16,17 @@ export default class Camera extends React.Component {
 
     this.socket.on("Image Display", (image) => {
       console.log("got image");
+      var seen = new Boolean(false);
+      for (var i = 0; i < this.state.channels.length; i++) {
+          if (this.state.channels[i].id === image.id){
+            this.state.channels[i] = {id : image.id, image : image.image};
+            seen = Boolean(true);
+            break;
+          }
+      }
+      if (!seen) {
+        channels.push({id : image.id, image : image.image});
+      }
       console.log(image.id);
       this.setImage(image);
     });
