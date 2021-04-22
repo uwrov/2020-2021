@@ -41,7 +41,7 @@ export class Leaf {
 // parent window had leaves, adds a new window between the parent window and the leaves (Case 1)
 // If adding a leaf to a window, adds the leaf to the window if it has other leafs (Case 3)
 // Otherwise, finds the leftmost window with leaves and adds the leaf to that window (Case 4)
-export function add(object, node,isTest = 0) {
+export function add(object, node, isTest = 0) {
   if(object == null) {
     object = new Window(isTest);
     if(node instanceof Leaf)
@@ -98,7 +98,7 @@ export function remove(object, windowID, componentID, isRoot = true) {
     } else {
       //Call remove on all this window's children windows
       for (let i = 0; i < object.child.length; i++) {
-        let removed = remove(object.child[i], windowID, componentID,false);
+        let removed = remove(object.child[i], windowID, componentID, false);
         // Delete a child if it becomes null
         if (removed === null){
           object.child.splice(0,1);
@@ -211,61 +211,94 @@ export function createDragSection(root, callback, currNode, isSideBySide,adjNode
  *
  *  @return {React.Component} DOM representation of the WidgetTree
  */
-export function renderWindows(root, callback, currNode = root, isSideBySide = false,adjNode = null) {
+export function renderWindows(root, callback, currNode = root, isSideBySide = false, adjNode = null) {
   if (currNode !== null && currNode instanceof Window) {
     if(currNode.hasLeafChildren) {
-      return (
-        <div className="widget-window" style={currNode.style}
-             onMouseMove={(event) => {onMouseMove(event, callback, root);}}
-             onMouseUp={onMouseUp}>
-          {createDragSection(root, callback, currNode, isSideBySide,adjNode)}
-          <div className="tab-section">
-            <div className="grouped-tabs">
-              {currNode.child.map((c, index) => {
-                if(currNode.openTab == index) {
-                  return (
-                    <div className="widget-tab widget-tab-focused" onClick={() => {
-                      setTab(root, currNode.WIN_ID, index);
-                      callback(root);
-                    }}>
-                      <a>{c.type}</a>
-                    </div>
-                  );
-                } else {
-                  return (
-                    <div className="widget-tab" onClick={() => {
-                      setTab(root, currNode.WIN_ID, index);
-                      callback(root);
-                    }}>
-                      <a>{c.type}</a>
-                    </div>
-                  );
-                }
-              })}
-            </div>
-          </div>
-          <div className="widget-content">
-            {generateComponent(currNode.child[currNode.openTab])}
-          </div>
-        </div>
-      );
+      return generateWidgetWindow(root, callback, currNode, isSideBySide, adjNode)
     } else {
-      return (
-        <div className="window-wrapper" style={currNode.style}>
-          {currNode.child.map((curNode, index, arr) => {
-            if(index!== arr.length-1){
-              // console.log("paired widgets",arr[index+1], curNode, !isSideBySide);
-              return renderWindows(root, callback,  curNode, !isSideBySide, arr[index+1]);
-            } else{
-              // console.log("path2",arr[index], curNode);
-              return renderWindows(root, callback, curNode, !isSideBySide);
-            }
-          })}
-        </div>
-      )
+      return generateWidgetWrapper(root, callback, currNode, isSideBySide, adjNode)
     }
   }
 }
+
+function generateWidgetWindow(root, callback, currNode = root,
+                              isSideBySide = false, adjNode = null) {
+  return (
+    <div className="widget-window" style={currNode.style}
+         onMouseMove={(event) => {onMouseMove(event, callback, root);}}
+         onMouseUp={onMouseUp}>
+      {createDragSection(root, callback, currNode, isSideBySide, adjNode)}
+      {generateAllTabs(currNode, root, callback)}
+      <div className="widget-content">
+        {generateComponent(currNode.child[currNode.openTab])}
+      </div>
+    </div>
+  );
+}
+
+function generateWidgetWrapper(root, callback, currNode = root,
+                                isSideBySide = false, adjNode = null) {
+  return (
+    <div className="window-wrapper" style={currNode.style}>
+      {currNode.child.map((curNode, index, arr) => {
+        if(index !== arr.length - 1) {
+          // console.log("paired widgets",arr[index+1], curNode, !isSideBySide);
+          return renderWindows(root, callback, curNode, !isSideBySide, arr[index+1]);
+        } else {
+          // console.log("path2",arr[index], curNode);
+          return renderWindows(root, callback, curNode, !isSideBySide);
+        }
+      })}
+    </div>
+  );
+}
+
+function generateAllTabs(currWindow, root, callback) {
+  return (
+    <div className="tab-section">
+      <div className="grouped-tabs">
+        {currWindow.child.map((c, index) => {
+          if(currWindow.openTab == index) {
+            return generateFocusedTab(c, currWindow, index, root, callback);
+          } else {
+            return generateUnfocusedTab(c, currWindow, index, root, callback);
+          }
+        })}
+      </div>
+    </div>
+  );
+}
+
+function generateUnfocusedTab(currTab, currWindow, tabIndex, root, callback) {
+  return generateSingleTab("widget-tab", currTab, currWindow, tabIndex, root, callback);
+}
+
+function generateFocusedTab(currTab, currWindow, tabIndex, root, callback) {
+  return generateSingleTab("widget-tab widget-tab-focused",
+                            currTab, currWindow, tabIndex, root, callback);
+}
+
+function generateSingleTab(className, currTab, currWindow, tabIndex, root, callback) {
+  return (
+    <div className={className} onClick={() => {
+      setTab(root, currWindow.WIN_ID, tabIndex);
+      callback(root);
+    }}>
+      <a>{currTab.type}</a>
+      <span onClick={
+        () => {
+          let newRoot = remove(root, currWindow.WIN_ID, tabIndex);
+          callback(newRoot);
+          console.log("Removing: " + currWindow.WIN_ID + ", " + tabIndex);
+          console.log(newRoot);
+        }
+      }>
+        &times;
+      </span>
+    </div>
+  );
+}
+
 
 /**
 *
