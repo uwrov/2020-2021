@@ -158,7 +158,10 @@ export function setTab(object, windowId, tabId) {
 *
 *
 */
+let oldWidth, oldHeight;
 export function averageSize(object, width, height, stackWindows=false) {
+  oldWidth = width;
+  oldHeight = height;
   object.width = width;
   object.height = height;
   object.updateStyle();
@@ -184,8 +187,8 @@ export function updateSizes(object, offset, updateWidths=true, avgOffsetLayer = 
   }
   object.updateStyle();
   if(!object.hasLeafChildren && object.child.length > 0) {
-    object.child.forEach((object) => {
-      updateSizes(object, avgOffsetLayer? offset/ object.child.length: offset, updateWidths, !avgOffsetLayer)
+    object.child.forEach((child) => {
+      updateSizes(child, avgOffsetLayer? child/ child.child.length: offset, updateWidths, !avgOffsetLayer)
     });
   }
 }
@@ -267,6 +270,27 @@ export function renderWindows(root, callback, currNode = root, isSideBySide = fa
   }
 }
 
+export function handleResize(root, callback){
+  let widthChange =  window.innerWidth - oldWidth;
+  let heightChange = window.innerHeight - oldHeight;
+  console.log(oldWidth,oldHeight, widthChange, heightChange,window.innerWidth,window.innerHeight)
+  oldWidth = window.innerWidth;
+  oldHeight = window.innerHeight;
+  resizeWidthHeight(root,widthChange,heightChange)
+  callback(root)
+}
+
+function resizeWidthHeight(object, widthChange, heightChange,stackWindows=false) {
+  object.width += widthChange;
+  object.height += heightChange;
+  object.updateStyle();
+  if(!object.hasLeafChildren && object.child.length > 0) {
+    object.child.forEach((child) => {
+      resizeWidthHeight(child, stackWindows? widthChange: widthChange/child.child.length,
+          stackWindows? heightChange/child.child.length: heightChange, !stackWindows)
+    });
+  }
+}
 /**
 *
 *                    RESIZE HANDLERS
@@ -325,5 +349,6 @@ export default {
   setTab,
   renderWindows,
   generateComponent,
-  averageSize
+  averageSize,
+  handleResize
 };

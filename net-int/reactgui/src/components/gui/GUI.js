@@ -32,6 +32,7 @@ class GUI extends React.Component {
     this.state.windows = WT.add(this.state.windows, new WT.Leaf("settings"));
     this.state.windows = WT.add(this.state.windows, window2);
     WT.averageSize(this.state.windows, window.innerWidth, window.innerHeight - 80);
+    window.addEventListener('resize', ()=>WT.handleResize(this.state.windows, this.updateWidgets))
   }
 
   addWidget = (widgetName) => {
