@@ -89,10 +89,10 @@ export function add(object, node, isTest = 0) {
 export function remove(object, windowID, componentID, isRoot = true) {
   if (object instanceof Window) {
     if (object.hasLeafChildren) {
-      if (object.windowID === windowID) {
+      if (object.WIN_ID === windowID) {
         object.child.splice(componentID, 1);
       }
-      if (object.child.length=== 0 && !isRoot){
+      if (object.child.length === 0 && !isRoot){
         return null;
       }
     } else {
@@ -102,7 +102,7 @@ export function remove(object, windowID, componentID, isRoot = true) {
         // Delete a child if it becomes null
         if (removed === null){
           object.child.splice(0,1);
-        } else{
+        } else {
           object.child[i] = removed;
         }
         // Remove the intermediary window if a window has only 1 window child
@@ -179,7 +179,7 @@ export function averageSize(object, width, height, stackWindows=false) {
 export function updateSizes(object, offset, updateWidths=true, avgOffsetLayer = false) {
   if (updateWidths){
     object.width += offset;
-  } else{
+  } else {
     object.height += offset;
   }
   object.updateStyle();
@@ -346,7 +346,9 @@ function onMouseUp() {
  *  @return {React.Component} React Component generated from the leaf.
  */
 export function generateComponent(component) {
-  return WIDGET_DICT[component.type];
+  if(component !== null && component !== undefined) {
+    return WIDGET_DICT[component.type];
+  }
 }
 
 export default {
