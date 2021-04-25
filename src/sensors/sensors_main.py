@@ -6,15 +6,23 @@ import distance as dist
 import numpy as np
 import time
 from Adafruit_BMP085_3 import BMP085
+# from rospy_message_converter import message_converter
+import json 
+from std_msgs.msg import String
 
 def force(mass, ax, ay, az): 
-    return mass * ax, mass * ay, mass * az, mass * netAccel(ax, ay, az) 
+    return mass * ax, mass * ay, mass * az, mass * threeVectorSum(ax, ay, az) 
 
 def velocity(time, ax, ay, az):
-    netA = netAccel(ax, ay, az)
+    netA = threeVectorSum(ax, ay, az)
     return time * ax, time * ay, time * az, time * netA
 
-def netAccel(ax, ay, az):
+# def velocity2(time, ax, ay, az, vx, vy, vz): 
+#     netA = threeVectorSum(ax, ay, az)
+#     netV = threeVectorSum(vx, vy, vz)
+#     return time * ax + vx, time * ay + vy, time * az + vz, time * netA + netV
+
+def threeVectorSum(ax, ay, az):
     return np.sqrt((ax * ax) + (ay * ay) + (az * az))
 
 def main():
@@ -31,8 +39,9 @@ def main():
           "Fx1": 0, "Fy1": 0, "Fz1": 0, "Fn1": 0,
           "Fx2": 0, "Fy2": 0, "Fz2": 0, "Fn2": 0}
 
-    # sensor_pub = rospy.Publisher('out/sensors/data', dict, queue_size=1)
-    # rospy.init_node('sensor_data')
+    
+    sensor_pub = rospy.Publisher('out/sensors/data', String, queue_size=1)
+    rospy.init_node('sensor_data')
 
     while (True): 
         tic = time.perf_counter()
@@ -40,13 +49,13 @@ def main():
         d["Gx1"], d["Gy1"], d["Gz1"], d["Ax1"], d["Ay1"], d["Az1"]  = m3.mpu6050(0x68)
         d["Rx1"] = m3.get_x_rotation(d["Ax1"], d["Ay1"], d["Az1"])
         d["Ry1"] = m3.get_y_rotation(d["Ax1"], d["Ay1"], d["Az1"])
-        d["An1"] = netAccel(d["Ax1"], d["Ay1"], d["Az1"])
+        d["An1"] = threeVectorSum(d["Ax1"], d["Ay1"], d["Az1"])
         d["Gx2"], d["Gy2"], d["Gz2"], d["Ax2"], d["Ay2"], d["Az2"]  = m3.mpu6050(0x69)
         d["Rx2"] = m3.get_x_rotation(d["Ax2"], d["Ay2"], d["Az2"])
         d["Ry2"] = m3.get_y_rotation(d["Ax2"], d["Ay2"], d["Az2"])
-        d["An2"] = netAccel(d["Ax2"], d["Ay2"], d["Az2"])
+        d["An2"] = threeVectorSum(d["Ax2"], d["Ay2"], d["Az2"])
 
-        time.sleep(0.3)
+        time.sleep(1)
         toc = time.perf_counter()
         d["Vx1"], d["Vy1"], d["Vz1"], d["Vn1"] = velocity((toc - tic)/1000, d["Ax1"], d["Ay1"], d["Az1"])
         d["Vx2"], d["Vy2"], d["Vz2"], d["Vn2"] = velocity((toc - tic)/1000, d["Ax2"], d["Ay2"], d["Az2"])
@@ -56,9 +65,11 @@ def main():
         d["Pressure"] = bmp.readPressure()
         d["Alt"] = bmp.readAltitude()
         d["Distance"] = dist.distance()
-        print(d['Vn1'])
+        print(d["Vn1"])
 
-        # sensor_pub.publish(d)
+        # msg = message_converter.convert_dictionary_to_ros_message('std_msgs/String', d)
+        msg = json.dumps(d)
+        sensor_pub.publish(msg)
 
         
 if __name__ == '__main__':
