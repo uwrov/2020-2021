@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+import numpy as np
+import cv2 as cv
+import skimage.filters as filters
+from matplotlib import pyplot as plt
 
 #Macros:
 #To adjust, keep in mind (0,0) is the top corner, +x is to right, and +y is to the bottom. 
@@ -10,8 +14,9 @@ UPPER_BOUND = 00
 NUM_FEATURES = 500
 NUM_MATCHES = 90
 
-
-
+# Generate a processed result given the input image
+def generate_result(current_frame, old_picture):
+    
 
 #Image IO:
 def read_image(image_file):
