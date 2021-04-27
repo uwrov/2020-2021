@@ -24,7 +24,7 @@ class GUI extends React.Component {
     window2 = WT.add(window2, new WT.Leaf("settings"));
     let window3 = new WT.Window();
     window3 = WT.add(window3, new WT.Leaf("ros_camera"));
-    window3 = WT.add(window3, new WT.Leaf("ros_camera"));
+    window3 = WT.add(window3, new WT.Leaf("controller"));
     window3 = WT.add(window3, new WT.Leaf("ros_camera"));
     // window3 = WT.add(window3, new WT.Leaf("controller"));
     window2 = WT.add(window2, window3);
@@ -83,7 +83,7 @@ class GUI extends React.Component {
         <div className="widgetDisplay">
           {
             WT.renderWindows(this.state.windows, this.updateWidgets)
-            //Render Widgets          <WidgetTreeDebugger tree={this.state.windows}/>
+            //Render Widgets <WidgetTreeDebugger tree={this.state.windows}/>
           }
         </div>
       </div>
