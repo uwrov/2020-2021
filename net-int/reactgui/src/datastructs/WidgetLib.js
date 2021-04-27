@@ -13,8 +13,6 @@ export let WIDGET_DICT = {
   settings: <Settings />,
   ros_camera: <RosCamera />,
   ip_camera: <IpCamera />,
-  widget: <TestWidget />,
-  console: <Console />,
   controller: <Xbox />,
   key_controller: <Controller />
 };

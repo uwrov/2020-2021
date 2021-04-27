@@ -88,6 +88,31 @@
   transition: all 0.2s ease-out;
 }
 
+.dropDown{
+  position: relative;
+  height: 0px;
+  width: 140px;
+  text-align: center;
+  overflow: visible;
+  z-index: 100;
+
+}
+
+.dropDownButton{
+  position: relative;
+  color: white;
+  text-decoration: none;
+  align-content: center;
+  padding: 0.5rem 1rem;
+  background-color:rgba(73, 63, 252, 1);
+}
+
+.dropDownButton:hover {
+  background-color: #6d76f7;
+  border-radius: 4px;
+  transition: all 0.2s ease-out;
+}
+
 .fa-bars {
   color: #fff;
 }

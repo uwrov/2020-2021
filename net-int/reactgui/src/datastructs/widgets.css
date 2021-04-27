@@ -2,6 +2,7 @@
   vertical-align: text-top;
   display: inline-block;
   height: 100%;
+  position: relative;
 }
 
 .widget-content {
@@ -14,6 +15,34 @@
   vertical-align: text-top;
   display: inline-block;
   height: 100%;
+  position:relative;
+}
+
+.drag-section-right{
+  width: 10px;
+  height: calc(100% - 30px);
+  background: darkgrey;
+  position:absolute;
+  top:30px;
+  right:0px;
+  z-index: 100;
+}
+.drag-section-right:hover {
+  cursor:col-resize;
+}
+
+.drag-section-bottom{
+  width: 100%;
+  height: 10px;
+  background: darkgrey;
+  position:absolute;
+  bottom: 0px;
+  left: 0px;
+  z-index: 100;
+}
+
+.drag-section-bottom:hover {
+  cursor:row-resize;
 }
 
 .tab-section {
@@ -31,8 +60,9 @@
   background-color: #f0dba6;
   height: 0;
   width: 130px;
-  border-radius: 15px 15px 0 0;
+  border-radius: 9px 9px 0 0;
   text-align: center;
+  min-width: 0;
 }
 
 .widget-tab-focused {
@@ -48,42 +78,40 @@
 
 .widget-tab:last-child:after,   .widget-tab:last-child a:after,
 .widget-tab:first-child:before, .widget-tab:first-child a:before,
-.widget-tab-focused:after, .widget-tab-focused:before, 
+.widget-tab-focused:after, .widget-tab-focused:before,
 .widget-tab-focused a:after, .widget-tab-focused a:before {
   content: "";
 }
 
 
 .widget-tab-focused:before, .widget-tab-focused:after {
-  background: white; 
-  
+  background: white;
+
   /* Squares below circles */
   z-index: 4;
 }
 
 .widget-tab:before, .widget-tab:after {
   background: #f0dba6;
-  width: 10px;
-  height: 10px;
+  width: 6px;
+  height: 5px;
 }
 
 .widget-tab:before {
-  left: -10px;
+  left: -5px;
 }
 
 .widget-tab:after {
-  right: -10px;
+  right: -5px;
 }
 
 .widget-tab a:before, .widget-tab a:after {
-  width: 20px; 
-  height: 20px;
+  width: 9px;
+  height: 9px;
   /* Circles are circular */
-  -webkit-border-radius: 10px;
-  -moz-border-radius:    10px;
-  border-radius:         10px;
+  border-radius: 4.5px;
   background: #c0ab66;
-  
+
   /* Circles over squares */
   z-index: 5;
 }
@@ -124,6 +152,7 @@
 }
 
 .grouped-tabs {
+  display: flex;
   margin-left: 20px;
 }
 
@@ -132,13 +161,24 @@
 }
 
 .widget-tab a:before {
-  left: -20px;
+  left: -9px;
 }
 .widget-tab a:after {
-  right: -20px;
+  right: -9px;
 }
 
 .widget-tab a {
+  display: inline-block;
+  width: 80%;
   font-family:'Roboto',sans-serif;
   font-weight: 500;
+  padding: 0px 5px 0px 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tab-exit-button {
+  position: absolute;
+  right: 10px;
 }
