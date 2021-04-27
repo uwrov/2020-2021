@@ -290,7 +290,7 @@ function generateSingleTab(className, currTab, currWindow, tabIndex, root, callb
       callback(root);
     }}>
       <a>{currTab.type}</a>
-      <span onClick={
+      <span className="tab-exit-button" onClick={
         () => {
           let newRoot = remove(root, currWindow.WIN_ID, tabIndex);
           callback(newRoot);

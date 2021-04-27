@@ -62,7 +62,6 @@
   width: 130px;
   border-radius: 9px 9px 0 0;
   text-align: center;
-  text-overflow: ellipsis;
   min-width: 0;
 }
 
@@ -169,12 +168,17 @@
 }
 
 .widget-tab a {
-  display: block;
-  width: 100%;
+  display: inline-block;
+  width: 80%;
   font-family:'Roboto',sans-serif;
   font-weight: 500;
   padding: 0px 5px 0px 5px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.tab-exit-button {
+  position: absolute;
+  right: 10px;
 }
