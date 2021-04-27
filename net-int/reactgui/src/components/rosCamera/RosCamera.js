@@ -25,7 +25,7 @@ export default class Camera extends React.Component {
           }
       }
       if (!seen) {
-        channels.push({id : image.id, image : image.image});
+        this.state.channels.push({id : image.id, image : image.image});
       }
       console.log(image.id);
       this.setImage(image);
@@ -72,7 +72,7 @@ export default class Camera extends React.Component {
     );
   }
 
-  
+
   // render() {
   //   return (
   //     <div className="camera">
