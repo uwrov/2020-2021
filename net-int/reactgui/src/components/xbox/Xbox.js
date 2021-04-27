@@ -128,13 +128,11 @@ export default class Xbox extends React.Component {
     stick:{
       left: this.state.stick.left,
       top: this.state.stick.top
-
     },
     stick2:{
       left: this.state.stick2.left,
       top: this.state.stick2.top
     }
-
   };
   // TODO
   // document.addEventListener("keydown", (event) => {
@@ -181,8 +179,6 @@ export default class Xbox extends React.Component {
   //   }
   constructor(props) {
     super();
-
-
     this.handleChange = this.handleChange.bind(this);
     this.handleAxis = this.handleAxis.bind(this);
   }
@@ -198,7 +194,7 @@ export default class Xbox extends React.Component {
     // let change = {};
     // change[axisName] = value;
     // this.setState(change)
-    
+
     // solve stick problem, code below is pseudo code
     // AxisStyleLeft = {relevant styles}
     // AxisStyleTop = {relevant styles}
