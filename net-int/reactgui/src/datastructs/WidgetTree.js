@@ -160,8 +160,10 @@ export function setTab(object, windowId, tabId) {
 */
 let oldWidth, oldHeight;
 export function averageSize(object, width, height, stackWindows=false) {
-  oldWidth = width;
-  oldHeight = height;
+  if (oldWidth === undefined && oldHeight === undefined){
+    oldWidth = width;
+    oldHeight = height;
+  }
   object.width = width;
   object.height = height;
   object.updateStyle();
@@ -305,22 +307,21 @@ function generateSingleTab(className, currTab, currWindow, tabIndex, root, callb
 
 export function handleResize(root, callback){
   let widthChange =  window.innerWidth - oldWidth;
-  let heightChange = window.innerHeight - oldHeight;
-  console.log(oldWidth,oldHeight, widthChange, heightChange,window.innerWidth,window.innerHeight)
+  let heightChange = window.innerHeight -80 - oldHeight;
   oldWidth = window.innerWidth;
-  oldHeight = window.innerHeight;
+  oldHeight = window.innerHeight -80;
   resizeWidthHeight(root,widthChange,heightChange)
   callback(root)
 }
 
-function resizeWidthHeight(object, widthChange, heightChange,stackWindows=false) {
+function resizeWidthHeight(object, widthChange, heightChange,stackWindows=true) {
   object.width += widthChange;
   object.height += heightChange;
   object.updateStyle();
   if(!object.hasLeafChildren && object.child.length > 0) {
     object.child.forEach((child) => {
-      resizeWidthHeight(child, stackWindows? widthChange: widthChange/child.child.length,
-          stackWindows? heightChange/child.child.length: heightChange, !stackWindows)
+      resizeWidthHeight(child, stackWindows? widthChange/object.child.length: widthChange,
+          stackWindows? heightChange: heightChange/object.child.length, !stackWindows)
     });
   }
 }
