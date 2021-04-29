@@ -30,7 +30,7 @@ class Console extends Component {
   }
 
   setSocketOn = () => {
-    this.socket.on("Print Console Logs", function (data) {
+    this.socket.on("Print Console Logs", (data) => {
       let temp = this.consoleStorage.getItem("ConsoleData");
       data.forEach((el) => {
         temp += "$>Type: " + el.type + "Message: " + el.message + "\n";
