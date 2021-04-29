@@ -11,10 +11,13 @@ export default class Controller extends React.Component {
   // Initialize the output vectors to zero.
   constructor(props) {
     super();
-    this.state = {
+    this.state = {	
       lin_x: 0,
       lin_y: 0,
       lin_z: 0,
+      ang_x: 0,
+      ang_y: 0,
+      ang_z: 0,
       config: {
         front: 87,
         back: 83,
@@ -35,7 +38,8 @@ export default class Controller extends React.Component {
           this.setState({
             lin_x: -1,
           });
-          socket.emit("Send State", this.state);
+          //socket.emit("Send State", this.state);
+          
         // Pressed up
         case this.state.config.front:
           this.setState({
@@ -81,7 +85,6 @@ export default class Controller extends React.Component {
         this.setState({
           lin_x: 0,
         });
-        socket.emit("Send State", this.state);
       }
       if (
         event.keyCode === this.state.config.back ||
@@ -90,7 +93,6 @@ export default class Controller extends React.Component {
         this.setState({
           lin_y: 0,
         });
-        socket.emit("Send State", this.state);
       }
       if (
         event.keyCode === this.state.config.up ||
@@ -99,13 +101,15 @@ export default class Controller extends React.Component {
         this.setState({
           lin_z: 0,
         });
-        socket.emit("Send State", this.state);
       }
       //console.log(this.state);
 
     });
   }
 
+  componentDidUpdate() {
+  	socket.emit("Send state", this.state);
+  }
   render() {
     // The upper half of the array of Nodes.
     let topArrows = [

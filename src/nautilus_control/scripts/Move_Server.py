@@ -45,24 +45,32 @@ def send_state(state):
     """
 
     if (current is None
-            or state["lin_x"] != current['lin_x'] or
-            state["lin_y"] != current['lin_y'] or
-            state["lin_z"] != current['lin_z']):
+            or state["lin_x"] != current['lin_x']
+            or state["lin_y"] != current['lin_y']
+            or state["lin_z"] != current['lin_z']
+            or state["ang_x"] != current["ang_x"]
+            or state["ang_y"] != current["ang_y"]
+            or state["ang_z"] != current["ang_z"]):
+
         msg = Wrench()
         msg.force.x = state["lin_x"]
         msg.force.y = state["lin_y"]
         msg.force.z = state["lin_z"]
+        msg.torque.x = state["ang_x"]
+        msg.torque.y = state["ang_y"]
+        msg.torque.z = state["ang_z"]
 
         current["lin_x"] = state["lin_x"]
         current["lin_y"] = state["lin_y"]
         current["lin_z"] = state["lin_z"]
+        current["ang_x"] = state["ang_x"]
+        current["ang_y"] = state["ang_y"]
+        current["ang_z"] = state["ang_z"]
 
-        print(msg)
 
         rospy.loginfo("Sending Command v:" + str(current))
         velocity_publisher.publish(msg)
         rate.sleep()
-
 
 
     #while not rospy.is_shutdown():
