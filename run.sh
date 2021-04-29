@@ -17,12 +17,12 @@ echo "starting image server"
 gnome-terminal -- bash -c 'source devel/setup.sh; cd net-int/server; python3 image_server.py; $SHELL'
 sleep 15s
 #
-# echo "starting image client"
-# gnome-terminal -- bash -c 'source devel/setup.sh; cd net-int/server; python3 image_client.py; $SHELL'
-# sleep 10s
+echo "starting image client"
+gnome-terminal -- bash -c 'source devel/setup.sh; cd net-int/server; python3 image_client.py; $SHELL'
+sleep 10s
 #
-echo "starting movement server"
-gnome-terminal -- bash -c 'source devel/setup.sh; cd src/nautilus_control/scripts; rosrun nautilus_control Move_Server.py; $SHELL'
-sleep 3s
+# echo "starting movement server"
+# gnome-terminal -- bash -c 'source devel/setup.sh; cd src/nautilus_control/scripts; rosrun nautilus_control Move_Server.py; $SHELL'
+# sleep 3s
 
 echo "All servers are running"

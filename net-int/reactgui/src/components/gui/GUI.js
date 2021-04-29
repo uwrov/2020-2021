@@ -20,18 +20,20 @@ class GUI extends React.Component {
 
     this.state.websocket = require("socket.io-client")("http://localhost:4040");
     let window2 = new WT.Window();
-    window2 = WT.add(window2, new WT.Leaf("console"));
-    window2 = WT.add(window2, new WT.Leaf("widget"));
     window2 = WT.add(window2, new WT.Leaf("key_controller"));
+    window2 = WT.add(window2, new WT.Leaf("settings"));
     let window3 = new WT.Window();
+    window3 = WT.add(window3, new WT.Leaf("ros_camera"));
+    window3 = WT.add(window3, new WT.Leaf("controller"));
     window3 = WT.add(window3, new WT.Leaf("ros_camera"));
     // window3 = WT.add(window3, new WT.Leaf("controller"));
     window2 = WT.add(window2, window3);
-    this.state.windows = WT.add(this.state.windows, new WT.Leaf("widget"));
+    this.state.windows = WT.add(this.state.windows, new WT.Leaf("ros_camera"));
     this.state.windows = WT.add(this.state.windows, new WT.Leaf("ip_camera"));
-    this.state.windows = WT.add(this.state.windows, new WT.Leaf("settings"));
+    this.state.windows = WT.add(this.state.windows, new WT.Leaf("ip_camera"));
     this.state.windows = WT.add(this.state.windows, window2);
     WT.averageSize(this.state.windows, window.innerWidth, window.innerHeight - 80);
+    window.addEventListener('resize', ()=>WT.handleResize(this.state.windows, this.updateWidgets))
   }
 
   addWidget = (widgetName) => {
@@ -81,7 +83,7 @@ class GUI extends React.Component {
         <div className="widgetDisplay">
           {
             WT.renderWindows(this.state.windows, this.updateWidgets)
-            //Render Widgets          <WidgetTreeDebugger tree={this.state.windows}/>
+            //Render Widgets <WidgetTreeDebugger tree={this.state.windows}/>
           }
         </div>
       </div>

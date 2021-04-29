@@ -41,7 +41,7 @@ export class Leaf {
 // parent window had leaves, adds a new window between the parent window and the leaves (Case 1)
 // If adding a leaf to a window, adds the leaf to the window if it has other leafs (Case 3)
 // Otherwise, finds the leftmost window with leaves and adds the leaf to that window (Case 4)
-export function add(object, node,isTest = 0) {
+export function add(object, node, isTest = 0) {
   if(object == null) {
     object = new Window(isTest);
     if(node instanceof Leaf)
@@ -89,20 +89,20 @@ export function add(object, node,isTest = 0) {
 export function remove(object, windowID, componentID, isRoot = true) {
   if (object instanceof Window) {
     if (object.hasLeafChildren) {
-      if (object.windowID === windowID) {
+      if (object.WIN_ID === windowID) {
         object.child.splice(componentID, 1);
       }
-      if (object.child.length=== 0 && !isRoot){
+      if (object.child.length === 0 && !isRoot){
         return null;
       }
     } else {
       //Call remove on all this window's children windows
       for (let i = 0; i < object.child.length; i++) {
-        let removed = remove(object.child[i], windowID, componentID,false);
+        let removed = remove(object.child[i], windowID, componentID, false);
         // Delete a child if it becomes null
         if (removed === null){
           object.child.splice(0,1);
-        } else{
+        } else {
           object.child[i] = removed;
         }
         // Remove the intermediary window if a window has only 1 window child
@@ -158,7 +158,12 @@ export function setTab(object, windowId, tabId) {
 *
 *
 */
+let oldWidth, oldHeight;
 export function averageSize(object, width, height, stackWindows=false) {
+  if (oldWidth === undefined && oldHeight === undefined){
+    oldWidth = width;
+    oldHeight = height;
+  }
   object.width = width;
   object.height = height;
   object.updateStyle();
@@ -179,13 +184,13 @@ export function averageSize(object, width, height, stackWindows=false) {
 export function updateSizes(object, offset, updateWidths=true, avgOffsetLayer = false) {
   if (updateWidths){
     object.width += offset;
-  } else{
+  } else {
     object.height += offset;
   }
   object.updateStyle();
   if(!object.hasLeafChildren && object.child.length > 0) {
-    object.child.forEach((object) => {
-      updateSizes(object, avgOffsetLayer? offset/ object.child.length: offset, updateWidths, !avgOffsetLayer)
+    object.child.forEach((child) => {
+      updateSizes(child, avgOffsetLayer? child/ child.child.length: offset, updateWidths, !avgOffsetLayer)
     });
   }
 }
@@ -211,62 +216,115 @@ export function createDragSection(root, callback, currNode, isSideBySide,adjNode
  *
  *  @return {React.Component} DOM representation of the WidgetTree
  */
-export function renderWindows(root, callback, currNode = root, isSideBySide = false,adjNode = null) {
+export function renderWindows(root, callback, currNode = root, isSideBySide = false, adjNode = null) {
   if (currNode !== null && currNode instanceof Window) {
     if(currNode.hasLeafChildren) {
-      return (
-        <div className="widget-window" style={currNode.style}
-             onMouseMove={(event) => {onMouseMove(event, callback, root);}}
-             onMouseUp={onMouseUp}>
-          {createDragSection(root, callback, currNode, isSideBySide,adjNode)}
-          <div className="tab-section">
-            <div className="grouped-tabs">
-              {currNode.child.map((c, index) => {
-                if(currNode.openTab == index) {
-                  return (
-                    <div className="widget-tab widget-tab-focused" onClick={() => {
-                      setTab(root, currNode.WIN_ID, index);
-                      callback(root);
-                    }}>
-                      <a>{c.type}</a>
-                    </div>
-                  );
-                } else {
-                  return (
-                    <div className="widget-tab" onClick={() => {
-                      setTab(root, currNode.WIN_ID, index);
-                      callback(root);
-                    }}>
-                      <a>{c.type}</a>
-                    </div>
-                  );
-                }
-              })}
-            </div>
-          </div>
-          <div className="widget-content">
-            {generateComponent(currNode.child[currNode.openTab])}
-          </div>
-        </div>
-      );
+      return generateWidgetWindow(root, callback, currNode, isSideBySide, adjNode)
     } else {
-      return (
-        <div className="window-wrapper" style={currNode.style}>
-          {currNode.child.map((curNode, index, arr) => {
-            if(index!== arr.length-1){
-              // console.log("paired widgets",arr[index+1], curNode, !isSideBySide);
-              return renderWindows(root, callback,  curNode, !isSideBySide, arr[index+1]);
-            } else{
-              // console.log("path2",arr[index], curNode);
-              return renderWindows(root, callback, curNode, !isSideBySide);
-            }
-          })}
-        </div>
-      )
+      return generateWidgetWrapper(root, callback, currNode, isSideBySide, adjNode)
     }
   }
 }
 
+function generateWidgetWindow(root, callback, currNode = root,
+                              isSideBySide = false, adjNode = null) {
+  return (
+    <div className="widget-window" style={currNode.style}
+         onMouseMove={(event) => {onMouseMove(event, callback, root);}}
+         onMouseUp={onMouseUp}>
+      {createDragSection(root, callback, currNode, isSideBySide, adjNode)}
+      {generateAllTabs(currNode, root, callback)}
+      <div className="widget-content">
+        {generateComponent(currNode.child[currNode.openTab])}
+      </div>
+    </div>
+  );
+}
+
+function generateWidgetWrapper(root, callback, currNode = root,
+                                isSideBySide = false, adjNode = null) {
+  return (
+    <div className="window-wrapper" style={currNode.style}>
+      {currNode.child.map((curNode, index, arr) => {
+        if(index !== arr.length - 1) {
+          // console.log("paired widgets",arr[index+1], curNode, !isSideBySide);
+          return renderWindows(root, callback, curNode, !isSideBySide, arr[index+1]);
+        } else {
+          // console.log("path2",arr[index], curNode);
+          return renderWindows(root, callback, curNode, !isSideBySide);
+        }
+      })}
+    </div>
+  );
+}
+
+function generateAllTabs(currWindow, root, callback) {
+  return (
+    <div className="tab-section">
+      <div className="grouped-tabs">
+        {currWindow.child.map((c, index) => {
+          if(currWindow.openTab == index) {
+            return generateFocusedTab(c, currWindow, index, root, callback);
+          } else {
+            return generateUnfocusedTab(c, currWindow, index, root, callback);
+          }
+        })}
+      </div>
+    </div>
+  );
+}
+
+function generateUnfocusedTab(currTab, currWindow, tabIndex, root, callback) {
+  return generateSingleTab("widget-tab", currTab, currWindow, tabIndex, root, callback);
+}
+
+function generateFocusedTab(currTab, currWindow, tabIndex, root, callback) {
+  return generateSingleTab("widget-tab widget-tab-focused",
+                            currTab, currWindow, tabIndex, root, callback);
+}
+
+function generateSingleTab(className, currTab, currWindow, tabIndex, root, callback) {
+  return (
+    <div className={className} onClick={() => {
+      setTab(root, currWindow.WIN_ID, tabIndex);
+      callback(root);
+    }}>
+      <a>{currTab.type}</a>
+      <span className="tab-exit-button" onClick={
+        () => {
+          let newRoot = remove(root, currWindow.WIN_ID, tabIndex);
+          callback(newRoot);
+          console.log("Removing: " + currWindow.WIN_ID + ", " + tabIndex);
+          console.log(newRoot);
+        }
+      }>
+        &times;
+      </span>
+    </div>
+  );
+}
+
+
+export function handleResize(root, callback){
+  let widthChange =  window.innerWidth - oldWidth;
+  let heightChange = window.innerHeight -80 - oldHeight;
+  oldWidth = window.innerWidth;
+  oldHeight = window.innerHeight -80;
+  resizeWidthHeight(root,widthChange,heightChange)
+  callback(root)
+}
+
+function resizeWidthHeight(object, widthChange, heightChange,stackWindows=true) {
+  object.width += widthChange;
+  object.height += heightChange;
+  object.updateStyle();
+  if(!object.hasLeafChildren && object.child.length > 0) {
+    object.child.forEach((child) => {
+      resizeWidthHeight(child, stackWindows? widthChange/object.child.length: widthChange,
+          stackWindows? heightChange: heightChange/object.child.length, !stackWindows)
+    });
+  }
+}
 /**
 *
 *                    RESIZE HANDLERS
@@ -313,7 +371,9 @@ function onMouseUp() {
  *  @return {React.Component} React Component generated from the leaf.
  */
 export function generateComponent(component) {
-  return WIDGET_DICT[component.type];
+  if(component !== null && component !== undefined) {
+    return WIDGET_DICT[component.type];
+  }
 }
 
 export default {
@@ -325,5 +385,6 @@ export default {
   setTab,
   renderWindows,
   generateComponent,
-  averageSize
+  averageSize,
+  handleResize
 };

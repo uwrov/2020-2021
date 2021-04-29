@@ -83,6 +83,7 @@
   display: inline-block;
   width: 60px;
   height: 28px;
+  margin-left: 10px;
 }
 
 /* Hide default HTML checkbox */

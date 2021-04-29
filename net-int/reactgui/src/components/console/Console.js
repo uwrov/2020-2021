@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "./Console.css";
 
-const socket = require("socket.io-client")("http://localhost:4045");
+//const socket = require("socket.io-client")("http://localhost:4046");
 
 class Console extends Component {
   static thisConsole;
@@ -24,12 +24,14 @@ class Console extends Component {
     this.data = "Console created.\nListening...\n";
     var temp = "Console created.\nListening...\n";
     this.consoleStorage.setItem("ConsoleData", temp); //set empty console
+    this.socket = require("socket.io-client")("http://localhost:4046");
+    // listen for server logs
+    this.setSocketOn();
   }
 
-  socketOnListeners() {
-    // listen for server logs
-    socket.on("Print Console Logs", function (data) {
-      let temp = this.consoleStorage.getElementById("ConsoleData");
+  setSocketOn = () => {
+    this.socket.on("Print Console Logs", (data) => {
+      let temp = this.consoleStorage.getItem("ConsoleData");
       data.forEach((el) => {
         temp += "$>Type: " + el.type + "Message: " + el.message + "\n";
         this.consoleStorage.removeItem("ConsoleData");
@@ -38,7 +40,7 @@ class Console extends Component {
           consoleWindow: this.consoleStorage.getItem("ConsoleData"),
         });
       });
-    });
+  });
   }
 
   addArgs = () => {
@@ -103,9 +105,9 @@ class Console extends Component {
         } else {
           // args are present
           temp += "$>" + this.state.text + "\n";
-          let data = '{ “command” : “run”, “arg1” : "' + commandInfo[1] + '" }'; // create data
+          let data = '{ "command" : "run", "arg1" : "' + commandInfo[1] + '" }'; // create data
           console.log(data); // debug
-          socket.emit("Send Commands", data); // send data to server
+          this.socket.emit("Send Commands", data); // send data to server
         }
         this.consoleStorage.removeItem("ConsoleData");
         this.consoleStorage.setItem("ConsoleData", temp);
@@ -118,9 +120,9 @@ class Console extends Component {
       } else if (commandInfo[0] === "/list") {
         // args are present
         temp += "$>" + this.state.text + "\n";
-        let data = '{ “command” : “list”' + '" }'; // create data
+        let data = '{ "command" : "list" }'; // create data
         console.log(data); // debug
-        socket.emit("Send Commands", data); // send data to server
+        this.socket.emit("Send Commands", data); // send data to server
         this.consoleStorage.removeItem("ConsoleData");
         this.consoleStorage.setItem("ConsoleData", temp);
         this.setState({

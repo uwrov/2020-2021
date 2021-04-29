@@ -11,11 +11,11 @@ export const NavbarItems = [
 		dropdownElements:[
 			{
 				title: 'IP Camera',
-				cName: 'navButton'
+				cName: 'dropDownButton'
 			},
 			{
 				title: 'ROS Camera',
-				cName: 'navButton'
+				cName: 'dropDownButton'
 			}
 		],
 		defaultWidget: '',

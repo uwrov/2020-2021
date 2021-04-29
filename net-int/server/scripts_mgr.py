@@ -33,8 +33,8 @@ from flask_socketio import SocketIO, send, emit
 # 	5. ./scripts_mgr.py or python3 scripts_mgr.py
 
 
-HOST_IP = "0.0.0.0"
-HOST_PORT = "4040"
+HOST_IP = "localhost"
+HOST_PORT = "4046"
 SCRIPTS_PATH = './scripts'
 RUNTIME_COMMAND = 'rosrun'
 RUNTIME_PARAMS = 'wb_sol'

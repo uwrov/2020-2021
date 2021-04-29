@@ -40,14 +40,14 @@ class NavBar extends React.Component {
     NavItem = (item) =>{
     	if(item.dropdown && this.state.buttonClicks.get(item.title)){
     		return(
-    			<div className="drop-down">
-					<a className={item.cName + this.state.buttonClicks.get(item.title)}
+    			<div className="dropDown">
+					<a className={"dropDownButton"}
 					   onClick = {() => {this.handleButtonClick(item.title)}}>
-						{item.title} test test test
+						{item.title}
 					</a>
 					{item.dropdownElements.map((dropDownElem) => {
 						return (
-							<a className={dropDownElem.cName + "true"}
+							<a className={dropDownElem.cName}
 							   onClick = {() => {this.handleButtonClick(dropDownElem.title)}}>
 								{dropDownElem.title}
 							</a>
@@ -68,7 +68,7 @@ class NavBar extends React.Component {
 	render() {
 		return(
 			<nav className="NavbarItems">
-				<h1 className = "navbar-logo">UWROV</h1>
+				<h1 className = "navbar-logo"><a href="http://uwrov.org/">UWROV</a></h1>
 				<div className="menu-icon" onClick={() => {this.handleButtonClick('menuIcon')}}>
                 	<i className={this.state.buttonClicks.get('menuIcon') ? 'fas fa-times' : 'fas fa-bars'}></i>
                 </div>
