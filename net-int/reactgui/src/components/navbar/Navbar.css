@@ -68,11 +68,12 @@
   color: white;
   text-decoration: none;
   padding: 0.5rem 1rem;
+  cursor: pointer;
 }
 
 .navButtontrue:hover {
   background-color: #6d76f7;
-  border-radius: 4px;
+  border-radius: 12px;
   transition: all 0.2s ease-out;
 }
 
@@ -80,11 +81,12 @@
   color: white;
   text-decoration: none;
   padding: 0.5rem 1rem;
+  cursor: pointer;
 }
 
 .navButtonfalse:hover {
   background-color: #6d76f7;
-  border-radius: 4px;
+  border-radius: 12px;
   transition: all 0.2s ease-out;
 }
 
@@ -95,6 +97,7 @@
   text-align: center;
   overflow: visible;
   z-index: 100;
+  display: grid;
 
 }
 
@@ -104,12 +107,14 @@
   text-decoration: none;
   align-content: center;
   padding: 0.5rem 1rem;
-  background-color:rgba(73, 63, 252, 1);
+  background: rgb(99, 88, 252);
+  cursor: pointer;
+  border-radius: 12px;
 }
 
 .dropDownButton:hover {
   background-color: #6d76f7;
-  border-radius: 4px;
+  border-radius: 12px;
   transition: all 0.2s ease-out;
 }
 
@@ -159,7 +164,7 @@
 
   .navButton:hover {
     background-color: #7577fa;
-    border-radius: 0;
+    border-radius: 12px;
   }
 
   .navbar-logo {
@@ -189,7 +194,7 @@
     text-align: center;
     padding: 1.5rem;
     margin: 2rem auto;
-    border-radius: 4px;
+    border-radius: 12px;
     width: 80%;
     background: #4ad9e4;
     text-decoration: none;
