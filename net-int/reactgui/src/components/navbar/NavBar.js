@@ -68,7 +68,7 @@ class NavBar extends React.Component {
 	render() {
 		return(
 			<nav className="NavbarItems">
-				<h1 className = "navbar-logo">UWROV</h1>
+				<h1 className = "navbar-logo"><a href="http://uwrov.org/">UWROV</a></h1>
 				<div className="menu-icon" onClick={() => {this.handleButtonClick('menuIcon')}}>
                 	<i className={this.state.buttonClicks.get('menuIcon') ? 'fas fa-times' : 'fas fa-bars'}></i>
                 </div>
