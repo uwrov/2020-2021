@@ -41,7 +41,14 @@
   font-size: 1.2rem;
 }
 
-.navbar-logo {
+.navbar-logo a{
+  color: #fff;
+  justify-self: start;
+  margin-left: 20px;
+  cursor: pointer;
+}
+
+.navbar-logo a:hover {
   color: #fff;
   justify-self: start;
   margin-left: 20px;
