@@ -14,7 +14,8 @@ export default class Camera extends React.Component {
         "id_2": "https://www.thermofisher.com/blog/food/wp-content/uploads/sites/5/2015/08/single_strawberry__isolated_on_a_white_background.jpg",
         "id_3": "http://uwrov.org/images/Nautilus/Nau8.JPG"
       },
-      curr: 0
+      curr: 0,
+      hide: false
     };
 
     console.log(this.socket);
@@ -53,14 +54,26 @@ export default class Camera extends React.Component {
   render() {
     return (
       <div className="camera">
-        Channel:
-        <select id="channels" onChange={(event) => {
-          this.setState({
-            curr: event.target.value
-          });
-        }}>
-          {this.renderOptions()}
-        </select>
+        <div className="buttons-wrapper">
+          <label className="switch">
+            <input type="checkbox"></input>
+              <span class="slider round" onClick={() => {
+                let curr = this.state.hide;
+                this.setState({
+                  hide: !curr,
+                });
+              }}></span>
+          </label>
+          <div className="ros-camera-buttons">
+            {!this.state.hide ? (<span className="channel-label">Channel:</span>) : null}    
+            {!this.state.hide ? (     
+              <select 
+                className="channels" onChange={(event) => {this.setState({curr: event.target.value});}}>
+              {this.renderOptions()}
+              </select>
+            ) : null}
+          </div>
+        </div>
         <img src={this.getCurrentImageId()} alt="Image Display" className="image" />
       </div>
     );
