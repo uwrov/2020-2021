@@ -1,6 +1,6 @@
 #!/user/bin/env python3
 """
-ROS driver for the subway car photomosaic task,
+ROS driver for the coral bleaching task,
 orignal code authored by
 Peyton Lee, Margot Adam, Cindy Zou and Jonathan Wong
 """
