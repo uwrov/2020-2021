@@ -10,6 +10,10 @@ from Adafruit_BMP085_3 import BMP085
 import json 
 from std_msgs.msg import String
 
+# Every-time steps to use the publisher: 
+#   In the terminal: export ROS_MASTER_URI=http://[VM IP]:11311
+#   In the terminal: export ROS_IP=[Pi IP]
+
 def force(mass, ax, ay, az): 
     return mass * ax, mass * ay, mass * az, mass * threeVectorSum(ax, ay, az) 
 
@@ -65,7 +69,7 @@ def main():
         d["Pressure"] = bmp.readPressure()
         d["Alt"] = bmp.readAltitude()
         d["Distance"] = dist.distance()
-        print(d["Vn1"])
+        # print(d["Vn1"])
 
         # msg = message_converter.convert_dictionary_to_ros_message('std_msgs/String', d)
         msg = json.dumps(d)
