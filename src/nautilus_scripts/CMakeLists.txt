@@ -28,3 +28,9 @@ catkin_install_python(PROGRAMS
   scripts/subway_car/subway_car_runner.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
+
+# Coral bleaching
+catkin_install_python(PROGRAMS
+  scripts/coral_bleaching/coral_bleaching_runner.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
