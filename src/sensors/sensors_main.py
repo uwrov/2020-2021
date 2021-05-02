@@ -6,7 +6,6 @@ import distance as dist
 import numpy as np
 import time
 from Adafruit_BMP085_3 import BMP085
-# from rospy_message_converter import message_converter
 import json 
 from std_msgs.msg import String
 
@@ -69,12 +68,9 @@ def main():
         d["Pressure"] = bmp.readPressure()
         d["Alt"] = bmp.readAltitude()
         d["Distance"] = dist.distance()
-        # print(d["Vn1"])
 
-        # msg = message_converter.convert_dictionary_to_ros_message('std_msgs/String', d)
         msg = json.dumps(d)
         sensor_pub.publish(msg)
 
-        
 if __name__ == '__main__':
     main()
