@@ -10,7 +10,7 @@ import rospy
 import numpy as np
 from sensor_msgs.msg import CompressedImage
 from std_msgs.msg import String
-from coral_bleaching.match_images import MatchImages
+import coral_bleaching.coral
 
 # variables
 cam = '/nautilus/nautilus/camera1/nautilus_cam/compressed'
@@ -38,8 +38,8 @@ def update_frame(msg):
 def snapshot_fn(msg):
     cap = cameras.get_frame(1)
     if cap is not None:
-        output = match_images.generate_result(current_frame, old_picture)
-        cv2.imwrite(output_path, output)
+        oldCoral_rect, newCoral_rect = coral.run_task(old_picture, current_frame)
+        cv2.imwrite(output_path, newCoral_rect)
         rospy.signal_shutdown("finished executing")
     return
 
