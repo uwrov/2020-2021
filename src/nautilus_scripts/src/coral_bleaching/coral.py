@@ -179,10 +179,14 @@ def bounding_boxes(oldCoral, oldCoral_mask, oldCoral_mask_pink, oldCoral_mask_wh
 # oldCoral_file: file path of old coral image (example: "old_coral.PNG")
 # newCoral_file: file path of new coral image (example: "new_coral.PNG")
 # returns old coral, new coral images with colored bounding boxes around changes from the old to new images
-def run_task(oldCoral_file, newCoral_file):
+def run_task(oldCoral_file, newCoral_file, setting=False):
     # Load Images:
-    oldCoral = read_image(oldCoral_file)
-    newCoral = read_image(newCoral_file)
+    if (setting):
+        oldCoral = oldCoral_file
+        newCoral = newCoral_file
+    else:
+        oldCoral = read_image(oldCoral_file)
+        newCoral = read_image(newCoral_file)
 
     # HSV hard-coded segmentation
     oldCoral_mask_pink, oldCoral_mask_white = segment_hsv(oldCoral)

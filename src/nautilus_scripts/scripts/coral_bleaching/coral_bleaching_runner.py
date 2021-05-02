@@ -1,4 +1,4 @@
-#!/user/bin/env python3
+#!/usr/bin/env python3
 """
 ROS driver for the coral bleaching task,
 orignal code authored by
@@ -8,9 +8,9 @@ Peyton Lee, Margot Adam, Cindy Zou and Jonathan Wong
 import cv2
 import rospy
 import numpy as np
+import coral_bleaching.coral as coral_bleaching
 from sensor_msgs.msg import CompressedImage
 from std_msgs.msg import String
-import coral_bleaching
 
 # variables
 cam = '/nautilus/nautilus/camera1/nautilus_cam/compressed'
@@ -24,25 +24,31 @@ old_coral_output_path = '~/old_coral_ouptut.png'
 new_coral_ouptut_path = '~/new_coral_ouptut.png'
 
 def main():
+    global old_picture
     rospy.init_node('coral_bleaching_runner')
     rospy.Subscriber(cam, CompressedImage, update_frame)
     old_picture = cv2.imread(original_image_path)
-    rospy.Subscriber('button', String, snapshot_fn)
+    rospy.Subscriber(button, String, snapshot_fn)
     rospy.on_shutdown(shutdown_fn)
     rospy.spin()
 
 def update_frame(msg):
+    global current_frame
     np_arr = np.fromstring(msg.data, np.uint8)
     image_np = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
     current_frame = image_np.copy()
 
 def snapshot_fn(msg):
-    cap = cameras.get_frame(1)
+    global old_picture
+    global current_frame
+    cap = current_frame
     if cap is not None:
-        oldCoral_rect, newCoral_rect = coral_bleaching.run_task(old_picture, current_frame)
+        oldCoral_rect, newCoral_rect = coral_bleaching.run_task(old_picture, current_frame, True)
         cv2.imwrite(new_coral_ouptut_path, newCoral_rect)
         cv2.imwrite(old_coral_output_path, oldCoral_rect)
         rospy.signal_shutdown("finished executing")
+    else: 
+        print("nothing")
     return
 
 def shutdown_fn():
