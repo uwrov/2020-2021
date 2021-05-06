@@ -199,7 +199,7 @@ export function createDragSection(root, callback, currNode, isSideBySide,adjNode
   if (adjNode !== null) {
     return (
         <div className= {isSideBySide? "drag-section-right":"drag-section-bottom"}
-          onMouseDown={(event) => {onMouseDown(event, currNode, adjNode, isSideBySide);}}>
+          onMouseDown={(event) => {onMouseDownResize(event, currNode, adjNode, isSideBySide);}}>
         </div>
     )
   }
@@ -231,7 +231,7 @@ function generateWidgetWindow(root, callback, currNode = root,
   return (
     <div className="widget-window" style={currNode.style}
          onMouseMove={(event) => {onMouseMove(event, callback, root);}}
-         onMouseUp={onMouseUp}>
+         onMouseUp={onMouseUpResize}>
       {createDragSection(root, callback, currNode, isSideBySide, adjNode)}
       {generateAllTabs(currNode, root, callback)}
       <div className="widget-content">
@@ -285,10 +285,13 @@ function generateFocusedTab(currTab, currWindow, tabIndex, root, callback) {
 
 function generateSingleTab(className, currTab, currWindow, tabIndex, root, callback) {
   return (
-    <div className={className} onClick={() => {
-      setTab(root, currWindow.WIN_ID, tabIndex);
-      callback(root);
-    }}>
+    <div className={className}
+         onClick={() => {
+           setTab(root, currWindow.WIN_ID, tabIndex);
+           callback(root);
+         }}
+         onMouseDown ={(event) => {onMouseDownRelocate(event, currWindow.WIN_ID, tabIndex)}}
+         >
       <a>{currTab.type}</a>
       <span className="tab-exit-button" onClick={
         () => {
@@ -327,38 +330,60 @@ function resizeWidthHeight(object, widthChange, heightChange,stackWindows=true) 
 }
 /**
 *
-*                    RESIZE HANDLERS
+*                    RESIZE & TAB RELOCATION HANDLERS
 *
 */
 let dragWindow = null;
 let adjWindow = null;
 let updatesWidth = null;
+let selectedWindowID = null;
+let selectedTab = null;
+let removed = true
 
-function onMouseDown(event, currNode, adjNode, isSideBySide) {
-  dragWindow = currNode
+
+function onMouseDownResize(event, curNode, adjNode, isSideBySide) {
+  console.log("selected")
+
+  dragWindow = curNode
   adjWindow= adjNode
   updatesWidth =isSideBySide;
+  removed = false;
+}
+
+function onMouseDownRelocate(event, curWindowID, tabIdx) {
+  console.log("selected")
+  selectedWindowID = curWindowID;
+  selectedTab = tabIdx;
 }
 
 function onMouseMove(event, callback, root) {
+  console.log("moved", removed)
   if(dragWindow !== null) {
     updateSizes(dragWindow,updatesWidth? event.movementX:event.movementY, updatesWidth);
     updateSizes(adjWindow,updatesWidth? -event.movementX:-event.movementY, updatesWidth);
-    // dragWindow.height += event.movementY;
-    // dragWindow.width += event.movementX;
-    // adjWindow.height -= event.movementY;
-    // adjWindow.width -= event.movementX;
-    // console.log(event.movementY,event.movementX, dragWindow.width, adjWindow.width)
-    // dragWindow.updateStyle();
-    // adjWindow.updateStyle();
     callback(root);  //rerendering widgets
+  } else if(!removed){
+    let newRoot = remove(root, selectedWindowID, selectedTab);
+    callback(newRoot);
+    removed = true;
+
   }
 }
 
-function onMouseUp() {
+function onMouseUpResize() {
   if(dragWindow !== null) {
     dragWindow = null;
     adjWindow = null;
+  } else if(selectedWindowID !== null) {
+    selectedWindowID = null;
+    selectedTab = null;
+  }
+}
+
+function onMouseUpRelocate() {
+  if(selectedWindowID !== null) {
+    selectedWindowID = null;
+    selectedTab = null;
   }
 }
 
