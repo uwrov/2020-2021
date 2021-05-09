@@ -1,9 +1,14 @@
 #!/usr/bin/env python3
 import rospy
 from sensor_msgs.msg import CompressedImage
+from std_msgs.msg import MultiArrayLayout, UInt8MultiArray
 import numpy as np
 import cv2 
-import threading
+from picamera import PiCamera
+from time import sleep
+import time
+import io
+import arducam_mipicamera as arducam
 
 # One-time steps to use the publisher: 
 #   sudo apt-get update
@@ -26,24 +31,48 @@ def streaming(msg, rate, stream, image_pub):
         image_pub.publish(msg)
         rate.sleep()
 
-if __name__ == '__main__':
-    src = 'http://192.168.1.5:8081/'
-    src2 = 'http://192.168.1.5:8081/' # change sources as necessary 
-    stream = cv2.VideoCapture(src)
-    stream2 = cv2.VideoCapture(src2)
-    
-    image_pub = rospy.Publisher('out/img/compressed', CompressedImage, queue_size=1)
-    image_pub2 = rospy.Publisher('out/img/compressed2', CompressedImage, queue_size=1)
-    rospy.init_node('compress_stream')
-    rate = rospy.Rate(100)
+def streaming2(msg, rate, stream, camera, image_pub):
+    camera.capture(stream, format='jpeg')
+    while not rospy.is_shutdown():        
+        msg.data = stream.getValue()
+        image_pub.publish(msg)
+        rate.sleep()
 
-    msg = CompressedImage()
+def align_down(size, align):
+    return (size & ~((align)-1))
 
-    # Publishes src to 'out/img/compressed'
-    x = threading.Thread(target = streaming, args = (msg, rate, stream, image_pub))
+def align_up(size, align):
+    return align_down(size + align - 1, align)
 
-    # Publishes src2 to 'out/img/compressed2'
-    y = threading.Thread(target = streaming, args = (msg, rate, stream2, image_pub2))
+if __name__ == "__main__":
+    try:
+        camera = arducam.mipi_camera()
+        print("Open camera...")
+        camera.init_camera()
+        print("Setting the resolution...")
+        fmt = camera.set_resolution(1280, 480)
+        print("Current resolution is {}".format(fmt))
 
-    x.start()
-    y.start()
+        image_pub = rospy.Publisher('out/img/compressed', UInt8MultiArray, queue_size=1)
+        rospy.init_node('compress_stream')
+        rate = rospy.Rate(100)
+
+        msg = UInt8MultiArray()
+        msg.layout = MultiArrayLayout()
+        msg.layout.data_offset = 0
+        while cv2.waitKey(10) != 27:
+            frame = camera.capture(encoding = 'i420')
+            height = int(align_up(fmt[1], 16))
+            width = int(align_up(fmt[0], 32))
+            image = frame.as_array
+
+            msg.data = image.tolist()
+            
+            image_pub.publish(msg)
+
+        # Release memory
+        del frame
+        print("Close camera...")
+        camera.close_camera()
+    except Exception as e:
+        print(e) 
