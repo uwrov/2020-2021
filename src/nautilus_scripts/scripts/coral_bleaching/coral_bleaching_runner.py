@@ -18,7 +18,7 @@ button = '/buttonPress'
 current_frame = None
 old_picture = None
 
-# paths - need adjustment
+# paths
 original_image_path = '/home/uwrov/original.png'
 old_coral_output_path = '/home/uwrov/old_coral_ouptut.png'
 new_coral_ouptut_path = '/home/uwrov/new_coral_ouptut.png'
@@ -28,8 +28,8 @@ captured_image_path = '/home/uwrov/capture.png'
 
 def main():
     # test
-    global capture
-    capture = cv2.imread(captured_image_path)
+    # global capture
+    # capture = cv2.imread(captured_image_path)
 
     # non-test
     global old_picture
@@ -51,8 +51,8 @@ def snapshot_fn(msg):
     global current_frame
     cap = current_frame
     if cap is not None:
-        oldCoral_rect, newCoral_rect = coral_bleaching.run_task(old_picture, capture, True)
-        # oldCoral_rect, newCoral_rect = coral_bleaching.run_task(old_picture, current_frame, True)
+        # oldCoral_rect, newCoral_rect = coral_bleaching.run_task(old_picture, capture)
+        oldCoral_rect, newCoral_rect = coral_bleaching.run_task(old_picture, current_frame)
         cv2.imwrite(new_coral_ouptut_path, newCoral_rect)
         cv2.imwrite(old_coral_output_path, oldCoral_rect)
         rospy.signal_shutdown("finished executing")
