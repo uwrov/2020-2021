@@ -19,11 +19,19 @@ current_frame = None
 old_picture = None
 
 # paths - need adjustment
-original_image_path = '~/original.png'
-old_coral_output_path = '~/old_coral_ouptut.png'
-new_coral_ouptut_path = '~/new_coral_ouptut.png'
+original_image_path = '/home/uwrov/original.png'
+old_coral_output_path = '/home/uwrov/old_coral_ouptut.png'
+new_coral_ouptut_path = '/home/uwrov/new_coral_ouptut.png'
+
+# test paths
+captured_image_path = '/home/uwrov/capture.png'
 
 def main():
+    # test
+    global capture
+    capture = cv2.imread(captured_image_path)
+
+    # non-test
     global old_picture
     rospy.init_node('coral_bleaching_runner')
     rospy.Subscriber(cam, CompressedImage, update_frame)
@@ -43,7 +51,8 @@ def snapshot_fn(msg):
     global current_frame
     cap = current_frame
     if cap is not None:
-        oldCoral_rect, newCoral_rect = coral_bleaching.run_task(old_picture, current_frame, True)
+        oldCoral_rect, newCoral_rect = coral_bleaching.run_task(old_picture, capture, True)
+        # oldCoral_rect, newCoral_rect = coral_bleaching.run_task(old_picture, current_frame, True)
         cv2.imwrite(new_coral_ouptut_path, newCoral_rect)
         cv2.imwrite(old_coral_output_path, oldCoral_rect)
         rospy.signal_shutdown("finished executing")
