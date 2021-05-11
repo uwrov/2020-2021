@@ -1,0 +1,142 @@
+.ip-camera-button {
+  height: 25px;
+  width: 25px;
+  display: inline-block;
+  background-color: #a9a9a9;
+  border-radius: 50%;
+  border-style: solid;
+  border-width: 1px;
+  text-align: center;
+}
+
+.ip-camera-button:hover {
+  background-color: #dcdcdc;
+}
+
+.ip-camera-button:active {
+  background-color: #d3d3d3;
+}
+
+.submit {
+  width: 75px;
+}
+
+.submit-button {
+  width: 75px;
+  text-align: center;
+  padding-top: 5px;
+  font-size: 15px;
+  border-radius: 20px;
+  box-sizing: border-box;
+  text-decoration:none;
+  font-family:'Roboto',sans-serif;
+  text-transform:uppercase;
+  font-weight:400;
+  color:#FFFFFF;
+  background-color:#3369ff;
+  box-shadow:inset 0 -0.6em 0 -0.35em rgba(0,0,0,0.17);
+}
+
+.submit-button:hover {
+  opacity: 85%;
+}
+
+.ip-textbox {
+  border-radius: 20px;
+}
+
+.camera {
+  height: 100%;
+  position: relative;
+}
+
+.camera-buttons {
+  margin-top: 5px;
+  width: 50%;
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.ip-camera {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+.buttons-wrapper {
+  display: flex;
+  align-items: center;
+  position: relative;
+  z-index: 100;
+}
+
+
+/* The switch - the box around the slider */
+.switch {
+  top: 7px;
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 28px;
+  margin-left: 10px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #2196F3;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 37px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #ccc;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(-34px);
+  -ms-transform: translateX(-34px);
+  transform: translateX(-34px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}

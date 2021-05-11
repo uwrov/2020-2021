@@ -7,172 +7,211 @@
 }
 
 #Settings {
-   background-color: #add8e6;
-   font-size: 20px;
-   text-align: center;
-   margin-right: 10px;
-   transition-duration: 0.4s;
-
+  background-color: #add8e6;
+  font-size: 20px;
+  text-align: center;
+  margin-right: 10px;
+  transition-duration: 0.4s;
 }
 
 #Debugger {
-   background-color: #ffcccb;
-   font-size: 20px;
-   text-align: center;
+  background-color: #ffcccb;
+  font-size: 20px;
+  text-align: center;
 }
 
 #Settings:hover {
-   background-color: #008CBA;
+  background-color: #008cba;
 }
 
 #Debugger:hover {
-   background-color: #f44336;
+  background-color: #f44336;
 }
 
 .NavbarItems {
-    background: linear-gradient(90deg, rgb(110, 94, 254) 0%, rgba(73,63,252,1) 100%);
-    height: 80px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.2rem;
+  background: linear-gradient(
+    90deg,
+    rgb(110, 94, 254) 0%,
+    rgba(73, 63, 252, 1) 100%
+  );
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
 }
 
-.navbar-logo {
-    color: #fff;
-    justify-self: start;
-    margin-left: 20px;
-    cursor: pointer;
+.navbar-logo a{
+  color: #fff;
+  justify-self: start;
+  margin-left: 20px;
+  cursor: pointer;
+}
+
+.navbar-logo a:hover {
+  color: #fff;
+  justify-self: start;
+  margin-left: 20px;
+  cursor: pointer;
 }
 
 .fa-react {
-    margin-left: 0.5rem;
-    font-size: 1.6rem;
+  margin-left: 0.5rem;
+  font-size: 1.6rem;
 }
 
 .nav-menu {
-    display: grid;
-    grid-template-columns: repeat(5, auto);
-    grid-gap: 10px;
-    list-style: none;
-    text-align: center;
-    width: 70vw;
-    justify-content: end;
-    margin-right: 2rem;
+  display: grid;
+  grid-template-columns: repeat(5, auto);
+  grid-gap: 10px;
+  list-style: none;
+  text-align: center;
+  width: 70vw;
+  justify-content: end;
+  margin-right: 2rem;
 }
 
 .navButtontrue {
-    color: white;
-    text-decoration: none;
-    padding: 0.5rem 1rem;
+  color: white;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
 }
 
 .navButtontrue:hover {
-    background-color: #6d76f7;
-    border-radius: 4px;
-    transition: all 0.2s ease-out;
+  background-color: #6d76f7;
+  border-radius: 12px;
+  transition: all 0.2s ease-out;
 }
 
 .navButtonfalse {
-    color: white;
-    text-decoration: none;
-    padding: 0.5rem 1rem;
+  color: white;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
 }
 
 .navButtonfalse:hover {
-    background-color: #6d76f7;
-    border-radius: 4px;
-    transition: all 0.2s ease-out;
+  background-color: #6d76f7;
+  border-radius: 12px;
+  transition: all 0.2s ease-out;
+}
+
+.dropDown{
+  position: relative;
+  height: 0px;
+  width: 140px;
+  text-align: center;
+  overflow: visible;
+  z-index: 100;
+  display: grid;
+
+}
+
+.dropDownButton{
+  position: relative;
+  color: white;
+  text-decoration: none;
+  align-content: center;
+  padding: 0.5rem 1rem;
+  background: rgb(99, 88, 252);
+  cursor: pointer;
+  border-radius: 12px;
+}
+
+.dropDownButton:hover {
+  background-color: #6d76f7;
+  border-radius: 12px;
+  transition: all 0.2s ease-out;
 }
 
 .fa-bars {
-    color: #fff;
+  color: #fff;
 }
 
 .navButton-mobile {
-    display: none;
+  display: none;
 }
 
 .menu-icon {
-    display: none;
+  display: none;
 }
 
 @media screen and (max-width: 960px) {
-    .NavbarItems {
-        position: relative;
-    }
+  .NavbarItems {
+    position: relative;
+  }
 
-    .nav-menu {
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        height: 500px;
-        position: absolute;
-        top: 80px;
-        left: -100%;
-        opacity: 1;
-        transition: all 0.5s ease;
-    }
+  .nav-menu {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 500px;
+    position: absolute;
+    top: 80px;
+    left: -100%;
+    opacity: 1;
+    transition: all 0.5s ease;
+  }
 
-    .nav-menu.active {
-        background: #6668f4;
-        left: 0;
-        opacity: 1;
-        transition: all 0.5s ease;
-        z-index: 1;
-    }
+  .nav-menu.active {
+    background: #6668f4;
+    left: 0;
+    opacity: 1;
+    transition: all 0.5s ease;
+    z-index: 1;
+  }
 
-    .navButton {
-        text-align: center;
-        padding: 2rem;
-        width: 100%;
-        display: table;
-    }
+  .navButton {
+    text-align: center;
+    padding: 2rem;
+    width: 100%;
+    display: table;
+  }
 
-    .navButton:hover {
-        background-color: #7577fa;
-        border-radius: 0;
-    }
+  .navButton:hover {
+    background-color: #7577fa;
+    border-radius: 12px;
+  }
 
-    .navbar-logo {
-        position: absolute;
-        top: 0;
-        left: 0;
-        transform: translate(25%, 50%);
-    }
+  .navbar-logo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(25%, 50%);
+  }
 
-    .menu-icon {
-        display: block;
-        position: absolute;
-        top: 0;
-        right: 0;
-        transform: translate(-100%, 60%);
-        font-size: 1.8rem;
-        cursor: pointer;
-    }
+  .menu-icon {
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translate(-100%, 60%);
+    font-size: 1.8rem;
+    cursor: pointer;
+  }
 
-    .fa-times {
-        color: #fff;
-        font-size: 2rem;
-    }
+  .fa-times {
+    color: #fff;
+    font-size: 2rem;
+  }
 
-    .navButton-mobile {
-        display: block;
-        text-align: center;
-        padding: 1.5rem;
-        margin: 2rem auto;
-        border-radius: 4px;
-        width: 80%;
-        background: #4ad9e4;
-        text-decoration: none;
-        color: #fff;
-        font-size: 1.5rem;
-    }
+  .navButton-mobile {
+    display: block;
+    text-align: center;
+    padding: 1.5rem;
+    margin: 2rem auto;
+    border-radius: 12px;
+    width: 80%;
+    background: #4ad9e4;
+    text-decoration: none;
+    color: #fff;
+    font-size: 1.5rem;
+  }
 
-    .navButton-mobile:hover {
-        background: #fff;
-        color: #6568F4;
-        transition: 250ms;
-    }
-
+  .navButton-mobile:hover {
+    background: #fff;
+    color: #6568f4;
+    transition: 250ms;
+  }
 }

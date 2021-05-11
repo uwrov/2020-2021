@@ -1,6 +1,7 @@
 import React from 'react';
 import "./Navbar.css";
 import {NavbarItems} from "./NavbarItems";
+import {uses} from 'react';
 
 class NavBar extends React.Component {
 	
@@ -25,18 +26,49 @@ class NavBar extends React.Component {
     handleButtonClick = (title) => {
     	let newVal = !this.state.buttonClicks.get(title);
         this.setState({ buttonClicks: this.state.buttonClicks.set(title, newVal)});
-        if (newVal){
-            this.props.addWidget(title);
-        } else{
-        	this.props.removeWidget(title);
-        }
+        if(title !== "Cameras") {
+			this.props.addWidget(title);
+		}
+		// IF you want one click to add and the other to close
+		// if (newVal){
+        //     this.props.addWidget(title);
+        // } else{
+        // 	this.props.removeWidget(title);
+        // }
     }
-    
+
+    NavItem = (item) =>{
+    	if(item.dropdown && this.state.buttonClicks.get(item.title)){
+    		return(
+    			<div className="dropDown">
+					<a className={"dropDownButton"}
+					   onClick = {() => {this.handleButtonClick(item.title)}}>
+						{item.title}
+					</a>
+					{item.dropdownElements.map((dropDownElem) => {
+						return (
+							<a className={dropDownElem.cName}
+							   onClick = {() => {this.handleButtonClick(dropDownElem.title)}}>
+								{dropDownElem.title}
+							</a>
+						)
+					})}
+				</div>
+            );
+    	} else {
+			return(
+				<a className={item.cName + this.state.buttonClicks.get(item.title)}
+				   onClick = {() => {this.handleButtonClick(item.title)}}>
+					{item.title}
+				</a>
+			)
+		}
+    }
     
 	render() {
 		return(
 			<nav className="NavbarItems">
-				<h1 className = "navbar-logo">UWROV</h1>
+				<h1 className = "navbar-logo"><a href="http://uwrov.org/">UWROV</a></h1>
 				<div className="menu-icon" onClick={() => {this.handleButtonClick('menuIcon')}}>
                 	<i className={this.state.buttonClicks.get('menuIcon') ? 'fas fa-times' : 'fas fa-bars'}></i>
                 </div>
@@ -44,10 +76,7 @@ class NavBar extends React.Component {
 		        	{NavbarItems.map((item, index) => {
 		        		return (
                             <li key={index}>
-                                <a className={item.cName + this.state.buttonClicks.get(item.title)} 
-                                 onClick = {() => {this.handleButtonClick(item.title)}}>
-                                {item.title}
-                                </a>
+								{this.NavItem(item)}
                             </li>
                         )
 		        	})}

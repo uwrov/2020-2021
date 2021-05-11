@@ -1,0 +1,16 @@
+.image {
+  height: 100%;
+}
+.camera {
+  height: 100%;
+}
+
+.ros-camera-buttons {
+  display: relative;
+  margin-left: 20px;
+}
+
+.channels {
+  display: relative;
+  margin-left: 10px;
+}

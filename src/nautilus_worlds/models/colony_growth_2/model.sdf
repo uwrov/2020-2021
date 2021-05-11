@@ -1,0 +1,59 @@
+<?xml version="1.0" ?>
+
+<sdf version="1.5">
+  <model name="colony_growth_2">
+    <pose>0 0 0 0 0 0</pose>
+    <link name="colony_0">
+      <inertial>
+        <mass>10</mass>
+        <inertia>
+          <ixx>0.4166666666666667</ixx>
+          <iyy>0.4166666666666667</iyy>
+          <izz>0.4166666666666667</izz>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyz>0</iyz>
+        </inertia>
+      </inertial>
+
+      <collision name="colony_0_collision">
+        <geometry>
+          <mesh>
+            <uri>model://colony_growth_2/meshes/colony_growth_2.dae</uri>
+          </mesh>
+        </geometry>
+      </collision>
+
+      <visual name="colony_0_visual">
+        <geometry>
+          <mesh>
+            <uri>model://colony_growth_2/meshes/colony_growth_2.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+
+      <self_collide>0</self_collide>
+    </link>
+
+    <joint name="world_joint" type="revolute">
+      <child>colony_0</child>
+      <parent>world</parent>
+      <axis>
+        <limit>
+          <lower>0</lower>
+          <upper>0</upper>
+        </limit>
+        <xyz>0 1 0</xyz>
+        <dynamics>
+          <damping>1.0</damping>
+        </dynamics>
+        <use_parent_model_frame>true</use_parent_model_frame>
+      </axis>
+      <physics>
+        <ode>
+          <cfm_damping>1</cfm_damping>
+        </ode>
+      </physics>
+    </joint>
+  </model>
+</sdf>
