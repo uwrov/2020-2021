@@ -76,7 +76,7 @@ def send_ids():
     """
     global topics
     print("sending list of IDs")
-    ids = topics.keys()
+    ids = list(topics.keys())
     sio.emit("IDs", {'ids':ids}, broadcast = True)
 
 

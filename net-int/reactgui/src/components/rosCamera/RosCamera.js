@@ -15,18 +15,23 @@ export default class Camera extends React.Component {
         "id_3": "http://uwrov.org/images/Nautilus/Nau8.JPG"
       },
       curr: 0,
-      hide: false
+      hide: false,
+      currImage: null
     };
-
-    console.log(this.socket);
-
-    // make a getid socket
 
     this.socket.on("Image Display", this.updateImage);
     this.socket.on("IDs", this.updateIDS);
+    this.getIDs();
+  }
+
+  getIDs = () => {
+    this.socket.emit("Get IDs");
+    console.log("GETIDS");
   }
 
   updateIDS = (data) => {
+    console.log("---------------GETTING IDS-------------------");
+    console.log(data.ids);
     this.setState({ids: data.ids});
     let newChannels = {}
     data.ids.forEach((item, i) => {
@@ -37,11 +42,12 @@ export default class Camera extends React.Component {
 
   updateImage = (image) => {
     console.log("got image");
-    let channelsCopy = {}.assign(this.state.channels);
-    if (channelsCopy[image.id] !== undefined) {
+    let channelsCopy = Object.assign({}, this.state.channels);
+    if (true) { //channelsCopy[image.id] !== undefined) {
       channelsCopy[image.id] = decodeImageToURL(image.image);
       this.setState({channels: channelsCopy});
     }
+    //this.setState({currImage: decodeImageToURL(image.image)});
   }
 
   renderOptions() {
@@ -74,12 +80,14 @@ export default class Camera extends React.Component {
             ) : null}
           </div>
         </div>
+	<div onClick={this.getIDs}>click me!</div>
         <img src={this.getCurrentImageId()} alt="Image Display" className="image" />
       </div>
     );
   }
 
   getCurrentImageId() {
+    //return this.state.currImage;
     return this.state.channels[this.state.ids[this.state.curr]]
   }
 
@@ -93,19 +101,10 @@ export default class Camera extends React.Component {
 }
 
 let decodeImageToURL = (image) => {
-  var d = new Date();
-  var n = d.getTime();
-  let typed_array = new Uint8Array(image.image);
-  const data = typed_array.reduce(
-    (acc, i) => (acc += String.fromCharCode.apply(null, [i])),
-    ""
-  );
+  let typed_array = new Uint8Array(image);
+  const data = typed_array.reduce((acc, i) => acc += String.fromCharCode.apply(null, [i]), '');
   //const string_char = String.fromCharCode.apply(null, typed_array);
   let imageurl = "data:image/png;base64, " + data;
+
   return imageurl;
-  /*
-  var d2 = new Date();
-  var m = d2.getTime();
-  console.log(m-n)
-  */
 };
