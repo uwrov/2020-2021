@@ -1,13 +1,9 @@
 #!/usr/bin/env python3
 import rospy
 from sensor_msgs.msg import CompressedImage
-from std_msgs.msg import MultiArrayLayout, UInt8MultiArray
+from std_msgs.msg import MultiArrayLayout, UInt8MultiArray, MultiArrayDimension
 import numpy as np
 import cv2 
-from picamera import PiCamera
-from time import sleep
-import time
-import io
 import arducam_mipicamera as arducam
 
 # One-time steps to use the publisher: 
@@ -22,21 +18,8 @@ import arducam_mipicamera as arducam
 # Future updates: 
 #   Need to edit source for stream2 to take input from second camera (see line 30)
 
-def streaming(msg, rate, stream, image_pub): 
-    while not rospy.is_shutdown():
-        ret, frame = stream.read()
-        msg.header.stamp = rospy.Time.now()
-        msg.format = 'jpeg'
-        msg.data = np.array(cv2.imencode('.jpeg', frame)[1]).tostring()
-        image_pub.publish(msg)
-        rate.sleep()
-
-def streaming2(msg, rate, stream, camera, image_pub):
-    camera.capture(stream, format='jpeg')
-    while not rospy.is_shutdown():        
-        msg.data = stream.getValue()
-        image_pub.publish(msg)
-        rate.sleep()
+camera = arducam.mipi_camera()
+camera.init_camera()
 
 def align_down(size, align):
     return (size & ~((align)-1))
@@ -44,35 +27,49 @@ def align_down(size, align):
 def align_up(size, align):
     return align_down(size + align - 1, align)
 
-if __name__ == "__main__":
-    try:
-        camera = arducam.mipi_camera()
-        print("Open camera...")
-        camera.init_camera()
-        print("Setting the resolution...")
-        fmt = camera.set_resolution(1280, 480)
-        print("Current resolution is {}".format(fmt))
+def main():
+    global camera
+    rospy.init_node('camera_streamer')
+    rospy.on_shutdown(shutdown_fn)
 
-        image_pub = rospy.Publisher('out/img/compressed', UInt8MultiArray, queue_size=1)
-        rospy.init_node('compress_stream')
-        rate = rospy.Rate(100)
+    front_cam = rospy.Publisher('/nautilus/nautilus/camera1/nautlius_cam/yuv', UInt8MultiArray, queue_size=1)
+    down_cam  = rospy.Publisher('/nautilus/nautilus/camera2/nautlius_cam/yuv', UInt8MultiArray, queue_size=1)
 
-        msg = UInt8MultiArray()
-        msg.layout = MultiArrayLayout()
-        msg.layout.data_offset = 0
-        while cv2.waitKey(10) != 27:
-            frame = camera.capture(encoding = 'i420')
-            height = int(align_up(fmt[1], 16))
-            width = int(align_up(fmt[0], 32))
-            image = frame.as_array
+    fmt = camera.set_resolution(1280, 480)
+    print("Current resolution is {}".format(fmt))
 
-            msg.data = image.tolist()
-            
-            image_pub.publish(msg)
+    msg = UInt8MultiArray()
+    msg.layout = MultiArrayLayout()
+    msg.layout.data_offset = 0
+    msg.layout.dim = [MultiArrayDimension(), MultiArrayDimension()]
+    msg.layout.dim[0].label = 'height'
+    msg.layout.dim[0].size  = fmt[1]
+    msg.layout.dim[1].label = 'width'
+    msg.layout.dim[1].size  = fmt[0]//2
 
-        # Release memory
+    height = int(align_up(fmt[1], 16))
+    width = int(align_up(fmt[0], 32))
+
+    while not rospy.is_shutdown():
+        frame = camera.capture(encoding = 'i420')
+        img = frame.as_array
+        img = img.reshape(int(height * 1.5), width)
+
+        # separate the two camera streams
+        i1, i2 = np.hsplit(img, 2)
+
+        # publish our messages
+        msg.data = i1.flatten().tolist()
+        front_cam.publish(msg)
+        msg.data = i2.flatten().tolist()
+        down_cam.publish(msg)
+
         del frame
-        print("Close camera...")
-        camera.close_camera()
-    except Exception as e:
-        print(e) 
+
+def shutdown_fn():
+    global camera
+    camera.close_camera()
+    print('shutting down')
+
+if __name__ == "__main__":
+    main()
