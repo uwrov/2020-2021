@@ -63,6 +63,7 @@
   border-radius: 9px 9px 0 0;
   text-align: center;
   min-width: 0;
+  cursor: pointer;
 }
 
 .widget-tab-focused {
