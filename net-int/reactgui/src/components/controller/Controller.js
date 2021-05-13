@@ -19,12 +19,12 @@ export default class Controller extends React.Component {
       ang_y: 0,
       ang_z: 0,
       config: {
-        front: 87,
-        back: 83,
-        left: 65,
-        right: 68,
-        up: 84,
-        down: 71,
+        front: "w",
+        back: "s",
+        left: "a",
+        right: "d",
+        up: "r",
+        down: "f",
       }
     };
 
@@ -32,83 +32,90 @@ export default class Controller extends React.Component {
     // left, right, space, and/or shift is being pressed. It will
     // send the current state of the movement vector to the server.
     document.addEventListener("keydown", (event) => {
-      switch (event.keyCode) {
+      switch (event.key) {
         // Pressed left('a')
         case this.state.config.left:
           this.setState({
             lin_x: -1,
           });
-          //socket.emit("Send State", this.state);
-          
+	  break;
         // Pressed up
         case this.state.config.front:
           this.setState({
             lin_y: 1,
           });
-          socket.emit("Send State", this.state);
+	  break;
         // Pressed down
         case this.state.config.back:
           this.setState({
             lin_y: -1,
           });
-          socket.emit("Send State", this.state);
+	  break;
         // Pressed right
         case this.state.config.right:
           this.setState({
             lin_x: 1,
           });
-          socket.emit("Send State", this.state);
+	  break;
         // Pressed space
         case this.state.config.up:
           this.setState({
             lin_z: 1,
           });
-          socket.emit("Send State", this.state);
+	  break;
         // Pressed shift
         case this.state.config.down:
           this.setState({
             lin_z: -1,
           });
-          socket.emit("Send State", this.state);
+	  break;
         default:
-          console.log("Error: keyCode not defined");
+          console.log("Error: key not defined " + event.key);
+	  break;
       }
-      //console.log(this.state);
+      console.log("key down" + event.key);
 
     });
 
     document.addEventListener("keyup", (event) => {
       if (
-        event.keyCode === this.state.config.left ||
-        event.keyCode === this.state.config.right
+        event.key === this.state.config.left ||
+        event.key === this.state.config.right 
+	/*event.key === this.state.config.back ||
+        event.key === this.state.config.front ||
+	event.key === this.state.config.up ||
+        event.key === this.state.config.down*/
       ) {
         this.setState({
           lin_x: 0,
+	  lin_y: 0,
+	  lin_z: 0,
         });
       }
       if (
-        event.keyCode === this.state.config.back ||
-        event.keyCode === this.state.config.front
+        event.key === this.state.config.back ||
+        event.key === this.state.config.front
       ) {
         this.setState({
           lin_y: 0,
         });
       }
       if (
-        event.keyCode === this.state.config.up ||
-        event.keyCode === this.state.config.down
+        event.key === this.state.config.up ||
+        event.key === this.state.config.down
       ) {
         this.setState({
           lin_z: 0,
         });
       }
-      //console.log(this.state);
+      console.log("key up" + event.key);
 
     });
   }
 
   componentDidUpdate() {
-  	socket.emit("Send state", this.state);
+  	socket.emit("Send State", this.state);
+	console.log(this.state + " emitting");
   }
   render() {
     // The upper half of the array of Nodes.

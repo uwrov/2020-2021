@@ -25,7 +25,9 @@ code {
   font-family: 'Roboto', sans-serif;
   display: flex;
   height: 10%;
-  border-bottom: solid 5px #EAEAEA;
+  overflow: hidden;
+  text-overflow: clip;
+  white-space: nowrap;
 }
 
 .single-setting:hover {
@@ -39,14 +41,20 @@ code {
   background-color: #EAEAEA;
 }
 
-.window {
+.settings-title-window {
   border-bottom: 2px solid black;
   height: 10%;
   width: 100%;
   position: relative;
+  overflow: hidden;
+  text-overflow: clip;
+  white-space: nowrap;
 }
 
+
 .settings-title {
+  position: absolute;
+  top: 0;
   display: inline-block;
   margin-top: 15%;
   text-align: left;
@@ -76,7 +84,7 @@ code {
 
 .settings-title {
   font-family: Arial, sans-serif;
-  font-size: 20px;
+  font-size: 16px;
 }
 
 .settings-icon {
