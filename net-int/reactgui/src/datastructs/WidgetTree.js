@@ -231,7 +231,7 @@ function generateWidgetWindow(root, callback, currNode = root,
   return (
     <div className="widget-window" style={currNode.style}
          onMouseMove={(event) => {onMouseMove(event, callback, root);}}
-         onMouseUp={onMouseUpResize}>
+         onMouseUp={(event) => {onMouseUp(add(new Window(), currNode), callback, root)}}>
       {createDragSection(root, callback, currNode, isSideBySide, adjNode)}
       {generateAllTabs(currNode, root, callback)}
       <div className="widget-content">
@@ -260,7 +260,8 @@ function generateWidgetWrapper(root, callback, currNode = root,
 
 function generateAllTabs(currWindow, root, callback) {
   return (
-    <div className="tab-section">
+    <div className="tab-section"
+         onMouseUp  = {(event) => {onMouseUp(currWindow, callback, root)}}>
       <div className="grouped-tabs">
         {currWindow.child.map((c, index) => {
           if(currWindow.openTab == index) {
@@ -290,7 +291,7 @@ function generateSingleTab(className, currTab, currWindow, tabIndex, root, callb
            setTab(root, currWindow.WIN_ID, tabIndex);
            callback(root);
          }}
-         onMouseDown ={(event) => {onMouseDownRelocate(event, currWindow.WIN_ID, tabIndex)}}
+         onMouseDown ={(event) => {onMouseDownRelocate(event, currWindow.WIN_ID, tabIndex, currTab)}}
          >
       <a>{currTab.type}</a>
       <span className="tab-exit-button" onClick={
@@ -338,31 +339,30 @@ let adjWindow = null;
 let updatesWidth = null;
 let selectedWindowID = null;
 let selectedTab = null;
+let selectedObject = null;
 let removed = true
 
 
 function onMouseDownResize(event, curNode, adjNode, isSideBySide) {
-  console.log("selected")
-
   dragWindow = curNode
   adjWindow= adjNode
   updatesWidth =isSideBySide;
+}
+
+function onMouseDownRelocate(event, curWindowID, tabIdx, currTab) {
+  selectedWindowID = curWindowID;
+  selectedTab = tabIdx;
+  selectedObject = currTab;
   removed = false;
 }
 
-function onMouseDownRelocate(event, curWindowID, tabIdx) {
-  console.log("selected")
-  selectedWindowID = curWindowID;
-  selectedTab = tabIdx;
-}
-
 function onMouseMove(event, callback, root) {
-  console.log("moved", removed)
   if(dragWindow !== null) {
     updateSizes(dragWindow,updatesWidth? event.movementX:event.movementY, updatesWidth);
     updateSizes(adjWindow,updatesWidth? -event.movementX:-event.movementY, updatesWidth);
     callback(root);  //rerendering widgets
   } else if(!removed){
+    console.log("moved", removed)
     let newRoot = remove(root, selectedWindowID, selectedTab);
     callback(newRoot);
     removed = true;
@@ -370,17 +370,23 @@ function onMouseMove(event, callback, root) {
   }
 }
 
-function onMouseUpResize() {
+function onMouseUp(toAdd, callback, root) {
   if(dragWindow !== null) {
     dragWindow = null;
     adjWindow = null;
   } else if(selectedWindowID !== null) {
+    if (removed){
+      add(toAdd,selectedObject)
+    }
+    removed= true;
+    callback(root)
     selectedWindowID = null;
     selectedTab = null;
+    selectedObject = null;
   }
 }
 
-function onMouseUpRelocate() {
+function onMouseUpRelocate(toAdd) {
   if(selectedWindowID !== null) {
     selectedWindowID = null;
     selectedTab = null;

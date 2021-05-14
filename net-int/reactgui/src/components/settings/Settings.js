@@ -30,9 +30,9 @@ class Settings extends React.Component {
     return (
         <div className="settings-widget">
           <div className="sidebar">
-          <div className="window">
+          <div className="settings-title-window">
             <img className="settings-icon" src="settingsImages/sicon.png"></img>
-            <p className="settings-title">Settings</p>
+              <p className="settings-title">Settings</p>
           </div>
             {this.renderClosedTabs()}
           </div>
