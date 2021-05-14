@@ -49,13 +49,7 @@ def send_image(data, id):
     None
     """
 
-    if id == 'front_cam' or id == 'down_cam':
-        buffer = np.fromstring(data.data, np.uint8)
-    else:
-        image = br.imgmsg_to_cv2(data)
-        retval, buffer = cv2.imencode('.png', image)
-    img = base64.b64encode(buffer)
-    sio.emit("Image Display", {'image': img, 'id': id}, broadcast = True)
+    sio.emit("Image Display", {'image': data.data, 'id': id}, broadcast = True)
 
 @sio.on("Get IDs")
 def send_ids():

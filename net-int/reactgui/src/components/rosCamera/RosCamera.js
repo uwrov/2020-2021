@@ -51,7 +51,6 @@ export default class Camera extends React.Component {
   }
 
   renderOptions() {
-    console.log(this.state.ids);
     return this.state.ids.map((item, i) => {
       return(<option value={i}>{item}</option>);
     });
@@ -102,9 +101,9 @@ export default class Camera extends React.Component {
 
 let decodeImageToURL = (image) => {
   let typed_array = new Uint8Array(image);
-  const data = typed_array.reduce((acc, i) => acc += String.fromCharCode.apply(null, [i]), '');
-  //const string_char = String.fromCharCode.apply(null, typed_array);
+  //const data = typed_array.reduce((acc, i) => acc += String.fromCharCode.apply(null, [i]), '');
+	const data = btoa(String.fromCharCode.apply(null, typed_array));
   let imageurl = "data:image/png;base64, " + data;
-
-  return imageurl;
+	console.log(imageurl)
+	return imageurl;
 };

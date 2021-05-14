@@ -3,7 +3,7 @@ import "./Xbox.css";
 import Gamepad from "react-gamepad";
 import Draggable from "react-draggable";
 
-const socket = require("socket.io-client")("http://localhost:4040");
+const socket = require("socket.io-client")("http://localhost:4041");
 
 export default class Xbox extends React.Component {
   state = {
@@ -187,6 +187,23 @@ export default class Xbox extends React.Component {
     let change = {};
     change[buttonName] = pressed;
     this.setState(change);
+    let temp_ang_z = 0;
+	if(this.state.DPadLeft) {
+      		temp_ang_z = 1;
+	} else if(this.state.DPadRight) {
+		temp_ang_z = -1;
+	}
+	this.setState({
+      vect: {
+        lin_x: this.state.LeftStickX,
+        lin_y: this.state.LeftStickY,
+        lin_z: this.state.RightStickY,
+        ang_x: 0,
+	ang_y: 0,
+	ang_z: temp_ang_z 
+      }
+    });
+
     //socket.emit("Send State", this.state.vect);
   }
 
@@ -242,13 +259,23 @@ export default class Xbox extends React.Component {
       default:
         console.log("Error: axisName not defined")
     }
+
+	
     this.setState({
       vect: {
-        lin_x: this.state.lsX,
-        lin_y: this.state.lsY,
-        lin_z: this.state.rsY
+        lin_x: this.state.LeftStickY,
+        lin_y: this.state.LeftStickX,
+        lin_z: this.state.RightStickX,
+        ang_x: 0,
+	ang_y: 0,
+	ang_z: 0 
       }
     });
+    //socket.emit("Send State", this.state.vect);
+  }
+
+  componentDidUpdate() {
+    console.log("Sending: ");
     console.log(this.state.vect);
     socket.emit("Send State", this.state.vect);
   }

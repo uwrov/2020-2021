@@ -43,7 +43,8 @@ def send_state(state):
     -------
     None
     """
-
+    print('heyo')
+    print(current)
     if (current is None
             or state["lin_x"] != current['lin_x']
             or state["lin_y"] != current['lin_y']
@@ -88,7 +89,7 @@ def send_state(state):
 if __name__ == '__main__':
     """ Sets up rospy and starts server """
     try:
-        rospy.init_node('wheely_boi', anonymous=True)
+        rospy.init_node('move_server', anonymous=False)
         velocity_publisher = rospy.Publisher('/nautilus/thruster_manager/input', Wrench, queue_size=10)
         rate = rospy.Rate(10)
         sio.run(app, host=HOST_IP, port=HOST_PORT)

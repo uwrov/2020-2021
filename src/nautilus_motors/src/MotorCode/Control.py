@@ -28,7 +28,7 @@ def control(controlInputs):
             print("Error")
     # Case where there is no rotation based on the "R" value of the input array being zero.
     if (controlInputs[3] == 0):
-        controlOutputs[4] = (slope * controlInputs[2]) + intercept
+        controlOutputs[4] = (slope * controlInputs[2]) + intercept 
         controlOutputs[5] = (slope * controlInputs[2]) + intercept
         c1 = (slope * 0.5 * (controlInputs[0] + controlInputs[1])) + intercept
         c2 = (slope * 0.5 * (((-1) * controlInputs[0]) + controlInputs[1])) + intercept
@@ -70,12 +70,12 @@ if __name__ == '__main__':
     # Operates the servo connected to each pin at a specific power.
     for input in inputs:
         outputs = control(input)
-        pi.set_servo_pulsewidth(pin1, outputs[0])
-        pi.set_servo_pulsewidth(pin2, outputs[1])
-        pi.set_servo_pulsewidth(pin3, outputs[2])
-        pi.set_servo_pulsewidth(pin4, outputs[3])
-        pi.set_servo_pulsewidth(pin5, outputs[4])
-        pi.set_servo_pulsewidth(pin6, outputs[5])
+        pi.set_servo_pulsewidth(pin1, outputs[0] / 4)
+        pi.set_servo_pulsewidth(pin2, outputs[1] / 4)
+        pi.set_servo_pulsewidth(pin3, outputs[2] / 4)
+        pi.set_servo_pulsewidth(pin4, outputs[3] / 4)
+        pi.set_servo_pulsewidth(pin5, outputs[4] / 4)
+        pi.set_servo_pulsewidth(pin6, outputs[5] / 4)
         print(outputs)
         time.sleep(1)
 
