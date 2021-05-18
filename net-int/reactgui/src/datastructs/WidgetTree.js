@@ -32,6 +32,13 @@ export class Window {
 export class Leaf {
   constructor(type) {
     this.type = type;
+    this.savedProps = {
+      saveProp: this.saveProp
+    }
+  }
+
+  saveProp = (object) => {
+    this.savedProps = Object.assign(this.savedProps, object);
   }
 }
 
@@ -403,7 +410,7 @@ function onMouseUpRelocate(toAdd) {
  */
 export function generateComponent(component) {
   if(component !== null && component !== undefined) {
-    return WIDGET_DICT[component.type];
+    return WIDGET_DICT(component);
   }
 }
 
