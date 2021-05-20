@@ -6,6 +6,81 @@ import "./widgets.css";
 
 let WINDOW_COUNT = [0, 0];
 
+export class WidgetTree {
+  constructor(updateCallback) {
+    this.updateState = updateCallback;
+    this.root = null;
+  }
+  // object: Object to be added to. Must be a window.
+  // node: Node to be added. Must be a window or a leaf
+  // If adding a window to a parent window, adds the window to the parent window (Case 2). If the
+  // parent window had leaves, adds a new window between the parent window and the leaves (Case 1)
+  // If adding a leaf to a window, adds the leaf to the window if it has other leafs (Case 3)
+  // Otherwise, finds the leftmost window with leaves and adds the leaf to that window (Case 4)
+  add(node, windowId, object = this.root, isTest = 0) {
+    if (object == null) {
+      object = new Window(isTest);
+      if (node instanceof Leaf) object.hasLeafChildren = true;
+    }
+    if (object instanceof Window) {
+      if (node instanceof Window) {
+        // Case 1
+        if (object.hasLeafChildren) {
+          let newWindow = new Window(isTest);
+          newWindow.hasLeafChildren = true;
+          for (let i = 0; i < object.child.length; i++) {
+            add(newWindow, object.child[i]);
+          }
+          object.child = [];
+          object.child.push(newWindow);
+          object.hasLeafChildren = false;
+        }
+        // Case 2
+        object.child.push(node);
+      } else if (node instanceof Leaf) {
+        // Case 3
+        if (object.hasLeafChildren) {
+          object.child.push(node);
+        } else {
+          // Case 4
+          if (object.child.length > 0) {
+            object.child[0] = add(object.child[0], node);
+          } else {
+            object.hasLeafChildren = true;
+            object.child.push(node);
+          }
+        }
+      } else {
+        throw new Error("The second param must be of type Window or Leaf");
+      }
+    } else {
+      throw new Error("The first param must be of type Window");
+    }
+    return object;
+  }
+
+  get(windowId, componentId, object = this.root) {
+    if (object instanceof Window) {
+      if (!object.hasLeafChildren) {
+        if (componentId !== -1) {
+          for (let i = 0; i < object.child.length; i++) {
+            let obj = get(windowId, componentId, object.child[i]);
+            if (obj !== null) return obj;
+          }
+        } else if (object.WIN_ID === windowId) return object;
+        return null;
+      } else {
+        if (object.WIN_ID === windowId && object.child.length > componentId) {
+          if (componentId < 0) return object;
+          else return object.child[componentId];
+        }
+        return null;
+      }
+    }
+    return null;
+  }
+}
+
 export class Window {
   constructor(isTest = 0) {
     this.WIN_ID = WINDOW_COUNT[isTest]++;
@@ -42,54 +117,6 @@ export class Leaf {
   };
 }
 
-// object: Object to be added to. Must be a window.
-// node: Node to be added. Must be a window or a leaf
-// If adding a window to a parent window, adds the window to the parent window (Case 2). If the
-// parent window had leaves, adds a new window between the parent window and the leaves (Case 1)
-// If adding a leaf to a window, adds the leaf to the window if it has other leafs (Case 3)
-// Otherwise, finds the leftmost window with leaves and adds the leaf to that window (Case 4)
-export function add(object, node, isTest = 0) {
-  if (object == null) {
-    object = new Window(isTest);
-    if (node instanceof Leaf) object.hasLeafChildren = true;
-  }
-  if (object instanceof Window) {
-    if (node instanceof Window) {
-      // Case 1
-      if (object.hasLeafChildren) {
-        let newWindow = new Window(isTest);
-        newWindow.hasLeafChildren = true;
-        for (let i = 0; i < object.child.length; i++) {
-          add(newWindow, object.child[i]);
-        }
-        object.child = [];
-        object.child.push(newWindow);
-        object.hasLeafChildren = false;
-      }
-      // Case 2
-      object.child.push(node);
-    } else if (node instanceof Leaf) {
-      // Case 3
-      if (object.hasLeafChildren) {
-        object.child.push(node);
-      } else {
-        // Case 4
-        if (object.child.length > 0) {
-          object.child[0] = add(object.child[0], node);
-        } else {
-          object.hasLeafChildren = true;
-          object.child.push(node);
-        }
-      }
-    } else {
-      throw new Error("The second param must be of type Window or Leaf");
-    }
-  } else {
-    throw new Error("The first param must be of type Window");
-  }
-  return object;
-}
-
 // Object must be a Window
 // TODO comment all cases.
 export function remove(object, windowID, componentID, isRoot = true) {
@@ -121,34 +148,6 @@ export function remove(object, windowID, componentID, isRoot = true) {
     throw "object must be a Window";
   }
   return object;
-}
-
-/**
- *  Returns either a leaf or window from the given WindowID.
- *
- *
- */
-export function get(object, windowId, componentId) {
-  if (object instanceof Window) {
-    if (!object.hasLeafChildren) {
-      for (let i = 0; i < object.child.length; i++) {
-        let obj = get(object.child[i], windowId, componentId);
-        if (obj !== null) {
-          return obj;
-        }
-      }
-      return null;
-    } else {
-      if (object.WIN_ID === windowId && object.child.length > componentId) {
-        if (componentId < 0) return object;
-        else if (object.child.length > componentId)
-          return object.child[componentId];
-      }
-      return null;
-    }
-  } else {
-    return null;
-  }
 }
 
 export function setTab(object, windowId, tabId) {

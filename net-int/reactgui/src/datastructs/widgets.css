@@ -15,34 +15,34 @@
   vertical-align: text-top;
   display: inline-block;
   height: 100%;
-  position:relative;
+  position: relative;
 }
 
-.drag-section-right{
+.drag-section-right {
   width: 10px;
   height: calc(100% - 30px);
   background: darkgrey;
-  position:absolute;
-  top:30px;
-  right:0px;
+  position: absolute;
+  top: 30px;
+  right: 0px;
   z-index: 100;
 }
 .drag-section-right:hover {
-  cursor:col-resize;
+  cursor: col-resize;
 }
 
-.drag-section-bottom{
+.drag-section-bottom {
   width: 100%;
   height: 10px;
   background: darkgrey;
-  position:absolute;
+  position: absolute;
   bottom: 0px;
   left: 0px;
   z-index: 100;
 }
 
 .drag-section-bottom:hover {
-  cursor:row-resize;
+  cursor: row-resize;
 }
 
 .tab-section {
@@ -76,27 +76,35 @@
   z-index: 6;
 }
 
-.widget-tab:before, .widget-tab:after, .widget-tab a:before, .widget-tab a:after {
+.widget-tab:before,
+.widget-tab:after,
+.widget-tab a:before,
+.widget-tab a:after {
   position: absolute;
   bottom: -30px;
 }
 
-.widget-tab:last-child:after,   .widget-tab:last-child a:after,
-.widget-tab:first-child:before, .widget-tab:first-child a:before,
-.widget-tab-focused:after, .widget-tab-focused:before,
-.widget-tab-focused a:after, .widget-tab-focused a:before {
+.widget-tab:last-child:after,
+.widget-tab:last-child a:after,
+.widget-tab:first-child:before,
+.widget-tab:first-child a:before,
+.widget-tab-focused:after,
+.widget-tab-focused:before,
+.widget-tab-focused a:after,
+.widget-tab-focused a:before {
   content: "";
 }
 
-
-.widget-tab-focused:before, .widget-tab-focused:after {
+.widget-tab-focused:before,
+.widget-tab-focused:after {
   background: white;
 
   /* Squares below circles */
   z-index: 4;
 }
 
-.widget-tab:before, .widget-tab:after {
+.widget-tab:before,
+.widget-tab:after {
   background: #f0dba6;
   width: 6px;
   height: 5px;
@@ -110,7 +118,8 @@
   right: -5px;
 }
 
-.widget-tab a:before, .widget-tab a:after {
+.widget-tab a:before,
+.widget-tab a:after {
   width: 9px;
   height: 9px;
   /* Circles are circular */
@@ -129,7 +138,7 @@
   background-color: #f0dba6;
 }
 
-.widget-tab:first-child.widget-tab-focused a:before{
+.widget-tab:first-child.widget-tab-focused a:before {
   display: flex;
   background: #c0ab66;
 }
@@ -144,14 +153,15 @@
 }
 
 .widget-tab:first-child a:before {
-  background: #c0ab66 ;
+  background: #c0ab66;
 }
 
 .widget-tab:first-child:before {
   background-color: #f0dba6;
 }
 
-.widget-tab-focused:before, .widget-tab-focused:after {
+.widget-tab-focused:before,
+.widget-tab-focused:after {
   background-color: white;
   z-index: 4;
 }
@@ -161,7 +171,8 @@
   margin-left: 20px;
 }
 
-.widget-tab-focused:after, .widget-tab-focused:before {
+.widget-tab-focused:after,
+.widget-tab-focused:before {
   background-color: #eeeeee;
 }
 
@@ -175,7 +186,7 @@
 .widget-tab a {
   display: inline-block;
   width: 80%;
-  font-family:'Roboto',sans-serif;
+  font-family: "Roboto", sans-serif;
   font-weight: 500;
   padding: 0px 5px 0px 5px;
   white-space: nowrap;

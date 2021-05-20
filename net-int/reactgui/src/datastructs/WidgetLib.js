@@ -10,18 +10,18 @@ import TestWidget from "../components/widgets/TestWidget.js";
 import Xbox from "../components/xbox/Xbox.js";
 
 export let WIDGET_DICT = (data) => {
-  switch(data.type) {
+  switch (data.type) {
     case "settings":
-      return <Settings props={data.savedProps}/>
+      return <Settings props={data.savedProps} />;
     case "ros_camera":
-      return <RosCamera props={data.savedProps}/>
+      return <RosCamera props={data.savedProps} />;
     case "ip_camera":
-      return <IpCamera props={data.savedProps}/>
+      return <IpCamera props={data.savedProps} />;
     case "controller":
-      return <Xbox props={data.savedProps}/>
+      return <Xbox props={data.savedProps} />;
     case "key_controller":
-      return <Controller props={data.savedProps}/>
+      return <Controller props={data.savedProps} />;
   }
-}
+};
 
 export default null;

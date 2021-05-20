@@ -32,8 +32,14 @@ class GUI extends React.Component {
     this.state.windows = WT.add(this.state.windows, new WT.Leaf("ip_camera"));
     this.state.windows = WT.add(this.state.windows, new WT.Leaf("ip_camera"));
     this.state.windows = WT.add(this.state.windows, window2);
-    WT.averageSize(this.state.windows, window.innerWidth, window.innerHeight - 80);
-    window.addEventListener('resize', ()=>WT.handleResize(this.state.windows, this.updateWidgets))
+    WT.averageSize(
+      this.state.windows,
+      window.innerWidth,
+      window.innerHeight - 80
+    );
+    window.addEventListener("resize", () =>
+      WT.handleResize(this.state.windows, this.updateWidgets)
+    );
   }
 
   addWidget = (widgetName) => {
@@ -42,36 +48,35 @@ class GUI extends React.Component {
       case "Settings":
         WT.add(root, new WT.Leaf("settings"));
         this.setState({
-          windows: root
+          windows: root,
         });
         break;
       case "IP Camera":
         WT.add(root, new WT.Leaf("ip_camera"));
         this.setState({
-          windows: root
+          windows: root,
         });
         break;
       case "ROS Camera":
         WT.add(root, new WT.Leaf("ros_camera"));
         this.setState({
-          windows: root
+          windows: root,
         });
         break;
       case "Controller":
         WT.add(root, new WT.Leaf("controller"));
         this.setState({
-          windows: root
+          windows: root,
         });
         break;
       case "Console":
         this.setState({
-          consoleShow: !this.state.consoleShow
+          consoleShow: !this.state.consoleShow,
         });
-        console.log(this.state.consoleShow)
+        console.log(this.state.consoleShow);
         break;
     }
   };
-
 
   //Render Nav Bar, Widget Display, Console, and Settings
   render() {
