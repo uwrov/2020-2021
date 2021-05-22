@@ -189,9 +189,9 @@ export default class Xbox extends React.Component {
     this.setState(change);
     let temp_ang_z = 0;
     if (this.state.DPadLeft) {
-      temp_ang_z = 1;
-    } else if (this.state.DPadRight) {
       temp_ang_z = -1;
+    } else if (this.state.DPadRight) {
+      temp_ang_z = 1;
     }
     this.setState({
       vect: {
