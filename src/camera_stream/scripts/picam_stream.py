@@ -21,7 +21,7 @@ class CamBuffer:
 
 cam_stream = CamBuffer()
 camera = picamera.PiCamera()
-dims = (720, 480)
+dims = (640, 480)
 fr = 24 
 
 
@@ -64,3 +64,4 @@ def shutdown_fn():
 
 if __name__ == '__main__':
     main()
+
