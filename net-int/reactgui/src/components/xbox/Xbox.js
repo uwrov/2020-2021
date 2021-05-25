@@ -29,7 +29,6 @@ export default class Xbox extends React.Component {
     LeftStickY: 0,
     RightStickX: 0,
     RightStickY: 0,
-    // look into move server to make sure they match what move server wants
     vect: {
       lin_x: 0,
       lin_y: 0,
@@ -47,9 +46,7 @@ export default class Xbox extends React.Component {
       top: "",
     },
   };
-  // KEYBOARD_BINDINGS = {
-  //   "r": "A"
-  // }
+
   BUTTON_OPACITY = {
     true: "50%",
     false: "100%",
@@ -176,14 +173,17 @@ export default class Xbox extends React.Component {
   //     default:
   //       console.log("Error: keyCode not defined");
   //     }
-  //   }
+  // }
   constructor(props) {
     super();
     this.handleChange = this.handleChange.bind(this);
     this.handleAxis = this.handleAxis.bind(this);
+    console.log("hello there")
+
   }
 
   handleChange(buttonName, pressed) {
+    console.log("hello there")
     let change = {};
     change[buttonName] = pressed;
     this.setState(change);
