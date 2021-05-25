@@ -9,7 +9,7 @@ import Controller from "./components/controller/Controller.js";
 
 import Tests from "./test-environment/WidgetTreeTest/WidgetTreeTest.js";
 
-ReactDOM.render(<GUI />, document.getElementById('root'));
+ReactDOM.render(<GUI />, document.getElementById("root"));
 
 //ReactDOM.render(<Console />, document.getElementById('root'));
 
