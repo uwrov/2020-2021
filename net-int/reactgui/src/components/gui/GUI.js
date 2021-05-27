@@ -10,7 +10,9 @@ import WT from "../../datastructs/WidgetTree.js";
 class GUI extends React.Component {
   state = {
     websocket: null,
-    settings: {},
+    settings: {
+      keybindings: {}
+    },
     windows: new WT.Window(),
     consoleShow: true,
   };
