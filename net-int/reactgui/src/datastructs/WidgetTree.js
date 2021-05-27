@@ -305,11 +305,8 @@ function generateWidgetWrapper(
 ) {
   return (
     <div className="window-wrapper" style={currNode.style}>
-
-    {currNode.child.map((curNode, index, arr) => {
-        if(index !== arr.length - 1) {
       {currNode.child.map((curNode, index, arr) => {
-        if (index !== arr.length - 1) {
+        if(index !== arr.length - 1) {
           // console.log("paired widgets",arr[index+1], curNode, !isSideBySide);
           return renderWindows(
             root,
