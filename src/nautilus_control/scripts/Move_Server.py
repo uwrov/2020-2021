@@ -14,18 +14,17 @@ app = Flask(__name__)
 sio = SocketIO(app, cors_allowed_origins="*")
 
 velocity_publisher = None
-rate = None
+# rate = None
 current = None
 msg = Wrench()
 
-# @sio.on("Send State")
-def send_state(state):
+
+def update_state(state):
     """
-    Sends contoller input to rospy
+    Updates State based on new contoller input
 
     Receives movement information from controller as a JSON object.
-    The movement info is then converted into a Twist object and published
-    to the rospy.
+    The movement info is then converted into a Wrench object
 
     Parameters
     -------
@@ -47,7 +46,6 @@ def send_state(state):
             or state["ang_y"] != current["ang_y"]
             or state["ang_z"] != current["ang_z"]):
 
-        # msg = Wrench()
         msg.force.x = state["lin_x"]
         msg.force.y = state["lin_y"]
         msg.force.z = state["lin_z"]
@@ -57,30 +55,65 @@ def send_state(state):
 
         current = state
 
-        # rospy.loginfo("Sending Command v:" + str(current))
-        #
-        # velocity_publisher.publish(msg)
-        # rate.sleep()
 
 @sio.on("Send State")
-def state_change(state):
-    # print('changing state')
-    _thread.start_new_thread(send_state, (state, ))
+def send_state(state):
+    """
+    Creates a new thread to update state
+
+    Receives movement information from controller as a JSON object.
+    This method then creates a new thread and calls the update_state()
+    to update the state with the new movement input.
+
+    Parameters
+    -------
+    state : JSON/Dictionary
+        stores the movement of the controller in terms of linear components and
+        anglular components.
+        state = {lin_x: 10, lin_y: 0, lin_z: 0, ang_x: 0, ang_y: 0, ang_z: 3}
+
+    Returns
+    -------
+    None
+    """
+    _thread.start_new_thread(update_state, (state, ))
+
 
 def publish(buffer):
-    # print("publishing")
+    """
+    Publishes controller input to rospy
+
+    publishes the wrench object, which stores the contoller input, to rospy
+    every 20 milliseconds while the server is running
+
+    Parameters
+    -------
+    buffer : Tuple
+        takes in an arbitary tuple because the
+        ```
+        _thread.start_new_thread(function, tuple)
+        ```
+        method needs requires a tuple as the second argument tuple to call
+        the function.
+        This publish() function, does nothing with this value.
+
+    Returns
+    -------
+    None
+    """
     while True:
-        # print("publishing")
+        # rospy.loginfo("Sending Command v:" + str(current))
         velocity_publisher.publish(msg)
         time.sleep(.05)
+        # rate.sleep()
 
 
 if __name__ == '__main__':
-    """ Sets up rospy and starts server """
+    """ Sets up rospy, inital publisher thread, and starts server """
     try:
         rospy.init_node('move_server', anonymous=False)
         velocity_publisher = rospy.Publisher('/nautilus/thruster_manager/input', Wrench, queue_size=10)
-        rate = rospy.Rate(10)
+        # rate = rospy.Rate(.10)
         _thread.start_new_thread(publish, (0,))
         sio.run(app, host=HOST_IP, port=HOST_PORT)
     except rospy.ROSInterruptException: pass
