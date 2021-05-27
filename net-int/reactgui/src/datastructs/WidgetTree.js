@@ -223,7 +223,8 @@ export function createDragSection(
         onMouseDown={(event) => {
           onMouseDownResize(event, currNode, adjNode, isSideBySide);
         }}
-      ></div>
+      >
+      </div>
     );
   }
 }
@@ -266,27 +267,18 @@ export function renderWindows(
   }
 }
 
-function generateWidgetWindow(
-  root,
-  callback,
-  currNode = root,
-  isSideBySide = false,
-  adjNode = null
-) {
+function generateWidgetWindow(root, callback, currNode = root, isSideBySide = false, adjNode = null) {
   return (
-    <div className="widget-window" style={currNode.style}
-         onMouseMove={(event) => {onMouseMove(event, callback, root);}}
-         onMouseUp={(event) => {onMouseUp(currNode, callback, root, true)}}>
-    <div
-      className="widget-window"
-      style={currNode.style}
-      onMouseMove={(event) => {
-        onMouseMove(event, callback, root);
-      }}
-      onMouseUp={(event) => {
-        onMouseUp(add(new Window(), currNode), callback, root);
-      }}
-    >
+     <div
+       className="widget-window"
+       style={currNode.style}
+       onMouseMove={(event) => {
+         onMouseMove(event, callback, root);
+       }}
+       onMouseUp={(event) => {
+         onMouseUp(add(new Window(), currNode), callback, root);
+       }}
+     >
       {createDragSection(root, callback, currNode, isSideBySide, adjNode)}
       {generateAllTabs(currNode, root, callback)}
       <div className="widget-content">
@@ -296,13 +288,7 @@ function generateWidgetWindow(
   );
 }
 
-function generateWidgetWrapper(
-  root,
-  callback,
-  currNode = root,
-  isSideBySide = false,
-  adjNode = null
-) {
+function generateWidgetWrapper(root, callback, currNode = root, isSideBySide = false, adjNode = null) {
   return (
     <div className="window-wrapper" style={currNode.style}>
       {currNode.child.map((curNode, index, arr) => {
@@ -478,18 +464,10 @@ function onMouseMove(event, callback, root) {
   }
 }
 
-function onMouseUp(toAdd, callback, root, addWindow = false) {
-  if(dragWindow !== null) {
 function onMouseUp(toAdd, callback, root) {
   if (dragWindow !== null) {
     dragWindow = null;
     adjWindow = null;
-  } else if(selectedWindowID !== null) {
-    if (removed){
-      // if (addWindow){
-      //   toAdd = add(toAdd, new Window());
-      // }
-      add(toAdd,selectedObject)
   } else if (selectedWindowID !== null) {
     if (removed) {
       add(toAdd, selectedObject);

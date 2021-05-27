@@ -4,6 +4,7 @@ import Gamepad from "react-gamepad";
 import Draggable from "react-draggable";
 
 const socket = require("socket.io-client")("http://localhost:4041");
+const AXIS_THROTTLE = 10;
 
 export default class Xbox extends React.Component {
   state = {
@@ -31,7 +32,7 @@ export default class Xbox extends React.Component {
     RightStickY: 0,
   };
 
-  vect: {
+  vect = {
     lin_x: 0,
     lin_y: 0,
     lin_z: 0,
@@ -51,27 +52,18 @@ export default class Xbox extends React.Component {
   };
 
   topOffset = {
-    A: 243 + this.BUTTON_TOP[this.state.A],
+    A: 243,
     B: 187 + this.BUTTON_TOP[this.state.B],
     X: 187 + this.BUTTON_TOP[this.state.X],
     Y: 135 + this.BUTTON_TOP[this.state.Y],
-    LeftStickY: 175 + this.state.LeftStickY * -20,
-    RightStickY: 296 + this.state.RightStickY * -20
+    LeftStickY: 175,
+    RightStickY: 296
   }
 
   leftOffset = {
-    LeftStickX: 98 + this.state.LeftStickX * 20,
-    RightStickX: 394 + this.state.RightStickX * 20
+    LeftStickX: 98,
+    RightStickX: 394
   }
-
-  style = {
-    LeftTrigger: {
-      filter: "invert(" + Math.abs(this.state.LeftTrigger) + ")",
-    },
-    RightTrigger: {
-      filter: "invert(" + Math.abs(this.state.RightTrigger) + ")",
-    }
-  };
   // TODO
   // document.addEventListener("keydown", (event) => {
   //   switch (event.keyCode) {
@@ -129,6 +121,12 @@ export default class Xbox extends React.Component {
     this.setState(change);
   }
 
+  getTriggerStyle(value) {
+    return {
+      filter: "invert(" + Math.abs(value) + ")",
+    }
+  }
+
   getTopOffsetStyle(value) {
     return {top: value + "px"}
   }
@@ -142,9 +140,13 @@ export default class Xbox extends React.Component {
   }
 
   handleAxis(axisName, value, previousValue) {
-    let change = {};
-    change[axisName] = value;
-    this.setState(change)
+    let rounded = Math.round(value * AXIS_THROTTLE) / AXIS_THROTTLE
+    if(Math.abs(this.state[axisName] - rounded) > 0) {
+      console.log(axisName + ", " + rounded);
+      let change = {};
+      change[axisName] = rounded;
+      this.setState(change);
+    }
   }
 
   updateVects() {
@@ -154,7 +156,8 @@ export default class Xbox extends React.Component {
     } else if (this.state.DPadRight) {
       temp_ang_z = 1;
     }
-    this.vect: {
+
+    this.vect = {
       lin_x: this.state.LeftStickX,
       lin_y: this.state.LeftStickY,
       lin_z: this.state.RightStickY,
@@ -165,9 +168,7 @@ export default class Xbox extends React.Component {
   }
 
   componentDidUpdate() {
-    console.log("Sending: ");
-    console.log(this.vect);
-    updateVects();
+    this.updateVects();
     socket.emit("Send State", this.state.vect);
   }
 
@@ -179,10 +180,26 @@ export default class Xbox extends React.Component {
       >
         <div className="gamepad">
           <img src="/xboxImages/bg.png" id="bg" />
-          <img src="/xboxImages/a.png" id="a" style={this.getOpacity(this.state.A)} />
-          <img src="/xboxImages/b.png" id="b" style={this.getOpacity(this.state.B)} />
-          <img src="/xboxImages/x.png" id="x" style={this.getOpacity(this.state.X)} />
-          <img src="/xboxImages/y.png" id="y" style={this.getOpacity(this.state.Y)} />
+          <img src="/xboxImages/a.png" id="a" style={
+            {
+              ...this.getOpacity(this.state.A),
+              ...this.getTopOffsetStyle(this.topOffset.A + this.BUTTON_TOP[this.state.A])
+            }} />
+          <img src="/xboxImages/b.png" id="b" style={
+            {
+              ...this.getOpacity(this.state.B),
+              ...this.getTopOffsetStyle(this.topOffset.B + this.BUTTON_TOP[this.state.B])
+            }} />
+          <img src="/xboxImages/x.png" id="x" style={
+            {
+              ...this.getOpacity(this.state.X),
+              ...this.getTopOffsetStyle(this.topOffset.X + this.BUTTON_TOP[this.state.X])
+            }} />
+          <img src="/xboxImages/y.png" id="y" style={
+            {
+              ...this.getOpacity(this.state.Y),
+              ...this.getTopOffsetStyle(this.topOffset.Y + this.BUTTON_TOP[this.state.Y])
+            }} />
           <img
             src="/xboxImages/left.png"
             id="left"
@@ -203,16 +220,16 @@ export default class Xbox extends React.Component {
             src="/xboxImages/stick.png"
             id="stick"
             style={{
-              ...this.getLeftOffsetStyle(this.leftOffset.LeftStickX),
-              ...this.getTopOffsetStyle(this.topOffset.LeftStickY)
-            }}}
+              ...this.getLeftOffsetStyle(this.leftOffset.LeftStickX + this.state.LeftStickX * 20),
+              ...this.getTopOffsetStyle(this.topOffset.LeftStickY + this.state.LeftStickY * -20)
+            }}
           />{" "}
           <img
             src="/xboxImages/stick2.png"
             id="stick2"
             style={{
-              ...this.getLeftOffsetStyle(this.leftOffset.RightStickX),
-              ...this.getTopOffsetStyle(this.topOffset.RightStickY)
+              ...this.getLeftOffsetStyle(this.leftOffset.RightStickX + this.state.RightStickX * 20),
+              ...this.getTopOffsetStyle(this.topOffset.RightStickY + this.state.RightStickY * -20)
             }}
           />{" "}
           <img
@@ -228,12 +245,12 @@ export default class Xbox extends React.Component {
           <img
             src="/xboxImages/lt.png"
             id="lt"
-            style={this.style.LeftTrigger}
+            style={this.getTriggerStyle(this.state.LeftTrigger)}
           />
           <img
             src="/xboxImages/rt.png"
             id="rt"
-            style={this.style.RightTrigger}
+            style={this.getTriggerStyle(this.state.RightTrigger)}
           />
           <img src="/xboxImages/left.png" id="back" style={this.getOpacity(this.state.Back)} />
           <img
