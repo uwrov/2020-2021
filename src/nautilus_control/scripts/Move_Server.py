@@ -38,13 +38,11 @@ def update_state(state):
     None
     """
     global msg, current
-    if (current is None
-            or state["lin_x"] != current['lin_x']
-            or state["lin_y"] != current['lin_y']
-            or state["lin_z"] != current['lin_z']
-            or state["ang_x"] != current["ang_x"]
-            or state["ang_y"] != current["ang_y"]
-            or state["ang_z"] != current["ang_z"]):
+    if (current is None or state != current):
+        if (state["ang_x"] != 0 or state["ang_y"] != 0 or state["ang_z"] != 0):
+            state["lin_x"] = 0
+            state["lin_y"] = 0
+            state["lin_z"] = 0
 
         msg.force.x = state["lin_x"]
         msg.force.y = state["lin_y"]
