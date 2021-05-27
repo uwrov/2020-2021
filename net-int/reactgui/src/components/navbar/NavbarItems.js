@@ -28,6 +28,12 @@ export const NavbarItems = [
 		cName: 'navButton'
 	},
 	{
+		title: 'Script Runner',
+		dropdown: false,
+		defaultWidget: '',
+		cName: 'navButton'
+	},
+	{
 		title: 'Console',
 		dropdown: false,
 		defaultWidget: '',

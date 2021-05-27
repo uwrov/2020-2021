@@ -12,8 +12,8 @@ const NODE_WIDTH = 50;
 class WidgetTreeDebugger extends React.Component {
 
 
-  componentDidMount() {
-    var ctx = this.mount.getContext("2d");
+  componentDidUpdate() {
+    let ctx = this.mount.getContext("2d");
     ctx.font = "30px Arial";
     ctx.fillStyle = "#AAAAFF";
     ctx.fillRect(0, 0, 1000, 500);

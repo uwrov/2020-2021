@@ -238,7 +238,7 @@ function generateWidgetWindow(root, callback, currNode = root,
   return (
     <div className="widget-window" style={currNode.style}
          onMouseMove={(event) => {onMouseMove(event, callback, root);}}
-         onMouseUp={(event) => {onMouseUp(add(new Window(), currNode), callback, root)}}>
+         onMouseUp={(event) => {onMouseUp(currNode, callback, root, true)}}>
       {createDragSection(root, callback, currNode, isSideBySide, adjNode)}
       {generateAllTabs(currNode, root, callback)}
       <div className="widget-content">
@@ -252,7 +252,8 @@ function generateWidgetWrapper(root, callback, currNode = root,
                                 isSideBySide = false, adjNode = null) {
   return (
     <div className="window-wrapper" style={currNode.style}>
-      {currNode.child.map((curNode, index, arr) => {
+
+    {currNode.child.map((curNode, index, arr) => {
         if(index !== arr.length - 1) {
           // console.log("paired widgets",arr[index+1], curNode, !isSideBySide);
           return renderWindows(root, callback, curNode, !isSideBySide, arr[index+1]);
@@ -377,16 +378,20 @@ function onMouseMove(event, callback, root) {
   }
 }
 
-function onMouseUp(toAdd, callback, root) {
+function onMouseUp(toAdd, callback, root, addWindow = false) {
   if(dragWindow !== null) {
     dragWindow = null;
     adjWindow = null;
   } else if(selectedWindowID !== null) {
     if (removed){
+      // if (addWindow){
+      //   toAdd = add(toAdd, new Window());
+      // }
       add(toAdd,selectedObject)
     }
     removed= true;
     callback(root)
+
     selectedWindowID = null;
     selectedTab = null;
     selectedObject = null;
