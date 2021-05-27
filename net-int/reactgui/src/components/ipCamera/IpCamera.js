@@ -36,45 +36,50 @@ export default class Camera extends React.Component {
       <div className="camera">
         <div className="buttons-wrapper">
           <label className="switch">
-          <input type="checkbox"></input>
-          <span class="slider round" onClick={() => {
-              let curr = this.state.hide;
-              this.setState({
-                hide: !curr,
-              });
-            }}></span>
-
-
+            <input type="checkbox"></input>
+            <span
+              class="slider round"
+              onClick={() => {
+                let curr = this.state.hide;
+                this.setState({
+                  hide: !curr,
+                });
+              }}
+            ></span>
           </label>
           <div className="camera-buttons">
-          {!this.state.hide ? (
-            <input
-              type="text"
-              className="ip-textbox"
-              placeholder="  IP-Address..."
-              onChange={(e) => {
-                this.setState({
-                  ip_add_pre: e.target.value,
-                });
-              }}
-            />
-          ) : null}
-          {!this.state.hide ? (
-            <div
-              className="submit-button"
-              onClick={() => {
-                this.setState({
-                  ip_add_post: this.state.ip_add_pre,
-                });
-              }}
-            >
-              {" "}
-              Submit{" "}
-            </div>
-          ) : null}
+            {!this.state.hide ? (
+              <input
+                type="text"
+                className="ip-textbox"
+                placeholder="  IP-Address..."
+                onChange={(e) => {
+                  this.setState({
+                    ip_add_pre: e.target.value,
+                  });
+                }}
+              />
+            ) : null}
+            {!this.state.hide ? (
+              <div
+                className="submit-button"
+                onClick={() => {
+                  this.setState({
+                    ip_add_post: this.state.ip_add_pre,
+                  });
+                }}
+              >
+                {" "}
+                Submit{" "}
+              </div>
+            ) : null}
           </div>
         </div>
-          <img src={this.state.ip_add_post} alt="IP Camera" className="ip-camera" />
+        <img
+          src={this.state.ip_add_post}
+          alt="IP Camera"
+          className="ip-camera"
+        />
       </div>
     );
   }

@@ -2,8 +2,8 @@
   height: 100%;
   position: absolute;
   top: 0;
-  transform: scaleY(-1);
-  -webkit-transform: scaleY(-1);
+  transform: rotate(180deg);
+  -webkit-transform: rotate(180deg);
 }
 .camera {
   height: 100%;

@@ -1,14 +1,14 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
 
@@ -22,7 +22,7 @@ code {
 }
 
 .single-setting {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   display: flex;
   height: 10%;
   overflow: hidden;
@@ -31,14 +31,14 @@ code {
 }
 
 .single-setting:hover {
-  background-color: #C4C4C4;
+  background-color: #c4c4c4;
 }
 
 .sidebar {
   height: 100%;
   width: 30%;
   border-right: solid black 2px;
-  background-color: #EAEAEA;
+  background-color: #eaeaea;
 }
 
 .settings-title-window {
@@ -50,7 +50,6 @@ code {
   text-overflow: clip;
   white-space: nowrap;
 }
-
 
 .settings-title {
   position: absolute;
@@ -71,7 +70,7 @@ code {
   font-weight: bold;
   margin-left: 0.5px;
   height: 100%;
-  background-color:#FCFCFC;
+  background-color: #fcfcfc;
 }
 
 .options {
@@ -109,11 +108,12 @@ code {
   padding: 5%;
 }
 
-html, body {
+html,
+body {
   height: 100%;
   width: 100%;
 }
 
 .true {
-  background-color: #C4C4C4;
+  background-color: #c4c4c4;
 }

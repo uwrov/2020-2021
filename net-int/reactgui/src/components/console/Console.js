@@ -13,12 +13,8 @@ class Console extends Component {
     this.argCount = -1;
     this.tempArgNum = 0;
     //this.resize = "minimize";
-    this.state = { resize: "minimize",
-    text: "",
-    consoleWindow: "",
-    rows: 20
-   };
-   
+    this.state = { resize: "minimize", text: "", consoleWindow: "", rows: 20 };
+
     //this.showConsole(true)
     this.consoleStorage = window.localStorage;
     this.data = "Console created.\nListening...\n";
@@ -40,8 +36,8 @@ class Console extends Component {
           consoleWindow: this.consoleStorage.getItem("ConsoleData"),
         });
       });
-  });
-  }
+    });
+  };
 
   addArgs = () => {
     if (this.state.text !== undefined && this.state.text !== "\\") {
@@ -181,22 +177,25 @@ class Console extends Component {
     if (this.state.resize === "minimize") {
       this.setState({
         resize: "maximize",
-        rows: 1
+        rows: 1,
       });
     } else {
       this.setState({
         resize: "minimize",
-        rows: 20
+        rows: 20,
       });
     }
-
-  }
+  };
 
   render() {
-    if (this.props.show === true ) {
+    if (this.props.show === true) {
       return (
         <div id="console">
-          <div><button  onClick={this.handleButtonClick}>{this.state.resize}</button></div>
+          <div>
+            <button onClick={this.handleButtonClick}>
+              {this.state.resize}
+            </button>
+          </div>
           <div>
             <textarea
               id="outputText"
@@ -224,9 +223,8 @@ class Console extends Component {
         </div>
       );
     } else {
-      return (<div></div>);
+      return <div></div>;
     }
-    
   }
 }
 

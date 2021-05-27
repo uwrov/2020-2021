@@ -11,7 +11,7 @@ export default class Controller extends React.Component {
   // Initialize the output vectors to zero.
   constructor(props) {
     super();
-    this.state = {	
+    this.state = {
       lin_x: 0,
       lin_y: 0,
       lin_z: 0,
@@ -25,7 +25,7 @@ export default class Controller extends React.Component {
         right: "d",
         up: "r",
         down: "f",
-      }
+      },
     };
 
     // This event listener will be triggered everytime up, down,
@@ -38,58 +38,57 @@ export default class Controller extends React.Component {
           this.setState({
             lin_x: -1,
           });
-	  break;
+          break;
         // Pressed up
         case this.state.config.front:
           this.setState({
             lin_y: 1,
           });
-	  break;
+          break;
         // Pressed down
         case this.state.config.back:
           this.setState({
             lin_y: -1,
           });
-	  break;
+          break;
         // Pressed right
         case this.state.config.right:
           this.setState({
             lin_x: 1,
           });
-	  break;
+          break;
         // Pressed space
         case this.state.config.up:
           this.setState({
             lin_z: 1,
           });
-	  break;
+          break;
         // Pressed shift
         case this.state.config.down:
           this.setState({
             lin_z: -1,
           });
-	  break;
+          break;
         default:
           console.log("Error: key not defined " + event.key);
-	  break;
+          break;
       }
       console.log("key down" + event.key);
-
     });
 
     document.addEventListener("keyup", (event) => {
       if (
         event.key === this.state.config.left ||
-        event.key === this.state.config.right 
-	/*event.key === this.state.config.back ||
+        event.key === this.state.config.right
+        /*event.key === this.state.config.back ||
         event.key === this.state.config.front ||
 	event.key === this.state.config.up ||
         event.key === this.state.config.down*/
       ) {
         this.setState({
           lin_x: 0,
-	  lin_y: 0,
-	  lin_z: 0,
+          lin_y: 0,
+          lin_z: 0,
         });
       }
       if (
@@ -109,13 +108,12 @@ export default class Controller extends React.Component {
         });
       }
       console.log("key up" + event.key);
-
     });
   }
 
   componentDidUpdate() {
-  	socket.emit("Send State", this.state);
-	console.log(this.state + " emitting");
+    socket.emit("Send State", this.state);
+    console.log(this.state + " emitting");
   }
   render() {
     // The upper half of the array of Nodes.
