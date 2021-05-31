@@ -20,7 +20,7 @@ pin5 = 26
 pin6 = 19
 
 # scalers applied onto each motors, index 0 is motor A and index 5 is motor F
-motor_scalers = [0.75, 0.75, 0.75, 0.75, 0.6, 0.6]
+motor_scalers = [0.33, -0.33, -0.33, 0.33, 0.6, 0.6]
 
 
 # controlOutputs - array of pwms to set
@@ -40,9 +40,9 @@ def control(controlInputs):
 
     # flip inputs as needed
     controlInputs[0] *= -1      # X 
-    controlInputs[1] *= -1      # Y
+    controlInputs[1] *= 1      # Y
     controlInputs[2] *= -1      # Z
-    controlInputs[3] *= -1      # R
+    controlInputs[3] *= 1      # R
 
     # Case where there is no rotation based on the "R" value of the input array being zero.
     if (controlInputs[3] == 0):
