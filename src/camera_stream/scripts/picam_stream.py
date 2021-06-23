@@ -1,9 +1,6 @@
 #!/usr/bin/env python3 
-import time
 import picamera
-import numpy as np
 import rospy
-import cv2
 from sensor_msgs.msg import CompressedImage
 
 class CamBuffer:
@@ -22,7 +19,7 @@ class CamBuffer:
 cam_stream = CamBuffer()
 camera = picamera.PiCamera()
 dims = (640, 480)
-fr = 24 
+fr = 24
 
 
 def align_down(size, align):
