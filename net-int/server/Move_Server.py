@@ -36,50 +36,54 @@ def send_state(state):
     Parameters
     -------
     state : JSON/Dictionary
-        stores the movement of the controller in terms of linear components and
-        anglular components.
-        state = {lin_x: 10, lin_y: 0, lin_z: 0, ang_x: 0, ang_y: 0, ang_z: 3}
+    stores the movement of the controller in terms of linear components and
+    anglular components.
+    state = {lin_x: 10, lin_y: 0, lin_z: 0, ang_x: 0, ang_y: 0, ang_z: 3}
 
     Returns
     -------
     None
     """
     #msg = Twist()
-    msg = Wrench()	
-    if current is None or msg.force.x != current['lin_x'] or msg.force.y != current['lin_y'] or msg.force.y != current['lin_y'] or msg.torque.x != current['ang_x'] or msg.torque.y != current['ang_y']
-    or msg.torque.z != current['ang_z']:
-	"""
-	 msg.linear.x = state["lin_x"]
-	 msg.linear.y = state["lin_y"]
-	 msg.linear.z = state["lin_z"]
-	 msg.angular.x = state["ang_x"]
-	 msg.angular.y = state["ang_y"]
-	 msg.angular.z = state["ang_z"]
-         current.linear.x = state["lin_x"]
-	 current.linear.y = state["lin_y"]
-	 current.linear.z = state["lin_z"]
-	 current.angular.x = state["ang_x"]
-	 current.angular.y = state["ang_y"]
-	 current.angular.z = state["ang_z"]"""
-
-	 msg.force.x = state["lin_x"]
-	 msg.force.y = state["lin_y"]
-	 msg.force.z = state["lin_z"]
-	 msg.torque.x = state["ang_x"]
-	 msg.torque.y = state["ang_y"]
-	 msg.torque.z = state["ang_z"]
-         current.force.x = state["lin_x"]
-	 current.force.y = state["lin_y"]
-	 current.force.z = state["lin_z"]
-	 current.torque.x = state["ang_x"]
-	 current.torque.y = state["ang_y"]
-	 current.torque.z = state["ang_z"] 
-        
-    #while not rospy.is_shutdown():
-    rospy.loginfo("Sending Command v:" + str(current.linear.x))
-    velocity_publisher.publish(current)
-    rate.sleep()
-    #rospy.signal_shutdown('task done')
+    msg = Wrench()
+    if (current is None
+        or msg.force.x != current['lin_x']
+        or msg.force.y != current['lin_y']
+        or msg.force.y != current['lin_y']
+        or msg.torque.x != current['ang_x']
+        or msg.torque.y != current['ang_y']
+        or msg.torque.z != current['ang_z']):
+        """
+        msg.linear.x = state["lin_x"]
+        msg.linear.y = state["lin_y"]
+        msg.linear.z = state["lin_z"]
+        msg.angular.x = state["ang_x"]
+        msg.angular.y = state["ang_y"]
+        msg.angular.z = state["ang_z"]
+        current.linear.x = state["lin_x"]
+        current.linear.y = state["lin_y"]
+        current.linear.z = state["lin_z"]
+        current.angular.x = state["ang_x"]
+        current.angular.y = state["ang_y"]
+        current.angular.z = state["ang_z"]
+        """
+        msg.force.x = state["lin_x"]
+        msg.force.y = state["lin_y"]
+        msg.force.z = state["lin_z"]
+        msg.torque.x = state["ang_x"]
+        msg.torque.y = state["ang_y"]
+        msg.torque.z = state["ang_z"]
+        current.force.x = state["lin_x"]
+        current.force.y = state["lin_y"]
+        current.force.z = state["lin_z"]
+        current.torque.x = state["ang_x"]
+        current.torque.y = state["ang_y"]
+        current.torque.z = state["ang_z"]
+        #while not rospy.is_shutdown():
+        rospy.loginfo("Sending Command v:" + str(current.linear.x))
+        velocity_publisher.publish(current)
+        rate.sleep()
+        #rospy.signal_shutdown('task done')
 
 # def send_sensor_data():
 #     emit('Senor Data', {'sensor data': sensor_data}, broadcast=True)

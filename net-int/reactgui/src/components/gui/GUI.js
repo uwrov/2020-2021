@@ -10,7 +10,9 @@ import WT from "../../datastructs/WidgetTree.js";
 class GUI extends React.Component {
   state = {
     websocket: null,
-    settings: {},
+    settings: {
+      keybindings: {}
+    },
     windows: new WT.Window(),
     consoleShow: true,
   };
@@ -73,7 +75,12 @@ class GUI extends React.Component {
         this.setState({
           consoleShow: !this.state.consoleShow,
         });
-        console.log(this.state.consoleShow);
+        break;
+      case "Script Runner":
+        WT.add(root, new WT.Leaf("script_runner"));
+        this.setState({
+          windows: root
+        });
         break;
     }
   };
@@ -88,8 +95,9 @@ class GUI extends React.Component {
         <div className="widgetDisplay">
           {
             WT.renderWindows(this.state.windows, this.updateWidgets)
-            //Render Widgets <WidgetTreeDebugger tree={this.state.windows}/>
           }
+          <WidgetTreeDebugger tree={this.state.windows}/>
+
         </div>
       </div>
     );

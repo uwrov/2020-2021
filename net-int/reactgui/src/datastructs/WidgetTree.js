@@ -223,7 +223,8 @@ export function createDragSection(
         onMouseDown={(event) => {
           onMouseDownResize(event, currNode, adjNode, isSideBySide);
         }}
-      ></div>
+      >
+      </div>
     );
   }
 }
@@ -266,24 +267,18 @@ export function renderWindows(
   }
 }
 
-function generateWidgetWindow(
-  root,
-  callback,
-  currNode = root,
-  isSideBySide = false,
-  adjNode = null
-) {
+function generateWidgetWindow(root, callback, currNode = root, isSideBySide = false, adjNode = null) {
   return (
-    <div
-      className="widget-window"
-      style={currNode.style}
-      onMouseMove={(event) => {
-        onMouseMove(event, callback, root);
-      }}
-      onMouseUp={(event) => {
-        onMouseUp(add(new Window(), currNode), callback, root);
-      }}
-    >
+     <div
+       className="widget-window"
+       style={currNode.style}
+       onMouseMove={(event) => {
+         onMouseMove(event, callback, root);
+       }}
+       onMouseUp={(event) => {
+         onMouseUp(add(new Window(), currNode), callback, root);
+       }}
+     >
       {createDragSection(root, callback, currNode, isSideBySide, adjNode)}
       {generateAllTabs(currNode, root, callback)}
       <div className="widget-content">
@@ -293,17 +288,11 @@ function generateWidgetWindow(
   );
 }
 
-function generateWidgetWrapper(
-  root,
-  callback,
-  currNode = root,
-  isSideBySide = false,
-  adjNode = null
-) {
+function generateWidgetWrapper(root, callback, currNode = root, isSideBySide = false, adjNode = null) {
   return (
     <div className="window-wrapper" style={currNode.style}>
       {currNode.child.map((curNode, index, arr) => {
-        if (index !== arr.length - 1) {
+        if(index !== arr.length - 1) {
           // console.log("paired widgets",arr[index+1], curNode, !isSideBySide);
           return renderWindows(
             root,
@@ -483,6 +472,9 @@ function onMouseUp(toAdd, callback, root) {
     if (removed) {
       add(toAdd, selectedObject);
     }
+    removed= true;
+    callback(root)
+
     removed = true;
     callback(root);
     selectedWindowID = null;
