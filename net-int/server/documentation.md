@@ -1,5 +1,3 @@
-4
-
 # UWROV Surface Server Documentation
 
 ## **Contents:**
