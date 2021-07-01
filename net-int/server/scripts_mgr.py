@@ -35,7 +35,8 @@ from flask_socketio import SocketIO, send, emit
 
 HOST_IP = "localhost"
 HOST_PORT = "4046"
-SCRIPTS_PATH = './scripts'
+SCRIPTS_PATH = '../src/nautilus_scripts/scripts'
+# SCRIPTS_PATH = './scripts'
 RUNTIME_COMMAND = 'rosrun'
 RUNTIME_PARAMS = 'wb_sol'
 MAX_LOGS_BUFFER_SIZE = 5

@@ -26,12 +26,17 @@ class ScriptRunner extends Component {
     // }
 
     // Triggers the app to calculate and draw a new path if the start and destination are valid
-    handleFindPath = () => {
+    handleRunScript = () => {
         if(this.state.script === "None") {
             alert("Please choose a script");
         }else{
             this.socket.emit("Send Commands", this.state.script)
         }
+        this.socket.on("Print Console Logs", (logs)=> {
+            for (let log in logs){
+
+            }
+        });
     }
 
     // Resets the app to the default state
@@ -53,7 +58,7 @@ class ScriptRunner extends Component {
                 {/*    <option value="None">Select a Destination location</option>*/}
                 {/*    {this.props.options}*/}
                 {/*</select> <br/>*/}
-                <button onClick={this.handleFindPath}>Run Script</button>
+                <button onClick={this.handleRunScript}>Run Script</button>
                 <button onClick={this.handleClear}>Clear</button>
             </div>
         );
