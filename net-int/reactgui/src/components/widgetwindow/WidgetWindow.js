@@ -51,8 +51,7 @@ export class WidgetWindow extends React.Component {
         count++;
         return (
           <div key={"key" + count} data-grid={{x: count, y: 0, w: 5, h: 5, isResizable: true}}>
-            {//}{getWidgetComponent(widget)}
-            }
+            {getWidgetComponent(widget)}
           </div>
         );
       });
