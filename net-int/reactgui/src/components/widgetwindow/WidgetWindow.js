@@ -2,7 +2,9 @@ import React from "react";
 import GridLayout from 'react-grid-layout';
 import Camera from '../ipCamera/IpCamera.js';
 import { getWidgetComponent } from '../../datastructs/WidgetLib.js';
+
 import "./WidgetWindow.css";
+import 'react-grid-layout/css/styles.css'
 
 export class WidgetWindow extends React.Component {
   state = {
