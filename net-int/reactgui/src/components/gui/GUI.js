@@ -2,6 +2,8 @@ import React from "react";
 import Navbar from "../navbar/NavBar.js";
 import Console from "../console/Console.js";
 import WidgetTreeDebugger from "../../tools/WidgetTreeDebugger";
+import WidgetWindow from "../widgetwindow/WidgetWindow.js";
+import {Widget} from "../widgets/Widget.js";
 
 import "./GUI.css";
 
@@ -91,14 +93,23 @@ class GUI extends React.Component {
       <div className="gui">
         <Navbar addWidget={this.addWidget} removeWidget={this.removeWidget} />
         <Console show={this.state.consoleShow} />
-
+        <div className="widgetDisplay">
+          <WidgetWindow widgets={
+            [
+              new Widget("ros_camera"),
+              new Widget("ip_camera"),
+              new Widget("ip_camera"),
+              new Widget("ip_camera")]
+            }/>
+        </div>
+        {/*
         <div className="widgetDisplay">
           {
             WT.renderWindows(this.state.windows, this.updateWidgets)
           }
           <WidgetTreeDebugger tree={this.state.windows}/>
 
-        </div>
+        </div>*/}
       </div>
     );
   }

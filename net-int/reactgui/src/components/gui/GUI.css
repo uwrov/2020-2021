@@ -11,6 +11,8 @@
   background: #f2f2f2;
   line-height: 1.2;
   position: relative;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .widgetWindow {
