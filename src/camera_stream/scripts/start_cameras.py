@@ -23,10 +23,10 @@ class CamBuffer:
         return self.data
 
 
-cam_stream = CamBuffer()
 camera = picamera.PiCamera()
-dims = (640, 480)
-fr = 24
+dims = (480, 360)
+cam_stream = CamBuffer(dims[0], dims[1])
+fr = 12
 
 
 def align_down(size, align):
@@ -49,7 +49,7 @@ def pi_main():
     camera.resolution = (dims[0], dims[1])
     camera.framerate = fr
 
-    rate = rospy.Rate(12)
+    rate = rospy.Rate(fr)
     print('starting stream')
     camera.start_recording(cam_stream, format='mjpeg')
     while not rospy.is_shutdown():
@@ -93,7 +93,7 @@ def usb_main():
 def get_cam_stream():
     while not rospy.is_shutdown():
         stream.grab()
-        time.sleep(0.05)
+        time.sleep(1/12)
 
 ################################################
 # main
@@ -104,6 +104,9 @@ if __name__ == '__main__':
     global stream 
     src = 0 # 'http://[Pi IP]:8081/'
     stream = cv2.VideoCapture(src)
+    stream.set(cv2.CAP_PROP_FPS, 12)
+    stream.set(cv2.CAP_PROP_FRAME_WIDTH, dims[0])
+    stream.set(cv2.CAP_PROP_FRAME_HEIGHT, dims[1])
 
     pi_thread = threading.Thread(target=pi_main)
     usb_thread = threading.Thread(target=usb_main)
