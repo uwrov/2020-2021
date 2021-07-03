@@ -12,15 +12,19 @@ intercept = max - slope * (1)
 inputs = [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1], [-1, 0, 0, 0], [0, -1, 0, 0], [0, 0, 0, 0]]
 
 # Gives the default values for the pins.
-pin1 = 21
-pin2 = 20
+pin1 = 21 
+pin2 = 20 
 pin3 = 16
-pin4 = 12
+
+#pin4 = 12 #original pin
+pin4 = 19
 pin5 = 26
-pin6 = 19
+
+#pin6 = 19 # original pin
+pin6 = 12
 
 # scalers applied onto each motors, index 0 is motor A and index 5 is motor F
-motor_scalers = [0.33, -0.33, -0.33, 0.33, 0.6, 0.6]
+motor_scalers = [0.25, -0.25, -0.25, 0.25, 0.25, 0.25]
 
 
 # controlOutputs - array of pwms to set
@@ -63,7 +67,7 @@ def control(controlInputs):
         apply_motor(controlOutputs, 5, Fc) 
     else:
         # rotation is clockwise based on a positive "R" value.
-        c1 = controlInputs[3]
+        c1 = controlInputs[3] / 2
         c2 = -1 * c1
         
         apply_motor(controlOutputs, 0, c2)

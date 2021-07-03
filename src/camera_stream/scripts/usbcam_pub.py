@@ -1,4 +1,3 @@
-
 #!/usr/bin/env python3
 import rospy
 from sensor_msgs.msg import CompressedImage
@@ -25,10 +24,9 @@ def streaming(msg, rate, stream, image_pub):
         rate.sleep()
 
 if __name__ == '__main__':
-    src = 'http://192.168.1.5:8081/' # 'http://[Pi IP]:8081/'
-    stream = cv2.VideoCapture(src)
+    stream = cv2.VideoCapture(0)
     
-    image_pub = rospy.Publisher('out/img/compressed', CompressedImage, queue_size=1)
+    image_pub = rospy.Publisher('/nautilus/nautilus/camera2/nautilus_cam/compressed', CompressedImage, queue_size=1)
     rospy.init_node('compress_stream')
     rate = rospy.Rate(100)
 
