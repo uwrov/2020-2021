@@ -85,6 +85,10 @@ def control(controlInputs):
     c1 = controlInputs[3] / 2
     # c2 = -1 * c1
 
+    # NEXT TIME WE WORK: If the input values are less than 0, then we would have to add the c1.
+    # If we have input values that are more than 0, then we would need to subtract the c1. 
+    # making this work will be your next task!
+    []
     if c1 > 0:
         Ac = 0.5 * (controlInputs[0] - controlInputs[1])
         Bc = 0.5 * (controlInputs[0] + controlInputs[1]) - c1
