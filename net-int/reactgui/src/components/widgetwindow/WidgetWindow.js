@@ -39,7 +39,7 @@ export class WidgetWindow extends React.Component {
 
   render() {
     return (
-      <GridLayout className="layout" cols={this.state.columns}
+      <GridLayout className="layout" cols={this.state.columns} draggableHandle=".drag-handle"
           rowHeight={this.state.rowHeight} width={this.state.width}>
         {this.renderWidgets()}
       </GridLayout>
@@ -53,7 +53,26 @@ export class WidgetWindow extends React.Component {
         count++;
         return (
           <div key={"key" + count} data-grid={{x: count, y: 0, w: 5, h: 5, isResizable: true}}>
-            {getWidgetComponent(widget)}
+            <div className="widget-tab-header drag-handle">
+              <a>{widget.type}</a>
+              <span
+                className="tab-exit-button"
+                onClick={() => {
+                  let newWidgets = this.props.widgets.slice(0);
+                  let i = newWidgets.indexOf(widget);
+                  if (i !== -1) {
+                    newWidgets.splice(i, 1);
+                  }
+                  this.props.update(newWidgets);
+                  console.log("click!!!!" + i);
+                }}
+              >
+                &times;
+              </span>
+            </div>
+            <div className="widget-content">
+              {getWidgetComponent(widget)}
+            </div>
           </div>
         );
       });

@@ -68,7 +68,7 @@ class GUI extends React.Component {
         <Navbar addWidget={this.addWidget} />
         <Console show={this.state.consoleShow} />
         <div className="widgetDisplay">
-          <WidgetWindow widgets={this.state.widgets}/>
+          <WidgetWindow widgets={this.state.widgets} update={this.updateWidgets}/>
         </div>
         {/*
         <div className="widgetDisplay">
@@ -83,7 +83,7 @@ class GUI extends React.Component {
   }
 
   updateWidgets = (newWidgets) => {
-    this.setState({ windows: newWidgets });
+    this.setState({ widgets: newWidgets });
   };
 
   updateSettings = (newSettings) => {
