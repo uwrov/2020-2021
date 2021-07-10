@@ -37,6 +37,8 @@ def apply_motor(controlOutputs, idx, c):
 
 # Allows the control of motors given an input array and an output array.
 def control(controlInputs):
+    # [0.5, 0.5, 0.5, 0, 0, 0], [0, 0, 0, 0.5, 0, 0] 
+    # [0.5, 0.5, 0.5, 0.5, 0, 0]
     controlOutputs = [0, 0, 0, 0, 0, 0]
     # Checks if the given input array is valid and shows an error message if not.
     for item in controlInputs:
@@ -49,35 +51,66 @@ def control(controlInputs):
     controlInputs[3] *= 1      # R
 
     # Case where there is no rotation based on the "R" value of the input array being zero.
-    if (controlInputs[3] == 0):
-        # calculate motor constants
-        Ac = 0.5 * (controlInputs[0] - controlInputs[1])
-        Bc = 0.5 * (controlInputs[0] + controlInputs[1])
-        Cc = 0.5 * (controlInputs[0] + controlInputs[1])
-        Dc = 0.5 * (controlInputs[0] - controlInputs[1])
-        Ec = controlInputs[2]
-        Fc = Ec
+    # if (controlInputs[3] == 0):
+    #     # calculate motor constants
+    #     Ac = 0.5 * (controlInputs[0] - controlInputs[1])
+    #     Bc = 0.5 * (controlInputs[0] + controlInputs[1])
+    #     Cc = 0.5 * (controlInputs[0] + controlInputs[1])
+    #     Dc = 0.5 * (controlInputs[0] - controlInputs[1])
+    #     Ec = controlInputs[2]
+    #     Fc = Ec
         
-        # apply constants onto motors
-        apply_motor(controlOutputs, 0, Ac) 
-        apply_motor(controlOutputs, 1, Bc) 
-        apply_motor(controlOutputs, 2, Cc) 
-        apply_motor(controlOutputs, 3, Dc) 
-        apply_motor(controlOutputs, 4, Ec) 
-        apply_motor(controlOutputs, 5, Fc) 
-    else:
-        # rotation is clockwise based on a positive "R" value.
-        c1 = controlInputs[3] / 2
-        c2 = -1 * c1
+    #     # apply constants onto motors
+    #     apply_motor(controlOutputs, 0, Ac) 
+    #     apply_motor(controlOutputs, 1, Bc) 
+    #     apply_motor(controlOutputs, 2, Cc) 
+    #     apply_motor(controlOutputs, 3, Dc) 
+    #     apply_motor(controlOutputs, 4, Ec) 
+    #     apply_motor(controlOutputs, 5, Fc) 
+    # else: 
+    # # rotation is clockwise based on a positive "R" value.
+    #     c1 = controlInputs[3] / 2
+    #     c2 = -1 * c1
         
-        apply_motor(controlOutputs, 0, c2)
-        apply_motor(controlOutputs, 1, c1)
-        apply_motor(controlOutputs, 2, c2)
-        apply_motor(controlOutputs, 3, c1)
+    #     apply_motor(controlOutputs, 0, c2)
+    #     apply_motor(controlOutputs, 1, c1)
+    #     apply_motor(controlOutputs, 2, c2)
+    #     apply_motor(controlOutputs, 3, c1)
 
-        # zero out vertical motors
-        apply_motor(controlOutputs, 4, 0)
-        apply_motor(controlOutputs, 5, 0)
+    #     # zero out vertical motors
+    #     apply_motor(controlOutputs, 4, 0)
+    #     apply_motor(controlOutputs, 5, 0)
+    # return controlOutputs
+    
+    c1 = controlInputs[3] / 2
+    # c2 = -1 * c1
+
+    # NEXT TIME WE WORK: If the input values are less than 0, then we would have to add the c1.
+    # If we have input values that are more than 0, then we would need to subtract the c1. 
+    # making this work will be your next task!
+    # Test Cases: [1, 0.5, 0.25, 0.5, 0, 0]; [1, 0.5, 0.5, 0.25, 1, 1]; [1, 0, -0.5, 0.25, 0, 1]
+    if c1 > 0:
+        Ac = 0.5 * (controlInputs[0] - controlInputs[1])
+        Bc = 0.5 * (controlInputs[0] + controlInputs[1]) - c1
+        Cc = 0.5 * (controlInputs[0] + controlInputs[1])
+        Dc = 0.5 * (controlInputs[0] - controlInputs[1]) - c1
+    else: 
+        Ac = 0.5 * (controlInputs[0] - controlInputs[1]) - c1
+        Bc = 0.5 * (controlInputs[0] + controlInputs[1])
+        Cc = 0.5 * (controlInputs[0] + controlInputs[1]) - c1
+        Dc = 0.5 * (controlInputs[0] - controlInputs[1])
+    Ec = controlInputs[2]
+    Fc = Ec
+
+    # Rotational Changes in pipeline 0 [c2], 1[c1], 2[c2], 3[c1], 4[0], 5[0]
+    
+
+    apply_motor(controlOutputs, 0, Ac) 
+    apply_motor(controlOutputs, 1, Bc) 
+    apply_motor(controlOutputs, 2, Cc) 
+    apply_motor(controlOutputs, 3, Dc) 
+    apply_motor(controlOutputs, 4, Ec) 
+    apply_motor(controlOutputs, 5, Fc) 
     return controlOutputs
 
 def apply_control(_input, pi):
