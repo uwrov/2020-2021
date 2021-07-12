@@ -32,7 +32,8 @@ def main():
     while not flying_over:
         rospy.sleep()
     course_adjustment.join()
-    data_collection.join
+    data_collection.join()
+    
     result = generate_grid(data)
     print("saving result")
     cv2.imwrite(output_path, result)
