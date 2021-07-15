@@ -7,14 +7,15 @@ from geometry_msgs.msg import Wrench
 import _thread
 import time
 
+
 HOST_IP = "0.0.0.0"
 HOST_PORT = "4041"
 
 app = Flask(__name__)
 sio = SocketIO(app, cors_allowed_origins="*")
 
-velocity_publisher = None
 # rate = None
+velocity_publisher = None
 current = None
 msg = Wrench()
 
@@ -104,6 +105,17 @@ def publish(buffer):
         velocity_publisher.publish(msg)
         time.sleep(.05)
         # rate.sleep()
+
+
+# def move_init():
+#     """ Sets up rospy and inital publisher thread """
+#     print('move server is running')
+#     try:
+#         rospy.init_node('move_server', anonymous=False)
+#         velocity_publisher = rospy.Publisher('/nautilus/thruster_manager/input', Wrench, queue_size=10)
+#         _thread.start_new_thread(publish, (0,))
+#     except rospy.ROSInterruptException: pass
+
 
 
 if __name__ == '__main__':

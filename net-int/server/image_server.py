@@ -3,9 +3,11 @@ import rospy
 from flask import Flask, render_template
 from flask_socketio import SocketIO, send, emit
 from sensor_msgs.msg import Image, CompressedImage
+import _thread
+# from main_server import sio
 
-# HOST_IP = "localhost"
-HOST_IP = "0.0.0.0"
+HOST_IP = "localhost"
+# HOST_IP = "0.0.0.0"
 HOST_PORT = "4040"
 
 app = Flask(__name__)
@@ -35,7 +37,6 @@ def send_image(data, id):
     -------
     None
     """
-
     sio.emit("Image Display", {'image': data.data, 'id': id}, broadcast = True)
 
 @sio.on("Get IDs")
@@ -61,15 +62,21 @@ def send_ids():
     sio.emit("IDs", {'ids':ids}, broadcast = True)
 
 
-if __name__ == '__main__':
-    """ Sets up rospy and starts server """
+def image_init(buffer):
+    """ Sets up rospy and subscibers """
     try:
         print("image server is running")
-        rospy.init_node('wheely_boi', anonymous=True)
 
         image_subscriber = rospy.Subscriber(topics['img_sub'], CompressedImage, send_image, 'img_sub')
         front_cam_subscriber = rospy.Subscriber(topics['front_cam'], CompressedImage, send_image, 'front_cam')
         downward_cam_subscriber = rospy.Subscriber(topics['down_cam'], CompressedImage, send_image, 'down_cam')
 
-        sio.run(app, host=HOST_IP, port=HOST_PORT)
+        try:
+            sio.run(app, host=HOST_IP, port=HOST_PORT)
+        except sio.error as socketerror:
+            print("Error: ", socketerror)
+
     except rospy.ROSInterruptException: pass
+
+def start_server():
+    _thread.start_new_thread(image_init, (0,))

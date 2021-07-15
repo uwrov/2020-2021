@@ -1,5 +1,3 @@
-4
-
 # UWROV Surface Server Documentation
 
 ## **Contents:**
@@ -20,7 +18,7 @@ To add another server copy
 
 ```
 
-gnome-terminal -- bash -c &#39;source devel/setup.sh; cd PATH/TO/FILE; python3 YOUR\_SERVER.py; $SHELL&#39;.
+gnome-terminal -- bash -c 'source devel/setup.sh; cd PATH/TO/FILE; python3 YOUR\_SERVER.py; $SHELL'
 
 ```
 
