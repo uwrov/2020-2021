@@ -89,16 +89,28 @@ def control(controlInputs):
     # If we have input values that are more than 0, then we would need to subtract the c1. 
     # making this work will be your next task!
     # Test Cases: [1, 0.5, 0.25, 0.5, 0, 0]; [1, 0.5, 0.5, 0.25, 1, 1]; [1, 0, -0.5, 0.25, 0, 1]
-    if c1 > 0:
-        Ac = 0.5 * (controlInputs[0] - controlInputs[1])
-        Bc = 0.5 * (controlInputs[0] + controlInputs[1]) - c1
-        Cc = 0.5 * (controlInputs[0] + controlInputs[1])
-        Dc = 0.5 * (controlInputs[0] - controlInputs[1]) - c1
-    else: 
-        Ac = 0.5 * (controlInputs[0] - controlInputs[1]) - c1
-        Bc = 0.5 * (controlInputs[0] + controlInputs[1])
-        Cc = 0.5 * (controlInputs[0] + controlInputs[1]) - c1
-        Dc = 0.5 * (controlInputs[0] - controlInputs[1])
+
+    # ----------------------------------------------------------
+    # 1. Finish Limit Speed Section
+    # 2. Apply R (direction) as scaled be speed (magnitude)
+
+
+    # TO DO: Limit on Maximum and Minimum Linear Speed
+    # Determine rotational and linear, maximum and minimum, speeds.
+    limit_max = (max_r_speed + 2 * (max_l_speed)) / 3
+    limit_min = (min_r_speed + 2 * (min_l_speed)) / 3
+
+    # TO DO: R mapped (-1, 0, 1)
+    # Determine rotational value source.
+    # Speeds some range between 1500 to 2500 witch change of 1000.
+    # Use this speed range as part of the magnitude scaling component.
+    r_mapped = limit_max * r
+
+    # Scaling an R_mapped value will compensate for rotational speed.
+    Ac = controlInputs[0] - controlInputs[1] + r_mapped
+    Bc = controlInputs[0] + controlInputs[1] - r_mapped
+    Cc = controlInputs[0] + controlInputs[1] + r_mapped
+    Dc = controlInputs[0] - controlInputs[1] - r_mapped
     Ec = controlInputs[2]
     Fc = Ec
 
