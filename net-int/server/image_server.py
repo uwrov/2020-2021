@@ -12,7 +12,8 @@ app = Flask(__name__)
 sio = SocketIO(app, cors_allowed_origins="*")
 
 topics = {
-    "front_cam": "/nautilus/nautilus/camera1/nautilus_cam/compressed",
+    #"front_cam": "/nautilus/nautilus/camera1/nautilus_cam/compressed",
+    "front_cam": "/nautilus/cameras/stream",
     "down_cam": "/nautilus/nautilus/camera2/nautilus_cam/compressed",
     "img_sub": "/image/distribute"
 }

@@ -2,9 +2,9 @@
 
 echo "Hello World!"
 
-echo "launching Nautilus"
-gnome-terminal -- bash -c 'source devel/setup.sh; roslaunch nautilus_worlds nautilus_sim.launch reset_tam:=true prop:=subway_car; $SHELL'
-sleep 40s
+#echo "launching Nautilus"
+#gnome-terminal -- bash -c 'source devel/setup.sh; roslaunch nautilus_worlds nautilus_sim.launch reset_tam:=true prop:=subway_car; $SHELL'
+#sleep 40s
 
 #echo "starting roscore"
 #gnome-terminal -- bash -c 'source devel/setup.sh; roscore; $SHELL'
