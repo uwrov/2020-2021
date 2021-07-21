@@ -1,25 +1,26 @@
 #!/usr/bin/env python3
 import json
 import rospy
-from flask import Flask, render_template
-from flask_socketio import SocketIO, send, emit
+# from flask import Flask, render_template
+# from flask_socketio import SocketIO, send, emit
 from geometry_msgs.msg import Wrench
 import _thread
 import time
+from main_server import sio
 
-HOST_IP = "localhost"
-# HOST_IP = "0.0.0.0"
-HOST_PORT = "4041"
-
-app = Flask(__name__)
-sio = SocketIO(app, cors_allowed_origins="*")
+# HOST_IP = "localhost"
+# # HOST_IP = "0.0.0.0"
+# HOST_PORT = "4041"
+#
+# app = Flask(__name__)
+# sio = SocketIO(app, cors_allowed_origins="*")
 
 # rate = None
-velocity_publisher = None
+# velocity_publisher = None
 current = None
 msg = Wrench()
 
-
+@sio.on("Send State")
 def update_state(state):
     """
     Updates State based on new contoller input
@@ -55,7 +56,7 @@ def update_state(state):
         current = state
 
 
-@sio.on("Send State")
+# @sio.on("Send State")
 def send_state(state):
     """
     Creates a new thread to update state
@@ -78,7 +79,7 @@ def send_state(state):
     update_state(state)
 
 
-def publish(buffer):
+def publish(velocity_publisher):
     """
     Publishes controller input to rospy
 
@@ -103,7 +104,7 @@ def publish(buffer):
     print('publishing')
     while True:
         velocity_publisher.publish(msg)
-        sio.sleep(0)
+        sio.sleep(.05)
         time.sleep(.05)
 
 
@@ -124,4 +125,17 @@ def move_init(buffer):
 
 
 def start_server():
-    _thread.start_new_thread(move_init, (0,))
+    # _thread.start_new_thread(move_init, (0,))
+
+    print('move server is running')
+    try:
+        global velocity_publisher
+
+        velocity_publisher = rospy.Publisher('/nautilus/thruster_manager/input', Wrench, queue_size=10)
+        _thread.start_new_thread(publish, (0,))
+
+        try:
+            sio.run(app, host=HOST_IP, port=HOST_PORT)
+        except sio.error as socketerror:
+            print("Error: ", socketerror)
+    except rospy.ROSInterruptException: pass

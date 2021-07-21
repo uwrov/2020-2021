@@ -25,6 +25,9 @@ export default class Camera extends React.Component {
     this.socket.on("Image Display", this.updateImage);
     this.socket.on("IDs", this.updateIDS);
     this.getIDs();
+    this.socket.on('hello', function (err) {
+      console.log(err);
+    });
   }
 
   getIDs = () => {
