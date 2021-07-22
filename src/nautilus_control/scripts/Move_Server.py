@@ -4,6 +4,7 @@ import rospy
 from flask import Flask, render_template
 from flask_socketio import SocketIO, send, emit
 from geometry_msgs.msg import Wrench
+from std_msgs.msg import Int16
 import _thread
 import time
 
@@ -15,8 +16,11 @@ sio = SocketIO(app, cors_allowed_origins="*")
 
 velocity_publisher = None
 # rate = None
+channel_publisher = None
 current = None
 msg = Wrench()
+channel = Int16()
+channel.data = 1
 
 
 def update_state(state):
@@ -31,13 +35,13 @@ def update_state(state):
     state : JSON/Dictionary
         stores the movement of the controller in terms of linear components and
         anglular components.
-        state = {lin_x: 10, lin_y: 0, lin_z: 0, ang_x: 0, ang_y: 0, ang_z: 3}
+        state = {lin_x: 10, lin_y: 0, lin_z: 0, ang_x: 0, ang_y: 0, ang_z: 3, a: true, b: false, x: false, y: false}
 
     Returns
     -------
     None
     """
-    global msg, current
+    global msg, current, channel
     if (current is None or state != current):
         if (state["ang_x"] != 0 or state["ang_y"] != 0 or state["ang_z"] != 0):
             state["lin_x"] = 0
@@ -51,6 +55,16 @@ def update_state(state):
         msg.torque.y = state["ang_y"]
         msg.torque.z = state["ang_z"]
 
+        channel.data = channel.data
+        if (state["a"]):
+            channel.data = 0 # usb cam
+        elif (state["b"]):
+            channel.data = 1 # picam a
+        elif (state["x"]):
+            channel.data = 3 # picam b
+        elif (state["y"]):
+            channel.data = 2 # picam c
+        
         current = state
 
 
@@ -102,6 +116,7 @@ def publish(buffer):
     while True:
         # rospy.loginfo("Sending Command v:" + str(current))
         velocity_publisher.publish(msg)
+        channel_publisher.publish(channel)
         time.sleep(.05)
         # rate.sleep()
 
@@ -109,8 +124,9 @@ def publish(buffer):
 if __name__ == '__main__':
     """ Sets up rospy, inital publisher thread, and starts server """
     try:
-        rospy.init_node('move_server', anonymous=False)
-        velocity_publisher = rospy.Publisher('/nautilus/thruster_manager/input', Wrench, queue_size=10)
+        rospy.init_node('move_server')
+        velocity_publisher = rospy.Publisher('/nautilus/motors/commands', Wrench, queue_size=10)
+        channel_publisher = rospy.Publisher('/nautilus/cameras/switch', Int16, queue_size=1)
         # rate = rospy.Rate(.10)
         _thread.start_new_thread(publish, (0,))
         sio.run(app, host=HOST_IP, port=HOST_PORT)

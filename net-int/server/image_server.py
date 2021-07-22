@@ -13,8 +13,8 @@ sio = SocketIO(app, cors_allowed_origins="*")
 
 topics = {
     #"front_cam": "/nautilus/nautilus/camera1/nautilus_cam/compressed",
-    "front_cam": "/nautilus/cameras/stream",
-    "down_cam": "/nautilus/nautilus/camera2/nautilus_cam/compressed",
+    "camera_stream": "/nautilus/cameras/stream",
+    # "down_cam": "/nautilus/nautilus/camera2/nautilus_cam/compressed",
     "img_sub": "/image/distribute"
 }
 
@@ -66,11 +66,11 @@ if __name__ == '__main__':
     """ Sets up rospy and starts server """
     try:
         print("image server is running")
-        rospy.init_node('wheely_boi', anonymous=True)
+        rospy.init_node('image_server')
 
         image_subscriber = rospy.Subscriber(topics['img_sub'], CompressedImage, send_image, 'img_sub')
-        front_cam_subscriber = rospy.Subscriber(topics['front_cam'], CompressedImage, send_image, 'front_cam')
-        downward_cam_subscriber = rospy.Subscriber(topics['down_cam'], CompressedImage, send_image, 'down_cam')
+        front_cam_subscriber = rospy.Subscriber(topics['camera_stream'], CompressedImage, send_image, 'camera_stream')
+        # downward_cam_subscriber = rospy.Subscriber(topics['down_cam'], CompressedImage, send_image, 'down_cam')
 
         sio.run(app, host=HOST_IP, port=HOST_PORT)
     except rospy.ROSInterruptException: pass
