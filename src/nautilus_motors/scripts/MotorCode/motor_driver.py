@@ -9,7 +9,7 @@ ROS motor code driver
 """
 
 #keyboard_topic = '/nautilus/nautilus_motors/wrench'
-keyboard_topic = '/nautilus/thruster_manager/input'
+command_topic = '/nautilus/motors/commands'
 pi = pigpio.pi()
 
 def drive(w):
@@ -23,9 +23,9 @@ def drive(w):
     print()
 
 def main():
-    print('starting listener on', keyboard_topic)
+    print('starting listener on', command_topic)
     rospy.init_node('motor_driver')
-    rospy.Subscriber(keyboard_topic, Wrench, drive)
+    rospy.Subscriber(command_topic, Wrench, drive)
 
     rospy.on_shutdown(shutdown_fn)
     rospy.spin()

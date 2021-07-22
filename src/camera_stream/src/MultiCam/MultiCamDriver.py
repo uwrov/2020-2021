@@ -29,9 +29,7 @@ class MultiAdapter:
 
     # constructor
     def __init__(self, camAddress=0):
-        print(camAddress)
         self.camera = cv2.VideoCapture(-1, cv2.CAP_V4L2)
-        print(camAddress)
         gp.setwarnings(False)
         gp.setmode(gp.BOARD)
         gp.setup(7, gp.OUT)
@@ -49,7 +47,7 @@ class MultiAdapter:
 
     def _init_channel(self, index):
         channel_info = self.adapter_info.get(index)
-        print("initializing picam", str(index))
+        # print("initializing picam", str(index))
         if channel_info == None:
             raise Exception(f"Can't get infor for picam {index}")
         os.system(channel_info["i2c_cmd"])  # i2c write
@@ -60,7 +58,7 @@ class MultiAdapter:
     # ===========================
     # Start the multi camera adapter, assumes
     # valid inputs for nCams, width, and height
-    def start_cams(self, nCams=2, width=640, height=480):
+    def start_cams(self, nCams=2, width=640, height=480, framerate=20):
         self.height = height
         self.width = width
         self.camNum = nCams
@@ -69,16 +67,17 @@ class MultiAdapter:
             self._init_channel(chr(65+i))
             self.camera.set(3, self.width)
             self.camera.set(4, self.height)
+            self.camera.set(5, framerate)
             ret, frame = self.camera.read()
             if not ret:
-                print("camera %s init ERROR" % (chr(65+i)))
+                # print("camera %s init ERROR" % (chr(65+i)))
                 self.camera.release()
 
     # Switch the camera currently viewed by the adapter
     def select_channel(self, index):
         channel_info = self.adapter_info.get(index)
-        if channel_info == None:
-            print("Can't get this info")
+        # if channel_info == None:
+            # print("Can't get this info")
         self._set_pins(channel_info['gpio_sta'])
 
     # Get the current frame

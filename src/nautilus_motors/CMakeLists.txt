@@ -32,3 +32,6 @@ catkin_install_python(PROGRAMS
   scripts/MotorCode/keyboard_controller.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
+
+install(PROGRAMS scripts/MotorCode/pig.sh
+        DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})

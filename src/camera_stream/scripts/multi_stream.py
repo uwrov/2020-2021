@@ -8,8 +8,8 @@ from sensor_msgs.msg import CompressedImage
 from std_msgs.msg import Int16
 
 if __name__ == '__main__':
-    cam_manager = MultiCamManager(nPiCam=3, useUsbCam=True)
-    fr = 20
+    fr = 15
+    cam_manager = MultiCamManager(nPiCam=3, useUsbCam=True, framerate=fr)
 
     pub_topic = '/nautilus/cameras/stream'
     sub_topic = '/nautilus/cameras/switch'
