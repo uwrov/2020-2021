@@ -41,7 +41,7 @@ def update_state(state):
     -------
     None
     """
-    global msg, current, channel
+    global msg, current, channel, channel_publisher
     if (current is None or state != current):
         if (state["ang_x"] != 0 or state["ang_y"] != 0 or state["ang_z"] != 0):
             state["lin_x"] = 0
@@ -55,15 +55,20 @@ def update_state(state):
         msg.torque.y = state["ang_y"]
         msg.torque.z = state["ang_z"]
 
-        channel.data = channel.data
-        if (state["a"]):
+        print(state)
+
+        if (state["a"] == 1):
             channel.data = 0 # usb cam
-        elif (state["b"]):
+            channel_publisher.publish(channel)
+        elif (state["b"] == 1):
             channel.data = 1 # picam a
-        elif (state["x"]):
+            channel_publisher.publish(channel)
+        elif (state["x"] == 1):
             channel.data = 3 # picam b
-        elif (state["y"]):
+            channel_publisher.publish(channel)
+        elif (state["y"] == 1):
             channel.data = 2 # picam c
+            channel_publisher.publish(channel)
         
         current = state
 
@@ -116,7 +121,6 @@ def publish(buffer):
     while True:
         # rospy.loginfo("Sending Command v:" + str(current))
         velocity_publisher.publish(msg)
-        channel_publisher.publish(channel)
         time.sleep(.05)
         # rate.sleep()
 

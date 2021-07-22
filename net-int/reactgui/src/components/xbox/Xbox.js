@@ -38,7 +38,11 @@ export default class Xbox extends React.Component {
     lin_z: 0,
     ang_x: 0,
     ang_y: 0,
-    ang_z: 0
+    ang_z: 0,
+    a: 0,
+    b: 0,
+    x: 0,
+    y: 0,
   }
 
   BUTTON_OPACITY = {
@@ -115,7 +119,7 @@ export default class Xbox extends React.Component {
   }
 
   handleChange(buttonName, pressed) {
-    console.log("hello there")
+    console.log(buttonName)
     let change = {};
     change[buttonName] = pressed;
     this.setState(change);
@@ -151,10 +155,10 @@ export default class Xbox extends React.Component {
 
   updateVects() {
     let temp_ang_z = 0;
-    if (this.state.DPadLeft) {
-      temp_ang_z = -1;
-    } else if (this.state.DPadRight) {
-      temp_ang_z = 1;
+    if (this.state.LeftTrigger != 0) {
+      temp_ang_z = this.state.LeftTrigger;
+    } else if (this.state.RightTrigger != 0) {
+      temp_ang_z = -1 * this.state.RightTrigger;
     }
 
     this.vect = {
@@ -164,6 +168,10 @@ export default class Xbox extends React.Component {
       ang_x: 0,
       ang_y: 0,
       ang_z: temp_ang_z,
+      a: this.state.A ? 1 : 0,
+      b: this.state.B ? 1 : 0,
+      x: this.state.X ? 1 : 0,
+      y: this.state.Y ? 1 : 0
     }
   }
 
