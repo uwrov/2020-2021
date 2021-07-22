@@ -10,11 +10,11 @@ echo "Hello World!"
 #gnome-terminal -- bash -c 'source devel/setup.sh; roscore; $SHELL'
 #sleep 3s
 echo "starting client"
-gnome-terminal -- bash -c 'cd net-int/reactgui; npm start; $SHELL'
+gnome-terminal -- bash -c 'cd /home/uwrov/2020-2021/net-int/reactgui; npm start; $SHELL'
 sleep 5s
 # #
 echo "starting image server"
-gnome-terminal -- bash -c 'source devel/setup.sh; cd net-int/server; python3 image_server.py; $SHELL'
+gnome-terminal -- bash -c 'source /home/uwrov/2020-2021/devel/setup.sh; cd /home/uwrov/2020-2021/net-int/server; python3 image_server.py; $SHELL'
 sleep 5s
 
 #echo "starting image client"
@@ -22,7 +22,7 @@ sleep 5s
 #sleep 5s
 #
 echo "starting movement server"
-gnome-terminal -- bash -c 'source devel/setup.sh; cd src/nautilus_control/scripts; rosrun nautilus_control Move_Server.py; $SHELL'
+gnome-terminal -- bash -c 'source /home/uwrov/2020-2021/devel/setup.sh; cd /home/uwrov/2020-2021/src/nautilus_control/scripts; rosrun nautilus_control Move_Server.py; $SHELL'
  sleep 3s
 
 echo "All servers are running"

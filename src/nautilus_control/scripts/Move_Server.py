@@ -55,8 +55,6 @@ def update_state(state):
         msg.torque.y = state["ang_y"]
         msg.torque.z = state["ang_z"]
 
-        print(state)
-
         if (state["a"] == 1):
             channel.data = 0 # usb cam
             channel_publisher.publish(channel)
