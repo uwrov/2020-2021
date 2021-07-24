@@ -3,7 +3,7 @@ import React from "react";
 import "./Controller.css";
 import Draggable from "react-draggable";
 
-const socket = require("socket.io-client")("http://localhost:4041");
+const socket = require("socket.io-client")("http://localhost:4040");
 
 // This component is a visual representation of the movement vector
 // that is being sent to the server by the controller.
@@ -18,6 +18,10 @@ export default class Controller extends React.Component {
       ang_x: 0,
       ang_y: 0,
       ang_z: 0,
+      a: 0,
+      b: 0,
+      x: 0,
+      y: 0,
       config: {
         front: "w",
         back: "s",

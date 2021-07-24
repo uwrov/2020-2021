@@ -3,7 +3,7 @@ import "./Xbox.css";
 import Gamepad from "react-gamepad";
 import Draggable from "react-draggable";
 
-const socket = require("socket.io-client")("http://localhost:4041");
+const socket = require("socket.io-client")("http://localhost:4040");
 const AXIS_THROTTLE = 10;
 
 export default class Xbox extends React.Component {
@@ -177,6 +177,7 @@ export default class Xbox extends React.Component {
 
   componentDidUpdate() {
     this.updateVects();
+    console.log('sending state')
     socket.emit("Send State", this.vect);
   }
 
