@@ -77,11 +77,11 @@ if __name__ == '__main__':
 
     rospy.init_node('compress_stream')
     rospy.on_shutdown(shutdown_fn)
-    topic_name = '/nautilus/cameras/camera_picker'
+    topic_name = '/nautilus/cameras/switch'
     
     picam_selected = [True]
 
-    front_cam = rospy.Publisher('/nautilus/nautilus/camera1/nautilus_cam/compressed', CompressedImage, queue_size=0)
+    front_cam = rospy.Publisher('/nautilus/cameras/stream', CompressedImage, queue_size=0)
     rospy.Subscriber(topic_name, String, camPickerCallback, callback_args=(picam_selected))
 
     msg = CompressedImage()
