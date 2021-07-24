@@ -1,14 +1,11 @@
 #!/usr/bin/env python3
 from geometry_msgs.msg import Wrench
-from std_msgs.msg import Int16
 import time
 
 current = None
 msg = Wrench()
-channel = Int16()
-channel.data = 1
 
-def update_state(state, sio, channel_publisher):
+def update_state(state, sio):
     """
     Updates State based on new contoller input
     Receives movement information from controller as a JSON object.
@@ -38,17 +35,6 @@ def update_state(state, sio, channel_publisher):
         msg.torque.y = state["ang_y"]
         msg.torque.z = state["ang_z"]
 
-        print(state)
-        if (state["a"] == 1):
-            channel.data = 0 # usb cam
-        elif (state["b"] == 1):
-            channel.data = 1 # picam a
-        elif (state["x"] == 1):
-            channel.data = 3 # picam b
-        elif (state["y"] == 1):
-            channel.data = 2 # picam c
-
-        channel_publisher.publish(channel)
         current = state
 
 
@@ -74,5 +60,4 @@ def publish(velocity_publisher):
     print('publishing')
     while True:
         velocity_publisher.publish(msg)
-        # channel_publisher.publish(channel)
         time.sleep(.05)

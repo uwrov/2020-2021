@@ -20,7 +20,7 @@ class Console extends Component {
     this.data = "Console created.\nListening...\n";
     var temp = "Console created.\nListening...\n";
     this.consoleStorage.setItem("ConsoleData", temp); //set empty console
-    this.socket = require("socket.io-client")("http://localhost:4046");
+    this.socket = require("socket.io-client")("http://localhost:4040");
     // listen for server logs
     this.setSocketOn();
   }
@@ -117,7 +117,7 @@ class Console extends Component {
         // args are present
         temp += "$>" + this.state.text + "\n";
         let data = '{ "command" : "list" }'; // create data
-        console.log(data); // debug
+        console.log("oof: " + data); // debug
         this.socket.emit("Send Commands", data); // send data to server
         this.consoleStorage.removeItem("ConsoleData");
         this.consoleStorage.setItem("ConsoleData", temp);
