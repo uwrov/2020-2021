@@ -45,6 +45,8 @@ export default class Xbox extends React.Component {
     y: 0,
   }
 
+  camera_index = 0;
+
   BUTTON_OPACITY = {
     true: "50%",
     false: "100%",
@@ -68,49 +70,7 @@ export default class Xbox extends React.Component {
     LeftStickX: 98,
     RightStickX: 394
   }
-  // TODO
-  // document.addEventListener("keydown", (event) => {
-  //   switch (event.keyCode) {
-  //     // Pressed left('a')
-  //     case this.state.config.left:
-  //       this.setState({
-  //         lin_x: -1,
-  //       });
-  //       socket.emit("Send State" , this.state);
-  //     // Pressed up
-  //     case this.state.config.front:
-  //       this.setState({
-  //         lin_y: 1,
-  //       });
-  //       socket.emit("Send State", this.state);
-  //     // Pressed down
-  //     case this.state.config.back:
-  //       this.setState({
-  //         lin_y: -1,
-  //       });
-  //       socket.emit("Send State", this.state);
-  //     // Pressed right
-  //     case this.state.config.right:
-  //       this.setState({
-  //         lin_x: 1,
-  //       });
-  //       socket.emit("Send State", this.state);
-  //     // Pressed space
-  //     case this.state.config.up:
-  //       this.setState({
-  //         lin_z: 1,
-  //       });
-  //       socket.emit("Send State", this.state);
-  //     // Pressed shift
-  //     case this.state.config.down:
-  //       this.setState({
-  //         lin_z: -1,
-  //       });
-  //       socket.emit("Send State", this.state);
-  //     default:
-  //       console.log("Error: keyCode not defined");
-  //     }
-  // }
+
   constructor(props) {
     super();
     this.handleChange = this.handleChange.bind(this);
@@ -168,11 +128,20 @@ export default class Xbox extends React.Component {
       ang_x: 0,
       ang_y: 0,
       ang_z: temp_ang_z,
-      a: this.state.A ? 1 : 0,
-      b: this.state.B ? 1 : 0,
-      x: this.state.X ? 1 : 0,
-      y: this.state.Y ? 1 : 0
     }
+  }
+
+  updateCameraIndex() {
+      let currIndex = 0;
+      if(this.state.DPadUp) currIndex = 0;
+      else if(this.state.DPadRight) currIndex = 1;
+      else if(this.state.DPadDown) currIndex = 2;
+      else if(this.state.DPadLeft) currIndex = 3;
+
+      if(currIndex != this.camera_index) {
+        this.camera_index = currIndex;
+        socket.emit("Set Camera", this.camera_index);
+      }
   }
 
   componentDidUpdate() {
