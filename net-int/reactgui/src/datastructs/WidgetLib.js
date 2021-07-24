@@ -10,7 +10,7 @@ import ScriptRunner from "../components/scriptRunner/ScriptRunner.js";
 import TestWidget from "../components/widgets/TestWidget.js";
 import Xbox from "../components/xbox/Xbox.js";
 
-export let WIDGET_DICT = (data) => {
+export let getWidgetComponent = (data) => {
   switch (data.type) {
     case "settings":
       return <Settings props={data.savedProps} />;
