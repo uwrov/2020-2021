@@ -10,7 +10,7 @@ def am_die():
 if __name__ == '__main__':
     rospy.init_node('keyboard_pub')
 
-    p = rospy.Publisher('/nautilus/nautilus_motors/wrench', Wrench, queue_size=10)
+    p = rospy.Publisher('/nautilus/thruster_manager/input', Wrench, queue_size=10)
     w = Wrench()
 
     print('controls:')
