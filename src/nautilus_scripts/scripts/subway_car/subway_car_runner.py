@@ -15,11 +15,10 @@ from subway_car.Photomosaic import Photomosaic
 from nautilus_utils.CamHolder import CamHolder
 
 # Static Variables
-cam1 = '/nautilus/nautilus/camera1/nautilus_cam/compressed'
-cam2 = '/nautilus/nautilus/camera2/nautilus_cam/compressed'
+cam1 = '/nautilus/cameras/stream'
 # cam1 = 'out/img/compressed'
 # cam2 = 'out/img/compressed2'
-button = '/buttonPress'
+button = '/nautilus/controls/signal'
 
 output_path = '/home/uwrov/Desktop/out.png'
 
@@ -30,7 +29,7 @@ output = Photomosaic()
 def main():
     rospy.init_node('subway_car_runner')
     rospy.Subscriber(cam1, CompressedImage, update_frame, callback_args=(1))
-    rospy.Subscriber(cam2, CompressedImage, update_frame, callback_args=(2))
+#     rospy.Subscriber(cam2, CompressedImage, update_frame, callback_args=(2))
     rospy.Subscriber(button, String, snapshot_fn)
 
     rospy.on_shutdown(shutdown_fn)
