@@ -5,10 +5,29 @@ import picamera
 import numpy as np
 import cv2
 from sensor_msgs.msg import CompressedImage
-from std_msgs.msg import String
+from std_msgs.msg import Int16
 import threading
 import multiprocessing
+import RPi.GPIO as gp
 
+adapter_info = {
+        "A": {"i2c_cmd": "i2cset -y 0 0x70 0x00 0x04",
+              "gpio_sta": [0, 0, 1],
+              },
+        "B": {
+            "i2c_cmd": "i2cset -y 0 0x70 0x00 0x05",
+            "gpio_sta": [1, 0, 1],
+        },
+        "C": {
+            "i2c_cmd": "i2cset -y 0 0x70 0x00 0x06",
+            "gpio_sta": [0, 1, 0],
+        },
+        "D": {
+            "i2c_cmd": "i2cset -y 0 0x70 0x00 0x07",
+            "gpio_sta": [1, 1, 0],
+        },
+    }
+nPiCam = 3
 
 class CamBuffer:
     def __init__(self, width=640, height=480):
@@ -24,6 +43,10 @@ class CamBuffer:
     def get_data(self):
         return self.data
 
+def _set_pins(inputs):
+    gp.output(7, inputs[0])
+    gp.output(11, inputs[1])
+    gp.output(12, inputs[2])
 
 def align_down(size, align):
     return (size & ~((align)-1))
@@ -42,6 +65,12 @@ def picam_init(camera):
     camera.resolution = (pidims[0], pidims[1])
     camera.framerate = fr
     
+    gp.setwarnings(False)
+    gp.setmode(gp.BOARD)
+    gp.setup(7, gp.OUT)
+    gp.setup(11, gp.OUT)
+    gp.setup(12, gp.OUT)
+    
     camera.start_recording(cam_stream, format='mjpeg')
 
 
@@ -52,7 +81,10 @@ def usbcam_init(usb_fr, width, height, stream):
 
 
 def camPickerCallback(msg, flagArr):
-    flagArr[0] = msg.data == 'cam1'
+    flagArr[0] = msg.data != 0
+    if flagArr[0]:
+        channel = chr(65 - (msg.data - 1))
+        _set_pins(adapter_info[channel]['gpio_sta']
 
 
 if __name__ == '__main__':
@@ -82,7 +114,7 @@ if __name__ == '__main__':
     picam_selected = [True]
 
     front_cam = rospy.Publisher('/nautilus/cameras/stream', CompressedImage, queue_size=0)
-    rospy.Subscriber(topic_name, String, camPickerCallback, callback_args=(picam_selected))
+    rospy.Subscriber(topic_name, Int16, camPickerCallback, callback_args=(picam_selected))
 
     msg = CompressedImage()
     msg.format = 'jpeg'
