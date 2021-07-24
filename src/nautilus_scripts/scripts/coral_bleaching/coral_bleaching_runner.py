@@ -13,8 +13,8 @@ from sensor_msgs.msg import CompressedImage
 from std_msgs.msg import String
 
 # variables
-cam = '/nautilus/nautilus/camera1/nautilus_cam/compressed'
-button = '/buttonPress'
+cam = '/nautilus/cameras/stream'
+button = '/nautilus/controls/signal'
 current_frame = None
 old_picture = None
 
