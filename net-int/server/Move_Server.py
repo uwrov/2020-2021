@@ -1,27 +1,11 @@
 #!/usr/bin/env python3
-import json
-import rospy
-# from flask import Flask, render_template
-# from flask_socketio import SocketIO, send, emit
 from geometry_msgs.msg import Wrench
-import _thread
 import time
-from main_server import sio
 
-# HOST_IP = "localhost"
-# # HOST_IP = "0.0.0.0"
-# HOST_PORT = "4041"
-#
-# app = Flask(__name__)
-# sio = SocketIO(app, cors_allowed_origins="*")
-
-# rate = None
-# velocity_publisher = None
 current = None
 msg = Wrench()
 
-@sio.on("Send State")
-def update_state(state):
+def update_state(state, sio):
     """
     Updates State based on new contoller input
 
@@ -56,29 +40,6 @@ def update_state(state):
         current = state
 
 
-# @sio.on("Send State")
-def send_state(state):
-    """
-    Creates a new thread to update state
-
-    Receives movement information from controller as a JSON object.
-    This method then creates a new thread and calls the update_state()
-    to update the state with the new movement input.
-
-    Parameters
-    -------
-    state : JSON/Dictionary
-        stores the movement of the controller in terms of linear components and
-        anglular components.
-        state = {lin_x: 10, lin_y: 0, lin_z: 0, ang_x: 0, ang_y: 0, ang_z: 3}
-
-    Returns
-    -------
-    None
-    """
-    update_state(state)
-
-
 def publish(velocity_publisher):
     """
     Publishes controller input to rospy
@@ -104,38 +65,4 @@ def publish(velocity_publisher):
     print('publishing')
     while True:
         velocity_publisher.publish(msg)
-        sio.sleep(.05)
         time.sleep(.05)
-
-
-def move_init(buffer):
-    """ Sets up rospy and inital publisher thread """
-    print('move server is running')
-    try:
-        global velocity_publisher
-
-        velocity_publisher = rospy.Publisher('/nautilus/thruster_manager/input', Wrench, queue_size=10)
-        _thread.start_new_thread(publish, (0,))
-
-        try:
-            sio.run(app, host=HOST_IP, port=HOST_PORT)
-        except sio.error as socketerror:
-            print("Error: ", socketerror)
-    except rospy.ROSInterruptException: pass
-
-
-def start_server():
-    # _thread.start_new_thread(move_init, (0,))
-
-    print('move server is running')
-    try:
-        global velocity_publisher
-
-        velocity_publisher = rospy.Publisher('/nautilus/thruster_manager/input', Wrench, queue_size=10)
-        _thread.start_new_thread(publish, (0,))
-
-        try:
-            sio.run(app, host=HOST_IP, port=HOST_PORT)
-        except sio.error as socketerror:
-            print("Error: ", socketerror)
-    except rospy.ROSInterruptException: pass
