@@ -1,16 +1,17 @@
 #!/usr/bin/env python3
 from std_msgs.msg import Int16
 
-id = None
-data = None
+# id = None
+# data = None
 channel = Int16()
 channel.data = 1
 
 topics = {
-    "camera_stream": "/nautilus/camera/stream",
+    "camera_stream": "/nautilus/cameras/stream",
+    "old cam 1": "/nautilus/nautilus/camera1/nautilus_cam/compressed",
+    "old cam 2": "/nautilus/nautilus/camera2/nautilus_cam/compressed",
     "img_sub": "/image/distribute"
 }
-
 
 def send_image(data, tup):
     """
@@ -28,7 +29,6 @@ def send_image(data, tup):
     None
     """
     id, sio = tup
-    print(sio)
     sio.emit("Image Display", {'image': data.data, 'id': id}, broadcast = True)
 
 
@@ -50,14 +50,7 @@ def send_ids(sio):
     ids = list(topics.keys())
     sio.emit("IDs", {'ids':ids}, broadcast=True)
 
-def set_camera(state, channel_publisher):
-    if (state["a"] == 1):
-        channel.data = 0 # usb cam
-    elif (state["b"] == 1):
-        channel.data = 1 # picam a
-    elif (state["x"] == 1):
-        channel.data = 3 # picam b
-    elif (state["y"] == 1):
-        channel.data = 2 # picam c
 
+def set_camera(self, data, channel_publisher):
+    channel.data = data
     channel_publisher.publish(channel)
