@@ -1,13 +1,10 @@
 import React from "react";
 import Navbar from "../navbar/NavBar.js";
 import Console from "../console/Console.js";
-import WidgetTreeDebugger from "../../tools/WidgetTreeDebugger";
 import WidgetWindow from "../widgetwindow/WidgetWindow.js";
 import {Widget} from "../widgets/Widget.js";
 
 import "./GUI.css";
-
-import WT from "../../datastructs/WidgetTree.js";
 
 class GUI extends React.Component {
   state = {
@@ -70,14 +67,6 @@ class GUI extends React.Component {
         <div className="widgetDisplay">
           <WidgetWindow widgets={this.state.widgets} update={this.updateWidgets}/>
         </div>
-        {/*
-        <div className="widgetDisplay">
-          {
-            WT.renderWindows(this.state.windows, this.updateWidgets)
-          }
-          <WidgetTreeDebugger tree={this.state.windows}/>
-
-        </div>*/}
       </div>
     );
   }
