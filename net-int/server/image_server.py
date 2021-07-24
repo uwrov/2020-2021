@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 
 topics = {
-    "front_cam": "/nautilus/nautilus/camera1/nautilus_cam/compressed",
-    "down_cam": "/nautilus/nautilus/camera2/nautilus_cam/compressed",
+    "camera_stream": "/nautilus/camera/stream",
     "img_sub": "/image/distribute"
 }
 data = None
