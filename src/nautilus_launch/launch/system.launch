@@ -16,6 +16,7 @@
         <!-- launch nodes -->
         <node machine="pi" name="motor_driver" pkg="nautilus_motors" type="motor_driver.py"/>
         <node machine="pi" name="camera_streamer" pkg="camera_stream" type="multi_stream.py"/>
+<!--         <node machine="pi" name="camrea_streamer" pkg="camera_stream" type="switchable_cams.py"/> -->
     </group>
 
 </launch>
