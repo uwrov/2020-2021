@@ -12,8 +12,8 @@ intercept = max - slope * (1)
 inputs = [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1], [-1, 0, 0, 0], [0, -1, 0, 0], [0, 0, 0, 0]]
 
 # Gives the default values for the pins.
-pin1 = 21 
-pin2 = 20 
+pin1 = 21
+pin2 = 20
 pin3 = 16
 
 #pin4 = 12 #original pin
@@ -45,10 +45,10 @@ def control(controlInputs):
         assert item >= -1 or item <= 1
 
     # flip inputs as needed
-    controlInputs[0] *= -1      # X 
-    controlInputs[1] *= 1      # Y
-    controlInputs[2] *= -1      # Z
-    controlInputs[3] *= 1      # R
+    controlInputs[0] *= -1    # X
+    controlInputs[1] *= 1     # Y
+    controlInputs[2] *= -1    # Z
+    controlInputs[3] *= 1     # R
 
     # Case where there is no rotation based on the "R" value of the input array being zero.
     # if (controlInputs[3] == 0):
@@ -94,7 +94,12 @@ def control(controlInputs):
     # 1. Finish Limit Speed Section
     # 2. Apply R (direction) as scaled be speed (magnitude)
 
-
+    max_r_speed = 2500
+    min_r_speed = 1500
+    max_l_speed = 2500
+    min_l_speed = 1500
+    r = controlInputs[3]
+    
     # TO DO: Limit on Maximum and Minimum Linear Speed
     # Determine rotational and linear, maximum and minimum, speeds.
     limit_max = (max_r_speed + 2 * (max_l_speed)) / 3
@@ -116,7 +121,6 @@ def control(controlInputs):
 
     # Rotational Changes in pipeline 0 [c2], 1[c1], 2[c2], 3[c1], 4[0], 5[0]
     
-
     apply_motor(controlOutputs, 0, Ac) 
     apply_motor(controlOutputs, 1, Bc) 
     apply_motor(controlOutputs, 2, Cc) 
