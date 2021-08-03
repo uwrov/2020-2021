@@ -50,7 +50,7 @@ def send_script_command(data):
 def send_error_message(data):
     scripts_manager.process_error_msg(data)
 
-@sio.on("Publish Empty Signal")
+@sio.on("Activate Script")
 def publish_empty_signal():
     empty_publisher.publish(msg)
 
@@ -68,10 +68,11 @@ if __name__ == '__main__':
 
         velocity_publisher = rospy.Publisher('/nautilus/motors/commands', Wrench, queue_size=10)
         channel_publisher = rospy.Publisher('/nautilus/cameras/switch', Int16, queue_size=1)
-
-        empty_publisher = rospy.Publisher('/nautilus/controls/signal', Empty, queue_size=1)
         threading.Thread(target=Move_Server.publish, args=(velocity_publisher,)).start()
 
         scripts_manager = scripts_mgr.ScriptManager(sio)
+
+        empty_publisher = rospy.Publisher('/nautilus/controls/signal', Empty, queue_size=1)
+
         sio.run(app, host=HOST_IP, port=HOST_PORT)
     except rospy.ROSInterruptException: pass
