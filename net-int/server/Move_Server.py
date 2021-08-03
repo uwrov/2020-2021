@@ -15,7 +15,7 @@ def update_state(state, sio):
     state : JSON/Dictionary
         stores the movement of the controller in terms of linear components and
         anglular components.
-        state = {lin_x: 10, lin_y: 0, lin_z: 0, ang_x: 0, ang_y: 0, ang_z: 3,
+        state = {lin_x: 0, lin_y: 0, lin_z: 0, ang_x: 0, ang_y: 0, ang_z: 0,
                  a: true, b: false, x: false, y: false}
     Returns
     -------
