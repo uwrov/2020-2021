@@ -1,6 +1,6 @@
 <launch>
-    <arg name="surface_ip" default="192.168.0.12" />
-    <arg name="pi_ip" default="192.168.0.19" />
+    <arg name="surface_ip" default="192.168.8.103" />
+    <arg name="pi_ip" default="192.168.8.104" />
     
     <machine name="surface_control" address="$(arg surface_ip)" user="uwrov" password="uwrov2020" env-loader="/home/uwrov/2020-2021/surface_env.sh"/>
     <machine name="pi" address="$(arg pi_ip)" user="pi" password="raspberry" env-loader="/home/pi/2020-2021/pi_env.sh"/>
@@ -15,8 +15,8 @@
         <node machine="pi" name="pigpio_launcher" pkg="nautilus_motors" type="pig.sh"/>
         <!-- launch nodes -->
         <node machine="pi" name="motor_driver" pkg="nautilus_motors" type="motor_driver.py"/>
-        <node machine="pi" name="camera_streamer" pkg="camera_stream" type="multi_stream.py"/>
-<!--         <node machine="pi" name="camrea_streamer" pkg="camera_stream" type="switchable_cams.py"/> -->
+        <!-- <node machine="pi" name="camera_streamer" pkg="camera_stream" type="multi_stream.py"/> -->
+        <node machine="pi" name="camrea_streamer" pkg="camera_stream" type="switchable_cams.py"/>
     </group>
 
 </launch>
