@@ -13,7 +13,7 @@ class Console extends Component {
     this.argCount = -1;
     this.tempArgNum = 0;
     //this.resize = "minimize";
-    this.state = { resize: "minimize", text: "", consoleWindow: "", rows: 20 };
+    this.state = { resize: "maximize", text: "", consoleWindow: "", rows: 1 };
 
     //this.showConsole(true)
     this.consoleStorage = window.localStorage;

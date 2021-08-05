@@ -193,8 +193,3 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
-.tab-exit-button {
-  position: absolute;
-  right: 10px;
-}

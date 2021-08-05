@@ -21,3 +21,8 @@
   width: 100%;
   height: calc(100% - 30px);
 }
+
+.tab-exit-button {
+  position: absolute;
+  right: 10px;
+}

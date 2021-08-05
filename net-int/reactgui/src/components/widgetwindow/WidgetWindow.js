@@ -10,8 +10,13 @@ export class WidgetWindow extends React.Component {
   state = {
     editMode: false,
     width: 0,
-    rowHeight: 60,
-    columns: 12,
+    rowHeight: 100,
+    columns: 8,
+    layout: [
+      {w: 6, h: 6, x: 0, y: 0, i: "key0"},
+      {w: 2, h: 3, x: 6, y: 0, i: "key1"},
+      {w: 2, h: 3, x: 6, y: 3, i: "key2"},
+    ]
   }
 
   constructor(props) {
@@ -40,19 +45,19 @@ export class WidgetWindow extends React.Component {
   render() {
     return (
       <GridLayout className="layout" cols={this.state.columns} draggableHandle=".drag-handle"
-          rowHeight={this.state.rowHeight} width={this.state.width}>
+          rowHeight={this.state.rowHeight} width={this.state.width}
+          layout={this.state.layout}
+          onLayoutChange={this.handleLayoutChange}>
         {this.renderWidgets()}
       </GridLayout>
     )
   }
 
   renderWidgets() {
-    let count = 0;
     if('widgets' in this.props) {
-      return this.props.widgets.map((widget) => {
-        count++;
+      return this.props.widgets.map((widget, i) => {
         return (
-          <div key={"key" + count} data-grid={{x: count, y: 0, w: 5, h: 5, isResizable: true}}>
+          <div key={"key" + i}>
             <div className="widget-tab-header drag-handle">
               <a>{widget.type}</a>
               <span
@@ -77,6 +82,15 @@ export class WidgetWindow extends React.Component {
         );
       });
     }
+  }
+
+  handleLayoutChange = (layout) => {
+    console.log(layout);
+    this.setState({layout: layout});
+  }
+
+  getLayout() {
+    return this.state.layout
   }
 }
 

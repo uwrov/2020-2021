@@ -12,8 +12,8 @@ class GUI extends React.Component {
     settings: {
       keybindings: {}
     },
-    consoleShow: true,
-    widgets: []
+    consoleShow: false,
+    widgets: [new Widget("ros_camera"), new Widget("controller"), new Widget("script_runner")]
   };
 
 

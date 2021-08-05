@@ -11,7 +11,7 @@ class ScriptRunner extends Component {
         this.state = {
             command: "None", // Starts with no start building
         };
-        this.socket = require("socket.io-client")("http://localhost:4046");
+        this.socket = require("socket.io-client")("http://localhost:4040");
     }
     //
     // Changes the currently selected start building
@@ -60,8 +60,13 @@ class ScriptRunner extends Component {
                 {/*</select> <br/>*/}
                 <button onClick={this.handleRunScript}>Run Script</button>
                 <button onClick={this.handleClear}>Clear</button>
+                <button onClick={this.sendSignal}>Send Activate Signal</button>
             </div>
         );
+    }
+
+    sendSignal = () => {
+      this.socket.emit("Activate Script");
     }
 }
 

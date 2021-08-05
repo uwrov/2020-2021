@@ -20,6 +20,7 @@ export default class Camera extends React.Component {
       curr: 0,
       hide: false,
       currImage: null,
+      rotation: 0
     };
 
     this.socket.on("Image Display", this.updateImage);
@@ -92,10 +93,11 @@ export default class Camera extends React.Component {
             ) : null}
           </div>
         </div>
-        <div onClick={this.getIDs}>click me!</div>
+        <button className="rotate-button" onClick={this.rotate}>rotate</button>
         <img
           src={this.getCurrentImageId()}
           alt="Image Display"
+          style={this.generateRotationStyle()}
           className="image"
         />
       </div>
@@ -107,13 +109,20 @@ export default class Camera extends React.Component {
     return this.state.channels[this.state.ids[this.state.curr]];
   }
 
-  // render() {
-  //   return (
-  //     <div className="camera">
-  //       <img src={this.state.img_src} alt="Image Display" className="image" />
-  //     </div>
-  //   );
-  // }
+  generateRotationStyle = () => {
+    return (
+      {
+        'transform': 'rotate(' + (90 * this.state.rotation) + 'deg)',
+        '-webkit-transform': 'rotate(' + (90 * this.state.rotation) + 'deg)'
+      }
+    );
+  }
+
+  rotate = () => {
+    let next = this.state.rotation + 1;
+    if(next > 3) next = 0;
+    this.setState({rotation: next});
+  }
 }
 
 let decodeImageToURL = (image) => {
