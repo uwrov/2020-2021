@@ -132,7 +132,7 @@ export default class Xbox extends React.Component {
   }
 
   updateCameraIndex() {
-      let currIndex = 0;
+      let currIndex = this.camera_index;
       if(this.state.DPadUp) currIndex = 0;
       else if(this.state.DPadRight) currIndex = 1;
       else if(this.state.DPadDown) currIndex = 2;
@@ -146,7 +146,8 @@ export default class Xbox extends React.Component {
 
   componentDidUpdate() {
     this.updateVects();
-    console.log('sending state')
+    this.updateCameraIndex();
+    console.log('sending state');
     socket.emit("Send State", this.vect);
   }
 

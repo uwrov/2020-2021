@@ -10,7 +10,7 @@ import rospy
 import numpy as np
 import coral_bleaching.coral as coral_bleaching
 from sensor_msgs.msg import CompressedImage
-from std_msgs.msg import String
+from std_msgs.msg import Empty
 
 # variables
 cam = '/nautilus/cameras/stream'
@@ -36,7 +36,7 @@ def main():
     rospy.init_node('coral_bleaching_runner')
     rospy.Subscriber(cam, CompressedImage, update_frame)
     old_picture = cv2.imread(original_image_path)
-    rospy.Subscriber(button, String, snapshot_fn)
+    rospy.Subscriber(button, Empty, snapshot_fn)
     rospy.on_shutdown(shutdown_fn)
     rospy.spin()
 

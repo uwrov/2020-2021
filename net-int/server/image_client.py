@@ -35,6 +35,10 @@ def send_image_through_ROS():
     image_publisher.publish(message)
     print("image sent")
 
+@sio.on('Scripts List')
+def print_scripts(data):
+    print(data['scripts'])
+
 
 if __name__ == '__main__':
     """ Sets up rospy and starts server """
@@ -45,3 +49,4 @@ if __name__ == '__main__':
     except rospy.ROSInterruptException: pass
 
     send_image_through_ROS()
+    sio.emit('Get Scripts')

@@ -40,6 +40,9 @@ class ScriptManager:
         self.scripts = [f for f in listdir(SCRIPTS_PATH) if isfile(join(SCRIPTS_PATH, f))]
         self.logs = []
 
+    def send_scipts(self):
+        self.sio.emit("Scripts List", {'scripts': self.scripts}, broadcast=True)
+
     def json_request(self, data):
 
         """

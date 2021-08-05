@@ -10,7 +10,7 @@ import cv2
 import rospy
 import numpy as np
 from sensor_msgs.msg import CompressedImage
-from std_msgs.msg import String
+from std_msgs.msg import Empty
 from subway_car.Photomosaic import Photomosaic
 from nautilus_utils.CamHolder import CamHolder
 
@@ -30,7 +30,7 @@ def main():
     rospy.init_node('subway_car_runner')
     rospy.Subscriber(cam1, CompressedImage, update_frame, callback_args=(1))
 #     rospy.Subscriber(cam2, CompressedImage, update_frame, callback_args=(2))
-    rospy.Subscriber(button, String, snapshot_fn)
+    rospy.Subscriber(button, Empty, snapshot_fn)
 
     rospy.on_shutdown(shutdown_fn)
 
@@ -41,8 +41,6 @@ def main():
 
 
 def snapshot_fn(msg):
-    if msg.data not in ['o', 't']:
-        return
     cap = cameras.get_frame(1) if msg.data[0] == 'o' else cameras.get_frame(2)
     if cap is not None:
         print('adding frame', output.imageIndex)

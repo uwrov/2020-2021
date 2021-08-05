@@ -3,7 +3,7 @@ import rospy
 from flask import Flask, render_template
 from flask_socketio import SocketIO, send, emit
 from sensor_msgs.msg import Image, CompressedImage
-from std_msgs.msg import Int16
+from std_msgs.msg import Int16, Empty
 import threading
 from geometry_msgs.msg import Wrench
 import image_server
@@ -23,6 +23,8 @@ sio = SocketIO(app, cors_allowed_origins="*", async_mode='threading')
 
 channel_publisher = None
 scripts_manager = None
+empty_publisher =None
+msg = Empty()
 
 @sio.on("Get IDs")
 def send_image_id():
@@ -36,6 +38,10 @@ def set_image_camera(data):
 def send_move_state(data):
     Move_Server.update_state(data, sio)
 
+@sio.on('Get Scripts')
+def send_scripts_list():
+    scripts_manager.send_scipts()
+
 @sio.on("Send Commands")
 def send_script_command(data):
     scripts_manager.json_request(data)
@@ -43,6 +49,10 @@ def send_script_command(data):
 @sio.on("Error Message")
 def send_error_message(data):
     scripts_manager.process_error_msg(data)
+
+@sio.on("Activate Script")
+def publish_empty_signal():
+    empty_publisher.publish(msg)
 
 if __name__ == '__main__':
     """ Sets up rospy and starts servers """
@@ -61,5 +71,8 @@ if __name__ == '__main__':
         threading.Thread(target=Move_Server.publish, args=(velocity_publisher,)).start()
 
         scripts_manager = scripts_mgr.ScriptManager(sio)
+
+        empty_publisher = rospy.Publisher('/nautilus/controls/signal', Empty, queue_size=1)
+
         sio.run(app, host=HOST_IP, port=HOST_PORT)
     except rospy.ROSInterruptException: pass
