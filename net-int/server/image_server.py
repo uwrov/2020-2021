@@ -51,6 +51,7 @@ def send_ids(sio):
     sio.emit("IDs", {'ids':ids}, broadcast=True)
 
 
-def set_camera(self, data, channel_publisher):
+def set_camera(data, channel_publisher):
     channel.data = data
     channel_publisher.publish(channel)
+    print(data)
