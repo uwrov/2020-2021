@@ -1,0 +1,310 @@
+import numpy as np
+import cv2 as cv
+# from matplotlib import pyplot as plt
+from funieGAN import load_model, infer_img
+
+# Macros:
+# To adjust, keep in mind (0,0) is the top corner, +x is to right, and +y is to the bottom. 
+LEFT_BOUND = 250
+RIGHT_BOUND = 650
+UPPER_BOUND = 00
+
+# Feature Matching: 
+NUM_FEATURES = 500
+NUM_MATCHES = 90
+
+# hsv color spaces for segmentation
+# ranges are (lower, upper)
+RED_RANGE_1 = (np.array([0, 70, 110]), np.array([10, 255, 255]))
+RED_RANGE_2 = (np.array([170, 70, 110]), np.array([180, 255, 255]))
+PINK_RANGE = (np.array([150, 70, 90]), np.array([170, 255, 255]))
+WHITE_RANGE = (np.array([0, 0, 180]), np.array([180, 70, 255]))
+
+def read_image(image_file):
+    img = cv.imread(image_file)
+    return cv.cvtColor(img, cv.COLOR_BGR2RGB)
+
+def grayscale(image):
+    HSV = cv.cvtColor(image, cv.COLOR_RGB2HSV)
+    return HSV[:,:,2]
+
+# Feature Detection:
+def mark_features(image):
+    image2 = image.copy()
+
+    #ORB feature detection
+    orb = cv.ORB_create(NUM_FEATURES)
+    kp, des = orb.detectAndCompute(image2,None)
+    for marker in kp:
+	    image2 = cv.drawMarker(image2, tuple(int(i) for i in marker.pt), color=(0, 255, 0))
+    return kp, des, image2
+
+def match_features(kp1, des1, image1, kp2, des2, image2):
+    #^keypoints, descriptors, and marked image respectively. Outputs of mark_features()
+    #Feature Matching Algorithm, finds matches and selects the top ones:
+    bf = cv.BFMatcher(cv.NORM_HAMMING, crossCheck = True)
+    matches = bf.match(des1, des2)
+    matches = sorted(matches, key = lambda x:x.distance)
+    best_matches = matches[:NUM_MATCHES]
+
+    #Get the points corresponding to the matches:
+    p1 = []
+    p2 = []
+    for match in matches:
+        p1.append(kp1[match.queryIdx].pt)   #points are stored in kp list. # old_kp
+        p2.append(kp2[match.trainIdx].pt) #new_kp
+    p1 = np.array(p1)
+    p2 = np.array(p2)
+
+    img3 = cv.drawMatches(image1, kp1, image2, kp2, best_matches, None,flags=cv.DrawMatchesFlags_NOT_DRAW_SINGLE_POINTS)
+    return p1, p2, img3
+
+def bg_color(img):
+    # average color of row 0
+    top_row = np.array([img[1]])
+    average = np.mean(top_row, axis=(0,1))
+    return average
+
+# best correction of blue-green cast for pink areas
+# image and return are RGB
+def color_correct_pink(image):
+    return increase_saturation(labMeanWhiteBalance(image), 40)
+
+# best correction of blue-green cast for pink areas
+# image and return are RGB
+def color_correct_white(image):
+    model = load_model()
+    image_rm_blue = infer_img(image, model)
+    return lab_clahe(image_rm_blue)
+
+# img and return are RGB
+def increase_saturation(img, val):
+    img_hsv = cv.cvtColor(img, cv.COLOR_RGB2HSV)
+    channels = cv.split(img_hsv)
+    for i in range(channels[1].shape[0]):
+        for j in range(channels[1].shape[1]):
+            channels[1][i][j] = channels[1][i][j] + val
+            if channels[1][i][j] > 255:
+                channels[1][i][j] = 255
+    cv.merge(channels, img_hsv)
+    return cv.cvtColor(img_hsv, cv.COLOR_HSV2RGB)
+
+# img and return are RGB
+def labMeanWhiteBalance(img):
+    img_float = np.float32(img) / 255
+    img_lab = cv.cvtColor(img_float, cv.COLOR_RGB2LAB)
+    channels = cv.split(img_lab)
+
+    meanA = np.mean(channels[1])
+    meanB = np.mean(channels[2])
+    subtract(channels[1], meanA)
+    subtract(channels[2], meanB)
+
+    cv.merge(channels, img_lab)
+    return np.uint8(cv.cvtColor(img_lab, cv.COLOR_LAB2RGB) * 255)
+
+def subtract(channel, val):
+    for i in range(channel.shape[0]):
+        for j in range(channel.shape[1]):
+            channel[i][j] = channel[i][j] - val
+            if channel[i][j] < -127:
+                channel[i][j] = -127
+            elif channel[i][j] > 127:
+                channel[i][j] = 127
+
+# img and return are RGB
+def lab_clahe(img):
+    img_lab = cv.cvtColor(img, cv.COLOR_RGB2LAB)
+    channels = cv.split(img_lab)
+    clahe = cv.createCLAHE(clipLimit=3.0, tileGridSize=(8,8))
+    channels[0] = clahe.apply(channels[0])
+    cv.merge(channels, img_lab)
+    return cv.cvtColor(img_lab, cv.COLOR_LAB2RGB)
+
+# corrects color contrast/brightness
+def gamma_correct(image, gamma):
+    lookUpTable = np.empty((1,256), np.uint8)
+    for i in range(256):
+        lookUpTable[0,i] = np.clip(pow(i / 255.0, gamma) * 255.0, 0, 255)
+    return cv.LUT(image, lookUpTable)
+
+# automatically calculates gamma based on average brightness of 10 x 10 kernel
+# returns gamma-corrected (brightened) image
+def auto_gamma(image):
+    grayscale_image = grayscale(image)
+    
+    # get max average value (brightness) for 10 x 10 kernel
+    maxAvgV = 0
+    for x in range(0, grayscale_image.shape[0], 10):
+        for y in range(0, grayscale_image.shape[1], 10):
+            vSum = 0
+            if (x + 10 < grayscale_image.shape[0] and y + 10 < grayscale_image.shape[1]):
+                for i in range(10):
+                    for j in range(10):
+                        vSum += grayscale_image[x + i, y + j]
+                if (vSum > maxAvgV):
+                    maxAvgV = vSum
+    maxAvgV /= 100
+    
+    gamma = 0.04 * pow(10, -7) * pow(1.07819, maxAvgV) + 0.30139
+    gamma = min(gamma, 1) # if image is bright enough, gamma = 1 leaves image unchanged
+    return gamma_correct(image, gamma)
+
+# returns pink mask, white mask
+def segment_hsv(image):
+    # image = auto_gamma(image)
+    image = cv.cvtColor(image, cv.COLOR_RGB2HSV)
+
+    # red
+    mask1 = cv.inRange(image, RED_RANGE_1[0], RED_RANGE_1[1])
+    mask2 = cv.inRange(image, RED_RANGE_2[0], RED_RANGE_2[1])
+    # pink
+    mask3 = cv.inRange(image, PINK_RANGE[0], PINK_RANGE[1])
+    mask_pink = mask1 | mask2 | mask3
+
+    # white
+    mask_white = cv.inRange(image, WHITE_RANGE[0], WHITE_RANGE[1])
+    
+    return mask_pink, mask_white
+
+def reduce_noise(image):
+    kernel = np.ones((3, 3), np.uint8)
+    erosion = cv.erode(image, kernel, iterations = 7)
+    dilation = cv.dilate(erosion, kernel, iterations = 9)
+    return dilation
+
+# all oldCoral, newCoral images and masks should be aligned for subtraction to work
+def bounding_boxes(oldCoral, oldCoral_mask, oldCoral_mask_pink, oldCoral_mask_white, newCoral, newCoral_mask, newCoral_mask_pink, newCoral_mask_white):
+    # Mask subtraction
+    """
+    0 is bg
+    Cases:
+    - Growth: 0 -> pink, green
+    - Damage: pink -> 0 or white -> 0, yellow
+    - Bleaching: pink -> white, red
+    - Recovery: white -> pink, blue
+    """
+
+    growth_sub = newCoral_mask_pink & ~oldCoral_mask
+    damage_sub = oldCoral_mask & ~newCoral_mask
+    bleach_sub = oldCoral_mask_pink & newCoral_mask_white
+    recovery_sub = oldCoral_mask_white & newCoral_mask_pink
+
+    # reduce noise:
+    growth = reduce_noise(growth_sub)
+    damage = reduce_noise(damage_sub)
+    bleach = reduce_noise(bleach_sub)
+    recovery = reduce_noise(recovery_sub)
+
+    growth_contours, _ = cv.findContours(growth, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
+    damage_contours, _ = cv.findContours(damage, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
+    bleach_contours, _ = cv.findContours(bleach, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
+    recovery_contours, _ = cv.findContours(recovery, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
+
+    contours = [[c, 'g'] for c in growth_contours]
+    contours += [[c, 'd'] for c in damage_contours]
+    contours += [[c, 'b'] for c in bleach_contours]
+    contours += [[c, 'r'] for c in recovery_contours]
+
+    # top <= 4 contours:
+    contours.sort(key=lambda pair: cv.contourArea(pair[0]), reverse=True)
+    contours = contours[:4]
+
+    # filter out duds:
+    contours = [pair for pair in contours if cv.contourArea(pair[0]) > 1000] # ~30x30 pixels
+
+    # draw bounding boxes on new and old aligned to new images:
+    box_colors = {
+        'g': (0, 255, 0), # growth: green
+        'd': (255, 255, 0), # damage: yellow
+        'b': (255, 0, 0), # bleaching: red
+        'r': (0, 0, 255) # recovery: blue
+    }
+
+    oldCoral_rect = oldCoral.copy()
+    newCoral_rect = newCoral.copy()
+
+    # each pair = [contour, box color]
+    for pair in contours:
+        x, y, w, h = cv.boundingRect(pair[0])
+        box_color = box_colors[pair[1]]
+        cv.rectangle(oldCoral_rect, (x,y), (x+w, y+h), color=box_color, thickness=2)
+        cv.rectangle(newCoral_rect, (x,y), (x+w, y+h), color=box_color, thickness=2)
+    
+    return oldCoral_rect, newCoral_rect
+
+# oldCoral: cv image
+# newCoral: cv image
+# returns old coral, new coral images with colored bounding boxes around changes from the old to new images
+def run_task(oldCoral, newCoral):
+    # Load Images:
+    oldCoral = cv.cvtColor(oldCoral, cv.COLOR_BGR2RGB)
+    newCoral = cv.cvtColor(newCoral, cv.COLOR_BGR2RGB)
+
+    # Color correction to remove blue-green cast
+    newCoral_cc_pink = color_correct_pink(newCoral)
+    newCoral_cc_white = color_correct_white(newCoral)
+
+    # cv.imshow('newCoral_cc_pink', cv.cvtColor(newCoral_cc_pink, cv.COLOR_RGB2BGR))
+    # cv.imshow('newCoral_cc_white', cv.cvtColor(newCoral_cc_white, cv.COLOR_RGB2BGR))
+
+    # HSV hard-coded segmentation
+    oldCoral_mask_pink, oldCoral_mask_white = segment_hsv(oldCoral)
+    newCoral_mask_pink, _ = segment_hsv(newCoral_cc_pink)
+    _, newCoral_mask_white = segment_hsv(newCoral_cc_white)
+
+    oldCoral_mask = oldCoral_mask_pink | oldCoral_mask_white
+    newCoral_mask = newCoral_mask_pink | newCoral_mask_white
+
+    # cv.imshow('newCoral_mask_pink', newCoral_mask_pink)
+    # cv.imshow('newCoral_mask_white', newCoral_mask_white)
+    cv.imshow('newCoral_mask', newCoral_mask)
+    cv.imshow('oldCoral_mask', oldCoral_mask)
+
+    # alignment
+    # get keypoints:
+    src_pts, dst_pts, _ = match_features(*mark_features(oldCoral_mask), *mark_features(newCoral_mask))
+    # src_pts, dst_pts, _ = match_features(*mark_features(oldCoral), *mark_features(newCoral))
+    # estimate homography transformation using mask keypoints
+    homography, _ = cv.findHomography(src_pts, dst_pts, cv.RANSAC, 5.0)
+
+    # apply homography transformation to masks
+    y, x = newCoral_mask.shape[:2]
+    oldCoral_mask_aligned = cv.warpPerspective(oldCoral_mask, homography, (x, y), borderValue=(0,0,0))
+    oldCoral_mask_pink_aligned = cv.warpPerspective(oldCoral_mask_pink, homography, (x, y), borderValue=(0,0,0))
+    oldCoral_mask_white_aligned = cv.warpPerspective(oldCoral_mask_white, homography, (x, y), borderValue=(0,0,0))
+
+    # cv.imshow('oldCoral_mask_aligned', oldCoral_mask_aligned)
+
+    # apply homography transformation to original image
+    y, x = newCoral.shape[:2]
+    # perspective transform
+    oldCoral_aligned = cv.warpPerspective(oldCoral, homography, (x, y), borderValue=bg_color(oldCoral))
+
+    cv.imshow('oldCoral_aligned', oldCoral_aligned)
+
+    oldCoral_mask = oldCoral_mask_aligned
+    oldCoral_mask_pink = oldCoral_mask_pink_aligned
+    oldCoral_mask_white = oldCoral_mask_white_aligned
+    
+    oldCoral_rect, newCoral_rect = bounding_boxes(oldCoral_aligned, oldCoral_mask, oldCoral_mask_pink, oldCoral_mask_white, newCoral, newCoral_mask, newCoral_mask_pink, newCoral_mask_white)
+    return cv.cvtColor(oldCoral_rect, cv.COLOR_RGB2BGR), cv.cvtColor(newCoral_rect, cv.COLOR_RGB2BGR)
+
+oldCoral = cv.imread("old_coral.PNG")
+newCoral = cv.imread("blue data/reef2.jpg")
+oldCoral_rect, newCoral_rect = run_task(oldCoral, newCoral)
+
+# cv.imwrite("newCoral_rect.jpg", newCoral_rect)
+
+# show images using OpenCV
+cv.imshow("old coral aligned to new coral", oldCoral_rect)
+cv.imshow("new coral", newCoral_rect)
+cv.waitKey(0)
+
+# # show images using matplotlib
+# fig, ax = plt.subplots(1, 2, figsize=(12, 20))
+# _ = ax[0].imshow(oldCoral_rect)
+# _ = ax[0].set_title("old coral aligned to new coral")
+# _ = ax[1].imshow(newCoral_rect)
+# _ = ax[1].set_title("new coral")
+# plt.show()

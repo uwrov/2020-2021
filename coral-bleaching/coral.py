@@ -176,13 +176,13 @@ def bounding_boxes(oldCoral, oldCoral_mask, oldCoral_mask_pink, oldCoral_mask_wh
     
     return oldCoral_rect, newCoral_rect
 
-# oldCoral_file: file path of old coral image (example: "old_coral.PNG")
-# newCoral_file: file path of new coral image (example: "new_coral.PNG")
+# oldCoral_file: cv image
+# newCoral_file: cv image
 # returns old coral, new coral images with colored bounding boxes around changes from the old to new images
-def run_task(oldCoral_file, newCoral_file):
+def run_task(oldCoral, newCoral):
     # Load Images:
-    oldCoral = read_image(oldCoral_file)
-    newCoral = read_image(newCoral_file)
+    oldCoral = cv.cvtColor(oldCoral, cv.COLOR_BGR2RGB)
+    newCoral = cv.cvtColor(newCoral, cv.COLOR_BGR2RGB)
 
     # HSV hard-coded segmentation
     oldCoral_mask_pink, oldCoral_mask_white = segment_hsv(oldCoral)
@@ -213,19 +213,23 @@ def run_task(oldCoral_file, newCoral_file):
     oldCoral_mask_white = oldCoral_mask_white_aligned
     
     oldCoral_rect, newCoral_rect = bounding_boxes(oldCoral_aligned, oldCoral_mask, oldCoral_mask_pink, oldCoral_mask_white, newCoral, newCoral_mask, newCoral_mask_pink, newCoral_mask_white)
-    return oldCoral_rect, newCoral_rect
+    return cv.cvtColor(oldCoral_rect, cv.COLOR_RGB2BGR), cv.cvtColor(newCoral_rect, cv.COLOR_RGB2BGR)
 
-oldCoral_rect, newCoral_rect = run_task("colony_original_wall.JPG", "colony_dead_bleach_wall.JPG")
+oldCoral = cv.imread("colony_original_wall.JPG")
+newCoral = cv.imread("colony_dead_bleach_wall.JPG")
+oldCoral_rect, newCoral_rect = run_task(oldCoral, newCoral)
 
-# # show images using OpenCV
-# cv.imshow("old coral aligned to new coral", cv.cvtColor(oldCoral_rect, cv.COLOR_RGB2BGR))
-# cv.imshow("new coral", cv.cvtColor(newCoral_rect, cv.COLOR_RGB2BGR))
-# cv.waitKey(0)
+# cv.imwrite("newCoral_rect.jpg", newCoral_rect)
 
-# show images using matplotlib
-fig, ax = plt.subplots(1, 2, figsize=(12, 20))
-_ = ax[0].imshow(oldCoral_rect)
-_ = ax[0].set_title("old coral aligned to new coral")
-_ = ax[1].imshow(newCoral_rect)
-_ = ax[1].set_title("new coral")
-plt.show()
+# show images using OpenCV
+cv.imshow("old coral aligned to new coral", oldCoral_rect)
+cv.imshow("new coral", newCoral_rect)
+cv.waitKey(0)
+
+# # show images using matplotlib
+# fig, ax = plt.subplots(1, 2, figsize=(12, 20))
+# _ = ax[0].imshow(oldCoral_rect)
+# _ = ax[0].set_title("old coral aligned to new coral")
+# _ = ax[1].imshow(newCoral_rect)
+# _ = ax[1].set_title("new coral")
+# plt.show()
